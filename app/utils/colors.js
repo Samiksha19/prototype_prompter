@@ -5,3 +5,4 @@ export const black = "#505052";
 export const gray = "#878C93";
 export const white = "#FFFFFF";
 export const darkpurple = "#4F2A6f";
+export const grey = "#EDEDED";

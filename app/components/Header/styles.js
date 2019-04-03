@@ -22,10 +22,11 @@ export default (styles = StyleSheet.create({
     alignItems: "center",
     fontSize: 18,
     marginTop: 5,
-    color: colors.black
+    color: colors.white
   },
   menuIcon: {
-    backgroundColor: "transparent",
+    marginTop: 3,
+    backgroundColor: colors.purple,
     marginLeft: 10
   }
 }));

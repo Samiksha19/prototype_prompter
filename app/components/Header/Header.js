@@ -1,9 +1,8 @@
 /* Header Component */
 
 import React, { Component } from "react";
-import { DrawerActions } from "react-navigation";
 import { View, Text, TouchableOpacity } from "react-native";
-import FeatherIcon from "react-native-vector-icons/dist/Feather";
+import FeatherIcon from "react-native-vector-icons/dist/MaterialIcons";
 import styles from "./styles";
 
 class Header extends Component {
@@ -23,14 +22,14 @@ class Header extends Component {
               name="menu"
               size={26}
               style={styles.menuIcon}
-              color="#000"
+              color="#fff"
             />
           ) : (
             <FeatherIcon
               name="chevron-left"
               size={26}
               style={styles.menuIcon}
-              color="#000"
+              color="#fff"
             />
           )}
         </TouchableOpacity>
