@@ -36,6 +36,21 @@ class Header extends Component {
         <View style={styles.Titlecontainer}>
           <Text style={styles.text}>{this.props.title}</Text>
         </View>
+        <TouchableOpacity
+          style={styles.Backcontainer}
+          onPress={() => this.props.onPressSearch()}
+        >
+          {this.props.isSearch ? (
+            <FeatherIcon
+              name="search"
+              size={26}
+              style={styles.menuIcon}
+              color="#fff"
+            />
+          ) : (
+            <View />
+          )}
+        </TouchableOpacity>
       </View>
     );
   }

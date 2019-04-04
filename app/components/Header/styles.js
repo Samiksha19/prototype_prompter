@@ -25,8 +25,26 @@ export default (styles = StyleSheet.create({
     color: colors.white
   },
   menuIcon: {
-    marginTop: 3,
+    marginRight: 10,
     backgroundColor: colors.purple,
     marginLeft: 10
+  },
+  cardStyle: {
+    flex: 1,
+    marginHorizontal: 22,
+    marginVertical: 20,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    elevation: 1,
+    zIndex: 99,
+    alignItems: "stretch",
+    backgroundColor: "#FFF",
+    borderWidth: StyleSheet.hairlineWidth
+  },
+  imageStyle: {
+    width: "100%",
+    height: 250,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12
   }
 }));

@@ -13,17 +13,20 @@ import {
   createBottomTabNavigator,
   createDrawerNavigator,
   DrawerItems,
-  SafeAreaView
+  SafeAreaView,
+  createStackNavigator
 } from "react-navigation";
 //import { Provider } from "react-redux";
 //import store from "../redux/configureStore";
 //import Drawer from "../components/navigator/Drawer";
-import { width, STATUSBAR_HEIGHT } from "@constants";
+import { width, ICON_SIZE, header_height } from "@constants";
 import * as colors from "../utils/colors";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import SplashScreen from "../components/screens/SplashScreen/Splash";
 import ExploreScreen from "../components/screens/ExploreScreen/Explore";
 import FavoriteScreen from "../components/screens/FavoriteScreen/Favorite";
 import HistoryScreen from "../components/screens/HistoryScreen/History";
+import SearchScreen from "../components/screens/Search/Search";
 /** allowfontscaling is to avoid fontscaling when device fonts are changed */
 //Text.defaultProps.allowFontScaling = false;
 //TextInput.defaultProps.allowFontScaling = false;
@@ -49,11 +52,100 @@ class Main extends Component {
   }
 
   render() {
+    const ArticleFeedScreen = createStackNavigator(
+      {
+        Article: {
+          screen: ExploreScreen,
+          navigationOptions: {
+            headerTitle: "Explore",
+            headerStyle: {
+              backgroundColor: colors.purple
+            },
+            headerTintColor: "#fff"
+          }
+        },
+        SearchFeed: {
+          screen: SearchScreen,
+          navigationOptions: {
+            headerMode: "none"
+          }
+        }
+      },
+      {}
+    );
+
+    const FavoriteFeedScreen = createStackNavigator(
+      {
+        FavoriteFeed: {
+          screen: FavoriteScreen,
+          navigationOptions: {
+            headerTitle: "Favorite",
+            headerStyle: {
+              backgroundColor: colors.purple
+            },
+            headerTintColor: "#fff"
+          }
+        },
+        SearchFeed: {
+          screen: SearchScreen,
+          navigationOptions: {
+            headerMode: "none"
+          }
+        }
+      },
+      {
+        initialRouteName: "FavoriteFeed"
+      }
+    );
+
+    const HistoryFeedScreen = createStackNavigator({
+      HistoryFeed: {
+        screen: HistoryScreen,
+        navigationOptions: {
+          headerTitle: "History",
+          headerStyle: {
+            backgroundColor: colors.purple
+          },
+          headerTintColor: "#fff"
+        }
+      },
+      SearchFeed: {
+        screen: SearchScreen,
+        navigationOptions: {
+          headerMode: "none"
+        }
+      }
+    });
+
     const HomeWithTabs = createBottomTabNavigator(
       {
-        Explore: ExploreScreen,
-        Favorite: FavoriteScreen,
-        History: HistoryScreen
+        Explore: {
+          screen: ArticleFeedScreen,
+          navigationOptions: {
+            title: "Browse",
+            tabBarIcon: ({ tintColor }) => (
+              <Icon name="web" size={ICON_SIZE} color={tintColor} />
+            )
+          }
+        },
+        Favorite: {
+          screen: FavoriteFeedScreen,
+          navigationOptions: {
+            title: "Favorite",
+            tabBarIcon: ({ tintColor }) => (
+              <Icon name="favorite-border" size={ICON_SIZE} color={tintColor} />
+            )
+          }
+        },
+        History: {
+          screen: HistoryFeedScreen,
+          navigationOptions: {
+            title: "History",
+            tabBarIcon: ({ tintColor }) => (
+              <Icon name="view-list" size={ICON_SIZE} color={tintColor} />
+            )
+          }
+        }
       },
       {
         navigationOptions: {
@@ -88,7 +180,6 @@ class Main extends Component {
             }}
           >
             <Image
-              //resizeMode="contain"
               source={require("../images/default.jpg")}
               style={{
                 width: width,
@@ -117,7 +208,15 @@ class Main extends Component {
 
     const AppNavigation = createDrawerNavigator(
       {
-        HomeNavigation: HomeWithTabs
+        HomeNavigation: createStackNavigator(
+          {
+            BottomTab: HomeWithTabs
+          },
+          {
+            initialRouteName: "BottomTab",
+            headerMode: "none"
+          }
+        )
       },
       {
         drawerWidth: width - width / 3,
