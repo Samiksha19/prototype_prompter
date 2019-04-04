@@ -1,22 +1,30 @@
 import React from "react";
 import { View, Text, StatusBar } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import Header from "../../Header/Header";
+import styles from "../../Header/styles";
 
 class Favorite extends React.Component {
-  static navigationOptions = {
-    title: "Favorite",
-    tabBarColor: "purple",
-    tabBarIcon: () => {
-      return (
+  static navigationOptions = ({ navigation, screenProps }) => {
+    return {
+      headerLeft: (
         <Icon
-          name="favorite-border"
-          type="MaterialIcons"
-          size={22}
-          color="purple"
+          style={styles.menuIcon}
+          name="menu"
+          onPress={() => navigation.toggleDrawer()}
+          color="#fff"
+          size={27}
         />
-      );
-    }
+      ),
+      headerRight: (
+        <Icon
+          style={styles.menuIcon}
+          name="search"
+          color="#fff"
+          size={27}
+          onPress={() => navigation.navigate("SearchFeed")}
+        />
+      )
+    };
   };
 
   render() {
@@ -24,11 +32,6 @@ class Favorite extends React.Component {
     return (
       <View>
         <StatusBar translucent={false} barStyle="light-content" />
-        <Header
-          title={"Favorite"}
-          isDrawer={true}
-          onPress={() => navigation.toggleDrawer()}
-        />
         <View
           style={{
             justifyContent: "center",

@@ -1,17 +1,31 @@
 import React from "react";
 import { View, Text, StatusBar } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import styles from "../../Header/styles";
 import Header from "../../Header/Header";
 
 class History extends React.Component {
-  static navigationOptions = {
-    title: "List",
-    tabBarColor: "purple",
-    tabBarIcon: () => {
-      return (
-        <Icon name="view-list" type="MaterialIcons" size={22} color="purple" />
-      );
-    }
+  static navigationOptions = ({ navigation, screenProps }) => {
+    return {
+      headerLeft: (
+        <Icon
+          style={styles.menuIcon}
+          name="menu"
+          onPress={() => navigation.toggleDrawer()}
+          color="#fff"
+          size={27}
+        />
+      ),
+      headerRight: (
+        <Icon
+          style={styles.menuIcon}
+          name="search"
+          color="#fff"
+          size={27}
+          onPress={() => navigation.navigate("SearchFeed")}
+        />
+      )
+    };
   };
 
   render() {
@@ -19,11 +33,6 @@ class History extends React.Component {
     return (
       <View>
         <StatusBar translucent={false} barStyle="light-content" />
-        <Header
-          title={"History"}
-          isDrawer={true}
-          onPress={() => navigation.toggleDrawer()}
-        />
         <View
           style={{
             justifyContent: "center",
