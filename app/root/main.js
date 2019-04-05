@@ -124,7 +124,7 @@ class Main extends Component {
           navigationOptions: {
             title: "Browse",
             tabBarIcon: ({ tintColor }) => (
-              <Icon name="web" size={ICON_SIZE} color={tintColor} />
+              <Icon name="public" size={ICON_SIZE} color={tintColor} />
             )
           }
         },
@@ -133,7 +133,7 @@ class Main extends Component {
           navigationOptions: {
             title: "Favorite",
             tabBarIcon: ({ tintColor }) => (
-              <Icon name="favorite-border" size={ICON_SIZE} color={tintColor} />
+              <Icon name="favorite" size={ICON_SIZE} color={tintColor} />
             )
           }
         },
@@ -142,7 +142,7 @@ class Main extends Component {
           navigationOptions: {
             title: "History",
             tabBarIcon: ({ tintColor }) => (
-              <Icon name="view-list" size={ICON_SIZE} color={tintColor} />
+              <Icon name="history" size={ICON_SIZE} color={tintColor} />
             )
           }
         }
