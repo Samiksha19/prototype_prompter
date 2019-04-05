@@ -5,7 +5,8 @@ import {
   StatusBar,
   ScrollView,
   Image,
-  Platform
+  Platform,
+  TextInput
 } from "react-native";
 import {
   createSwitchNavigator,
@@ -16,20 +17,18 @@ import {
   SafeAreaView,
   createStackNavigator
 } from "react-navigation";
-//import { Provider } from "react-redux";
-//import store from "../redux/configureStore";
-//import Drawer from "../components/navigator/Drawer";
 import { width, ICON_SIZE, header_height } from "@constants";
 import * as colors from "../utils/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SplashScreen from "../components/screens/SplashScreen/Splash";
 import ExploreScreen from "../components/screens/ExploreScreen/Explore";
+import ArticleRenderScreen from "../components/screens/ArticleRenderScreen/ArticleRender";
 import FavoriteScreen from "../components/screens/FavoriteScreen/Favorite";
 import HistoryScreen from "../components/screens/HistoryScreen/History";
 import SearchScreen from "../components/screens/Search/Search";
-/** allowfontscaling is to avoid fontscaling when device fonts are changed */
-//Text.defaultProps.allowFontScaling = false;
-//TextInput.defaultProps.allowFontScaling = false;
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
+TextInput.defaultProps.allowFontScaling = false;
 
 class Main extends Component {
   //   constructor(props) {
@@ -64,6 +63,16 @@ class Main extends Component {
             headerTintColor: "#fff"
           }
         },
+        ArticleFeed: {
+          screen: ArticleRenderScreen,
+          navigationOptions: {
+            headerTitle: "Article",
+            headerStyle: {
+              backgroundColor: colors.purple
+            },
+            headerTintColor: "#fff"
+          }
+        },
         SearchFeed: {
           screen: SearchScreen,
           navigationOptions: {
@@ -71,7 +80,9 @@ class Main extends Component {
           }
         }
       },
-      {}
+      {
+        initialRouteName: "Article"
+      }
     );
 
     const FavoriteFeedScreen = createStackNavigator(
@@ -156,7 +167,8 @@ class Main extends Component {
         backBehavior: "initialRoute",
         tabBarOptions: {
           activeTintColor: colors.purple,
-          inactiveTintColor: colors.gray
+          inactiveTintColor: colors.gray,
+          allowFontScaling: false
         }
       }
     );
@@ -180,7 +192,7 @@ class Main extends Component {
             }}
           >
             <Image
-              source={require("../images/default.jpg")}
+              source={require("../images/drawerImage.jpeg")}
               style={{
                 width: width,
                 height: 200,
@@ -191,7 +203,7 @@ class Main extends Component {
             <Text
               style={{
                 flex: 1,
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: "100",
                 marginHorizontal: 8,
                 marginTop: 8
