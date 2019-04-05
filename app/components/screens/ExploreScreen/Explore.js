@@ -3,77 +3,20 @@ import {
   View,
   Text,
   StatusBar,
-  StyleSheet,
-  Image,
-  ActivityIndicator,
-  Dimensions
+  TouchableOpacity,
+  Image
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import styles from "../../Header/styles";
-import Carousel, { ParallaxImage } from "react-native-snap-carousel";
-
-const horizontalMargin = 20;
-const slideWidth = 280;
-
-const sliderWidth = Dimensions.get("window").width;
-const itemWidth = slideWidth + horizontalMargin * 2;
+import { IndicatorViewPager, PagerDotIndicator } from 'rn-viewpager';
 
 class Explore extends React.Component {
   constructor() {
     super();
     this.state = {
-      arr: null,
+      articles: [],
       loader: true
     };
-  }
-
-  async componentDidMount() {
-    try {
-      let responseData = await fetch("http://pp.f418.eu/article/random");
-      let response = await responseData.json();
-      this.setState({
-        arr: response,
-        loader: false
-      });
-    } catch (err) {
-      alert(err);
-    }
-  }
-
-  _renderItem({ item, index }, parallaxProps) {
-    return (
-      <View style={styles.cardStyle}>
-        <Image
-          resizeMode="stretch"
-          style={styles.imageStyle}
-          source={require("../../../images/genfb.jpg")}
-        />
-        <View
-          style={{
-            flex: 1,
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-            wordWrap: "break-word"
-          }}
-        >
-          <Text numberOfLines={2} style={{ fontSize: 17, marginVertical: 20 }}>
-            {item.title}
-          </Text>
-          <Text
-            style={{
-              flex: 1,
-              flexWrap: "wrap",
-              marginLeft: 15,
-              marginRight: 15,
-              marginBottom: 8,
-              fontSize: 15
-            }}
-          >
-            {item.teaser}
-          </Text>
-        </View>
-      </View>
-    );
   }
 
   static navigationOptions = ({ navigation, screenProps }) => {
@@ -99,58 +42,54 @@ class Explore extends React.Component {
     };
   };
 
-  renderContent() {
-    if (this.state.loader) {
-      return (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <ActivityIndicator size="large" color="purple" />
-        </View>
-      );
+  async componentDidMount() {
+    try {
+      let responseData = await fetch("http://pp.f418.eu/article/random");
+      let response = await responseData.json();
+      this.setState({
+        articles: response,
+        loader: false
+      });
+    } catch (err) {
+      alert(err);
     }
-
-    return (
-      <Carousel
-        data={this.state.arr}
-        renderItem={this._renderItem}
-        windowSize={1}
-        sliderWidth={sliderWidth}
-        itemWidth={itemWidth}
-        layout={"tinder"}
-        layoutCardOffset={18}
-      />
-    );
   }
 
   render() {
-    const { navigation } = this.props;
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: '#EDEDED' }}>
         <StatusBar translucent={false} barStyle="light-content" />
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: "#fff",
-              marginHorizontal: 12,
-              marginVertical: 18,
-              borderRadius: 12,
-              elevation: 1,
-              zIndex: 99
-            }}
+        <View style={{ flex: 1 }}>
+          <IndicatorViewPager
+            style={{ flex: 1 }}
+            indicator={this._renderDotIndicator()}
           >
-            {this.renderContent()}
-          </View>
+            {
+              this.state.articles.map((article) => (
+                <View style={{ flex: 1, backgroundColor: '#EDEDED', paddingHorizontal: 20, paddingBottom: 65, paddingTop: 20}}>
+                  <View style={{ backgroundColor : 'white', flex: 1, paddingBottom: 10 }}>
+                    <Image
+                      resizeMode="stretch"
+                      style={styles.imageStyle}
+                      source={require("../../../images/genfb.jpg")}
+                    />
+                    <Text style={{ marginLeft: 20, marginTop: 25, fontSize: 18, fontWeight: 'bold' }}>{article.title}</Text>
+                    <Text style={{ flex: 1, margin: 20, fontSize: 15 }}>{article.teaser}{article.teaser}</Text>
+                  </View>
+                  <TouchableOpacity style={{ flex: 1, height: 50, width: 50, borderRadius: 25, borderColor: 'purple', backgroundColor: 'white', alignSelf: 'center', borderWidth: 2, position: 'absolute', bottom: 40, alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon name='autorenew' color='purple' size={28}/>
+                  </TouchableOpacity>
+                </View>
+              ))
+            }
+          </IndicatorViewPager>
         </View>
       </View>
     );
+  }
+
+  _renderDotIndicator() {
+    return <PagerDotIndicator pageCount={3} style={{marginTop: 40}}/>;
   }
 }
 

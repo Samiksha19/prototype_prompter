@@ -17,7 +17,8 @@
     "redux": "^4.0.1",
     "redux-api-middleware": "^3.0.1",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "rn-viewpager": "^1.2.9"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
