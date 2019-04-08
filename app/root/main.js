@@ -21,6 +21,7 @@ import { width, ICON_SIZE, header_height } from "@constants";
 import * as colors from "../utils/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SplashScreen from "../components/screens/SplashScreen/Splash";
+import Offline from "../components/screens/Offline/Offline";
 import ExploreScreen from "../components/screens/ExploreScreen/Explore";
 import ArticleRenderScreen from "../components/screens/ArticleRenderScreen/ArticleRender";
 import FavoriteScreen from "../components/screens/FavoriteScreen/Favorite";
@@ -133,7 +134,7 @@ class Main extends Component {
         Explore: {
           screen: ArticleFeedScreen,
           navigationOptions: {
-            title: "Browse",
+            title: "Explore",
             tabBarIcon: ({ tintColor }) => (
               <Icon name="public" size={ICON_SIZE} color={tintColor} />
             )
