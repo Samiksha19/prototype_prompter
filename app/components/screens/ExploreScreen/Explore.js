@@ -187,7 +187,6 @@ class Explore extends React.Component {
         </View>
       );
     } else {
-      debugger;
       return (
         <View style={{ flex: 1, backgroundColor: colors.grey }}>
           <StatusBar translucent={false} barStyle="light-content" />
