@@ -2,6 +2,9 @@
   package="com.prototype_prompter">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
 
     <application
       android:name=".MainApplication"
