@@ -14,7 +14,9 @@ class ArticleRender extends React.Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 50 }}
         >
-          <Text style={styles.headerTextStyle}>{article.title}</Text>
+          <Text style={[styles.headerTextStyle, { paddingTop: 10 }]}>
+            {article.title}
+          </Text>
           <Image
             source={require("../../../images/drawerImage.jpeg")}
             style={[styles.imageStyle, { marginBottom: 15 }]}

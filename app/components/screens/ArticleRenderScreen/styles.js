@@ -4,7 +4,7 @@ import * as colors from "../../../utils/colors";
 
 export default (styles = StyleSheet.create({
   containerStyle: {
-    padding: 20,
+    paddingHorizontal: 20,
     paddingBottom: 0
   },
   imageStyle: {
