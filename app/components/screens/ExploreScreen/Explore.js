@@ -5,9 +5,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Image,
-  AsyncStorage,
   NetInfo,
-  ImageBackground,
   ToastAndroid
 } from "react-native";
 import Loader from "../../Loader/Loader";
@@ -18,6 +16,7 @@ import callApi from "../../../lib/apicaller";
 import Offline from "../Offline/Offline";
 import { IndicatorViewPager, PagerDotIndicator } from "rn-viewpager";
 
+const Realm = require("realm");
 const end_point = "random";
 const method = "GET";
 
@@ -30,8 +29,9 @@ class Explore extends React.Component {
       saved_articles: [],
       loading: false,
       icon_favorite: "favorite-border",
-      icon_color: colors.gray,
-      isConnected: true
+      icon_color: colors.black,
+      isConnected: true,
+      realm: null
     };
   }
 
@@ -46,7 +46,7 @@ class Explore extends React.Component {
           size={27}
         />
       ),
-      headerBackTitle: "",
+      headerBackTitle: null,
       headerRight: (
         <Icon
           style={styles.menuIcon}
@@ -92,41 +92,9 @@ class Explore extends React.Component {
     }
   }
 
-  //   async saveArticle(article) {
-  //     this.state.icon_favorite === "favorite"
-  //       ? this.setState(
-  //           {
-  //             icon_favorite: "favorite-border",
-  //             icon_color: colors.grey
-  //           },
-  //           async () => {
-  //             let saved_articles = await AsyncStorage.getItem("SAVED_ARTICLES");
-  //             if (saved_articles === null) {
-  //               await AsyncStorage.setItem(
-  //                 "SAVED_ARTICLES",
-  //                 JSON.stringify(article)
-  //               );
-  //             } else {
-  //               //await AsyncStorage.setItem
-  //             }
-  //           }
-  //         )
-  //       : this.setState(
-  //           {
-  //             icon_favorite: "favorite",
-  //             icon_color: colors.red
-  //           },
-  //           async () => {
-  //             let saved_articles = await AsyncStorage.getItem("SAVED_ARTICLES");
-  //             if (saved_articles === null) {
-  //               await AsyncStorage.setItem(
-  //                 "SAVED_ARTICLES",
-  //                 JSON.stringify(article)
-  //               );
-  //             }
-  //           }
-  //         );
-  //   }
+  async saveArticle(article) {
+    debugger;
+  }
 
   async refreshArticle() {
     this.setState({ loading: true });
@@ -212,14 +180,15 @@ class Explore extends React.Component {
                   >
                     <Image
                       style={styles.imageStyle}
-                      source={require("../../../images/genfb.jpg")}
+                      source={{ uri: "http://www.f418.eu/share/f418.png" }}
                     />
+                    <View style={styles.seperatorStyle} />
                     <View style={styles.icon_image_view_style}>
                       <Icon
                         name={this.state.icon_favorite}
                         color={this.state.icon_color}
                         size={28}
-                        //onPress={() => this.saveArticle(article)}
+                        onPress={() => this.saveArticle(article)}
                       />
                     </View>
                     <Text

@@ -17,26 +17,24 @@ import {
   SafeAreaView,
   createStackNavigator
 } from "react-navigation";
-import { width, ICON_SIZE, header_height } from "@constants";
+import { width, ICON_SIZE } from "@constants";
 import * as colors from "../utils/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
+// import realm from "../realm";
+// import { RealmProvider } from "react-native-realm";
+
 import SplashScreen from "../components/screens/SplashScreen/Splash";
-import Offline from "../components/screens/Offline/Offline";
 import ExploreScreen from "../components/screens/ExploreScreen/Explore";
 import ArticleRenderScreen from "../components/screens/ArticleRenderScreen/ArticleRender";
 import FavoriteScreen from "../components/screens/FavoriteScreen/Favorite";
 import HistoryScreen from "../components/screens/HistoryScreen/History";
 import SearchScreen from "../components/screens/Search/Search";
+
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
 TextInput.defaultProps.allowFontScaling = false;
 
 class Main extends Component {
-  //   constructor(props) {
-  //     super(props);
-  //     this.state = {};
-  //   }
-
   renderStatusBar() {
     if (Platform.OS === "android") {
       return <StatusBar translucent={false} backgroundColor={colors.purple} />;
@@ -253,24 +251,11 @@ class Main extends Component {
     );
 
     return (
-      // <Provider store={store} >
+      //   <RealmProvider realm={realm}>
       <Stack />
-      // </Provider>
+      //   </RealmProvider>
     );
   }
 }
-//screen added in stack navigator
-// const Stack = createStackNavigator(
-//   {
-//     Drawer: {
-//       screen: Drawer,
-//       title: Drawer,
-//       navigationOptions: {
-//         header: null
-//       }
-//     }
-//   },
-//   { initialRouteName: "Drawer" }
-// );
 
 export default Main;

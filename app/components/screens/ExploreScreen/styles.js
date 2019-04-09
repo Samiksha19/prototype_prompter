@@ -105,14 +105,19 @@ export default (styles = StyleSheet.create({
   },
   icon_image_view_style: {
     position: "absolute",
-    top: 20,
-    right: 20,
+    top: 10,
+    right: 10,
     height: 40,
     width: 40,
-    borderRadius: 4,
+    borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.white,
-    shadowOpacity: 100
+    backgroundColor: colors.transparent
+  },
+  seperatorStyle: {
+    width: "100%",
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: colors.black,
+    marginHorizontal: 5
   }
 }));

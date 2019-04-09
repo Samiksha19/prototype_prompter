@@ -6,4 +6,4 @@ export const gray = "#878C93";
 export const white = "#FFFFFF";
 export const darkpurple = "#4F2A6f";
 export const grey = "#EDEDED";
-export const transparent = "rgba(0,0,0,0.2)";
+export const transparent = "rgba(255, 255, 255, 0.7)";

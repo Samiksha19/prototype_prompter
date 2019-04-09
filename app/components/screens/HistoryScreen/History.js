@@ -16,6 +16,7 @@ class History extends React.Component {
           size={27}
         />
       ),
+      headerBackTitle: null,
       headerRight: (
         <Icon
           style={styles.menuIcon}
