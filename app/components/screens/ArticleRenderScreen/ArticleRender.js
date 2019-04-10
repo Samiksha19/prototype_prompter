@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView, Platform } from "react-native";
 import styles from "./styles";
 
 class ArticleRender extends React.Component {
@@ -17,10 +17,13 @@ class ArticleRender extends React.Component {
           <Text style={[styles.headerTextStyle, { paddingTop: 10 }]}>
             {article.title}
           </Text>
-          <Image
-            source={require("../../../images/drawerImage.jpeg")}
-            style={[styles.imageStyle, { marginBottom: 15 }]}
-          />
+          <View style={styles.imageViewStyle}>
+            <Image
+              resizeMode={Platform.OS === "ios" ? "center" : "contain"}
+              source={{ uri: article.image }}
+              style={[styles.imageStyle, { marginBottom: 15 }]}
+            />
+          </View>
           <Text style={styles.descriptionTextStyle}>{article.teaser}</Text>
           <View style={styles.tableStyles}>
             <View style={[styles.propertiesStyle, { flex: 1 }]}>

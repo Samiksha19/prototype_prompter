@@ -9,8 +9,7 @@ export default (styles = StyleSheet.create({
   },
   imageStyle: {
     width: "100%",
-    height: 200,
-    paddingBottom: 10
+    height: "100%"
   },
   headerTextStyle: {
     fontSize: globals.header_fontsize,
@@ -29,5 +28,9 @@ export default (styles = StyleSheet.create({
   },
   tableStyles: {
     marginVertical: 6
+  },
+  imageViewStyle: {
+    width: "100%",
+    height: 250
   }
 }));
