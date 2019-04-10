@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Image,
   NetInfo,
-  ToastAndroid
+  ToastAndroid,
+  Platform
 } from "react-native";
 import Loader from "../../Loader/Loader";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -15,6 +16,7 @@ import * as colors from "../../../utils/colors";
 import callApi from "../../../lib/apicaller";
 import Offline from "../Offline/Offline";
 import { IndicatorViewPager, PagerDotIndicator } from "rn-viewpager";
+import realm from "../../../database/realmDB";
 
 const Realm = require("realm");
 const end_point = "random";
@@ -29,7 +31,7 @@ class Explore extends React.Component {
       saved_articles: [],
       loading: false,
       icon_favorite: "favorite-border",
-      icon_color: colors.black,
+      icon_color: colors.white,
       isConnected: true,
       realm: null
     };
@@ -92,8 +94,30 @@ class Explore extends React.Component {
     }
   }
 
-  async saveArticle(article) {
-    debugger;
+  saveArticle(article) {
+    {
+      this.state.icon_color === colors.white
+        ? this.setState({
+            icon_color: colors.red
+          })
+        : this.setState({
+            icon_color: colors.white
+          });
+    }
+    let realmData = realm.objects("Favourites");
+    let previousArticles = realmData[0] ? JSON.parse(realmData[0].data) : [];
+    let newData = previousArticles.concat([article]);
+    if (Object.keys(realmData).length === 0) {
+      realm.write(() => {
+        const favArticles = realm.create("Favourites", {
+          data: JSON.stringify(newData)
+        });
+      });
+    } else {
+      realm.write(() => {
+        realmData[0].data = JSON.stringify(newData);
+      });
+    }
   }
 
   async refreshArticle() {
@@ -163,29 +187,34 @@ class Explore extends React.Component {
             indicator={this._renderDotIndicator()}
           >
             {this.state.articles !== undefined &&
-              this.state.articles.map(article => (
-                <View style={styles.mainCarouselStyle}>
+              this.state.articles.map((article, key) => (
+                <View key={key} style={styles.mainCarouselStyle}>
                   <TouchableOpacity
                     activeOpacity={0.9}
-                    onPress={() =>
+                    onPress={() => {
                       this.props.navigation.navigate("ArticleFeed", {
                         param: article
-                      })
-                    }
+                      });
+                    }}
                     style={{
                       backgroundColor: "white",
                       flex: 1,
                       paddingBottom: 10
                     }}
                   >
-                    <Image
-                      style={styles.imageStyle}
-                      source={{ uri: "http://www.f418.eu/share/f418.png" }}
-                    />
+                    <View style={styles.image_view_style}>
+                      <Image
+                        resizeMode={
+                          Platform.OS === "ios" ? "center" : "contain"
+                        }
+                        style={styles.imageStyle}
+                        source={{ uri: article.image}}
+                      />
+                    </View>
                     <View style={styles.seperatorStyle} />
                     <View style={styles.icon_image_view_style}>
                       <Icon
-                        name={this.state.icon_favorite}
+                        name="favorite"
                         color={this.state.icon_color}
                         size={28}
                         onPress={() => this.saveArticle(article)}

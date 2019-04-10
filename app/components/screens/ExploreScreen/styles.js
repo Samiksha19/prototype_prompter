@@ -38,7 +38,7 @@ export default (styles = StyleSheet.create({
   },
   imageStyle: {
     width: "100%",
-    height: 250
+    height: "100%"
   },
   cardStyle: {
     flex: 1,
@@ -105,19 +105,24 @@ export default (styles = StyleSheet.create({
   },
   icon_image_view_style: {
     position: "absolute",
-    top: 10,
-    right: 10,
+    top: 5,
+    right: 5,
     height: 40,
     width: 40,
-    borderRadius: 8,
+    borderRadius: 4,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.transparent
   },
   seperatorStyle: {
     width: "100%",
+    alignSelf: "center",
     height: StyleSheet.hairlineWidth,
     backgroundColor: colors.black,
     marginHorizontal: 5
+  },
+  image_view_style: {
+    width: "100%",
+    height: 250
   }
 }));
