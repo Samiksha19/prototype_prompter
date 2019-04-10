@@ -7,6 +7,7 @@ import * as colors from "../../../utils/colors";
 import realm from "../../../database/realmDB";
 
 const Realm = require("realm");
+
 class Favorite extends React.Component {
   state = {
     favorites: []
@@ -37,28 +38,31 @@ class Favorite extends React.Component {
   };
 
   componentDidMount() {
+      let data = JSON.parse(realm.objects("Favourites")[0].data)
+      console.warn(data)
     this.setState(
       {
-        favorites: JSON.parse(realm.objects("Favourites")[0].data)
-      },
-      () => {
+        favorites: data
+      }, () => {
         console.warn(this.state.favorites);
-      }
-    );
+      });
+    
     debugger;
   }
 
   render() {
     return (
+      <View style={{ flex: 1, backgroundColor: colors.grey, paddingBottom: 5 }}>
+        <StatusBar translucent={false} barStyle="light-content" />
         <FlatList
-        data={this.state.favorites}
-        keyExtractor={(x, i) => i.toString()}
-        extraData={this.state.favorites}
-        renderItem={({ item }) => (
-          <FavoriteList key={item.title} obj={item} />
-        )}
-        showsVerticalScrollIndicator={false}
-      />
+          data={this.state.favorites}
+          keyExtractor={(x, i) => i.toString()}
+          extraData={this.state.favorites}
+          renderItem={({ item }) => (
+            <FavoriteList key={item.title} obj={item} />
+          )}
+        />
+      </View>
     );
   }
 }
