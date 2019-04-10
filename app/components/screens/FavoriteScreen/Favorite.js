@@ -1,13 +1,15 @@
 import React from "react";
-import { View, FlatList, StatusBar, AsyncStorage } from "react-native";
+import { View, FlatList, StatusBar, Text } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import styles from "./styles";
-import List from "../../List/List";
+import FavoriteList from "../../FavoriteList/FavoriteList";
+import * as colors from "../../../utils/colors";
+import realm from "../../../database/realmDB";
 
 const Realm = require("realm");
 class Favorite extends React.Component {
   state = {
-    articles: []
+    favorites: []
   };
 
   static navigationOptions = ({ navigation, screenProps }) => {
@@ -34,60 +36,29 @@ class Favorite extends React.Component {
     };
   };
 
-  async componentDidMount() {
-    Realm.open(
+  componentDidMount() {
+    this.setState(
       {
-        schema: [
-          {
-            name: "Article",
-            properties: {
-              description: "string",
-              image: "string",
-              label: "string",
-              language: "string",
-              steps: "data",
-              tags: "data",
-              teaser: "string",
-              title: "string"
-            }
-          }
-        ],
-        schemaVersion: 1
+        favorites: JSON.parse(realm.objects("Favourites")[0].data)
       },
-      schema
-    ).then(realm => {
-      let res = realm.objects("Article");
-      let parsed_res = JSON.parse(res);
-    });
+      () => {
+        console.warn(this.state.favorites);
+      }
+    );
+    debugger;
   }
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <StatusBar translucent={false} barStyle="light-content" />
         <FlatList
-          contentContainerStyle={{
-            justifyContent: "flex-start",
-            alignItems: "center"
-          }}
-          showsHorizontalScrollIndicator={false}
-          automaticallyAdjustContentInsets={false}
-          horizontal={true}
-          data={this.state.articles}
-          keyExtractor={(x, i) => i.toString()}
-          //ListEmptyComponent={this.renderText}
-          extraData={this.state.articles}
-          //renderItem={({ item }) => <List key={item.ProductID} obj={item} />}
-          showsVerticalScrollIndicator={false}
-          //ListHeaderComponent={this.renderHeader}
-          //ListFooterComponent={this.renderFooter}
-          //ItemSeparatorComponent={this.renderSeparator}
-          //refreshing={this.state.refreshing}
-          //onRefresh={this.handleRefresh}
-          //onEndReached={this.handleLoadMore}
-          onEndReachedThreshold={0}
-        />
-      </View>
+        data={this.state.favorites}
+        keyExtractor={(x, i) => i.toString()}
+        extraData={this.state.favorites}
+        renderItem={({ item }) => (
+          <FavoriteList key={item.title} obj={item} />
+        )}
+        showsVerticalScrollIndicator={false}
+      />
     );
   }
 }
