@@ -108,6 +108,7 @@ class Explore extends React.Component {
     }
     let realmData = realm.objects("Favourites");
     let previousArticles = realmData[0] ? JSON.parse(realmData[0].data) : [];
+
     let newData = previousArticles.concat([article]);
     if (Object.keys(realmData).length === 0) {
       realm.write(() => {
@@ -154,6 +155,52 @@ class Explore extends React.Component {
     });
   };
 
+  insertInHistory(selectedArticle) {
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
+    let date = new Date();
+    let year = date.getFullYear();
+    let curr_date = date.getDate();
+    let month = monthNames[date.getMonth()];
+    let date_obj = `${14} ${month} ${year}`;
+    let article = selectedArticle;
+    article.date = date_obj;
+    let realmData = realm.objects("History");
+    let previousArticles = realmData[0] ? JSON.parse(realmData[0].data) : [];
+    let index = previousArticles.findIndex(
+      article => article.title === selectedArticle.title
+    );
+    if (index === -1) {
+      let newData = previousArticles.concat([article]);
+      if (Object.keys(realmData).length === 0) {
+        realm.write(() => {
+          realm.create("History", {
+            data: JSON.stringify(newData)
+          });
+        });
+      } else {
+        realm.write(() => {
+          realmData[0].data = JSON.stringify(newData);
+        });
+      }
+    }
+    this.props.navigation.navigate("ArticleFeed", {
+      param: article
+    });
+  }
+
   retryApiCall() {
     if (this.state.isConnected) {
       this.handleApiCall();
@@ -164,6 +211,18 @@ class Explore extends React.Component {
         ToastAndroid.CENTER
       );
     }
+  }
+
+  renderFavoriteIcon(article) {
+    let db_data = realm.objects("Favourites");
+    // return(
+    //     <Icon
+    //     name="favorite"
+    //     color={this.state.icon_color}
+    //     size={28}
+    //     onPress={() => this.saveArticle(article)}
+    //   />
+    // )
   }
 
   componentWillUnmount() {
@@ -193,11 +252,7 @@ class Explore extends React.Component {
                 <View key={index} style={styles.mainCarouselStyle}>
                   <TouchableOpacity
                     activeOpacity={0.9}
-                    onPress={() => {
-                      this.props.navigation.navigate("ArticleFeed", {
-                        param: article
-                      });
-                    }}
+                    onPress={() => this.insertInHistory(article)}
                     style={{
                       backgroundColor: "white",
                       flex: 1,
@@ -210,11 +265,12 @@ class Explore extends React.Component {
                           Platform.OS === "ios" ? "center" : "contain"
                         }
                         style={styles.imageStyle}
-                        source={{ uri: article.image}}
+                        source={{ uri: `${article.image}` }}
                       />
                     </View>
                     <View style={styles.seperatorStyle} />
                     <View style={styles.icon_image_view_style}>
+                      {/* {this.renderFavoriteIcon(article)} */}
                       <Icon
                         name="favorite"
                         color={this.state.icon_color}
