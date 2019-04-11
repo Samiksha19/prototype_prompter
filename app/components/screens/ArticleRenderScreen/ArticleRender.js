@@ -59,7 +59,7 @@ class ArticleRender extends React.Component {
           </View>
           <Text style={styles.headerTextStyle}>{"Short instructions"}</Text>
           {article.steps.map((step, index) => (
-            <Text style={[styles.descriptionTextStyle, { paddingBottom: 4 }]}>
+            <Text key={index} style={[styles.descriptionTextStyle, { paddingBottom: 4 }]}>
               {index + 1 + ". "} {step}
             </Text>
           ))}

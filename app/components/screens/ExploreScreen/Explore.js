@@ -5,16 +5,18 @@ import {
   StatusBar,
   TouchableOpacity,
   Image,
-  NetInfo,
   ToastAndroid,
   Platform
 } from "react-native";
-import Loader from "../../Loader/Loader";
+
 import Icon from "react-native-vector-icons/MaterialIcons";
+import NetInfo from "@react-native-community/netinfo";
+
 import styles from "./styles";
 import * as colors from "../../../utils/colors";
 import callApi from "../../../lib/apicaller";
 import Offline from "../Offline/Offline";
+import Loader from "../../Loader/Loader";
 import { IndicatorViewPager, PagerDotIndicator } from "rn-viewpager";
 import realm from "../../../database/realmDB";
 
@@ -187,8 +189,8 @@ class Explore extends React.Component {
             indicator={this._renderDotIndicator()}
           >
             {this.state.articles !== undefined &&
-              this.state.articles.map((article, key) => (
-                <View key={key} style={styles.mainCarouselStyle}>
+              this.state.articles.map((article, index) => (
+                <View key={index} style={styles.mainCarouselStyle}>
                   <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() => {
