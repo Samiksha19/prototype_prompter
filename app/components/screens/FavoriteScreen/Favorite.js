@@ -9,9 +9,12 @@ import realm from "../../../database/realmDB";
 const Realm = require("realm");
 
 class Favorite extends React.Component {
-  state = {
-    favorites: []
-  };
+  constructor() {
+    super();
+    this.state = {
+      favorites: []
+    }
+  }
 
   static navigationOptions = ({ navigation, screenProps }) => {
     return {
@@ -38,30 +41,25 @@ class Favorite extends React.Component {
   };
 
   componentDidMount() {
-      let data = JSON.parse(realm.objects("Favourites")[0].data)
-      console.warn(data)
-    this.setState(
-      {
-        favorites: data
-      }, () => {
-        console.warn(this.state.favorites);
-      });
-    
-    debugger;
+    let data = realm.objects("Favourites")[0] ? JSON.parse(realm.objects("Favourites")[0].data) : [];
+    this.setState({ favorites: data });
   }
 
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: colors.grey, paddingBottom: 5 }}>
         <StatusBar translucent={false} barStyle="light-content" />
-        <FlatList
+        {this.state.favorites.length !== 0 ? <FlatList
           data={this.state.favorites}
           keyExtractor={(x, i) => i.toString()}
           extraData={this.state.favorites}
           renderItem={({ item }) => (
             <FavoriteList key={item.title} obj={item} />
           )}
-        />
+        /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>No Articels Added</Text>
+          </View>
+        }
       </View>
     );
   }
