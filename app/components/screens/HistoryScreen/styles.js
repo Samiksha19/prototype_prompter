@@ -1,5 +1,4 @@
 import { Platform, StyleSheet } from "react-native";
-import globals from "../../../lib/globals";
 import * as colors from "../../../utils/colors";
 
 export default (styles = StyleSheet.create({
@@ -32,5 +31,10 @@ export default (styles = StyleSheet.create({
     alignItems: "center"
   },
   imageStyle: { flex: 1, height: 45 },
-  titleTextStyle: { flex: 3, fontSize: 16, marginLeft: 10 }
+  titleTextStyle: { flex: 3, fontSize: 16, marginLeft: 10 },
+  blankScreenStyle: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  }
 }));
