@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@react-native-community/netinfo": "^2.0.0",
+    "lodash": "^4.17.11",
     "react": "16.8.3",
     "react-native": "0.59.3",
     "react-native-gesture-handler": "^1.1.0",
