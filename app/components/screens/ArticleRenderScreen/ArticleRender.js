@@ -6,7 +6,6 @@ class ArticleRender extends React.Component {
   render() {
     const { navigation } = this.props;
     const article = navigation.getParam("param", " ");
-    console.log(article.references);
     return (
       <View style={styles.containerStyle}>
         <ScrollView
@@ -59,7 +58,10 @@ class ArticleRender extends React.Component {
           </View>
           <Text style={styles.headerTextStyle}>{"Short instructions"}</Text>
           {article.steps.map((step, index) => (
-            <Text key={index} style={[styles.descriptionTextStyle, { paddingBottom: 4 }]}>
+            <Text
+              key={index}
+              style={[styles.descriptionTextStyle, { paddingBottom: 4 }]}
+            >
               {index + 1 + ". "} {step}
             </Text>
           ))}

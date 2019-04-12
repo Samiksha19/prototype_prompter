@@ -1,15 +1,9 @@
-import { Platform, StyleSheet } from "react-native";
-import globals from "../../../lib/globals";
+import { StyleSheet } from "react-native";
 import * as colors from "../../../utils/colors";
 
 export default (styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    height: globals.OS === "ios" ? 70 : 50,
-    width: "100%",
-    backgroundColor: colors.purple,
-    alignItems: "center"
-  },
+  container: { flex: 1, backgroundColor: colors.grey },
+  teaserStyle: { flex: 1, margin: 20, fontSize: 15 },
   Titlecontainer: {
     width: "70%",
     alignItems: "center"
@@ -37,8 +31,9 @@ export default (styles = StyleSheet.create({
     paddingTop: 20
   },
   imageStyle: {
-    width: "100%",
-    height: "100%"
+    width: "0%",
+    height: "100%",
+    alignSelf: "flex-end"
   },
   cardStyle: {
     flex: 1,
@@ -115,7 +110,7 @@ export default (styles = StyleSheet.create({
     backgroundColor: colors.transparent
   },
   seperatorStyle: {
-    width: "100%",
+    width: "90%",
     alignSelf: "center",
     height: StyleSheet.hairlineWidth,
     backgroundColor: colors.black,
@@ -123,6 +118,17 @@ export default (styles = StyleSheet.create({
   },
   image_view_style: {
     width: "100%",
-    height: 250
+    height: 230
+  },
+  titleStyle: {
+    marginLeft: 20,
+    marginTop: 25,
+    fontSize: 18,
+    fontWeight: "bold"
+  },
+  touchableStyle: {
+    backgroundColor: "white",
+    flex: 1,
+    paddingBottom: 10
   }
 }));
