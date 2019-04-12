@@ -5,19 +5,22 @@ import {
   StatusBar,
   TouchableOpacity,
   Image,
-  ToastAndroid,
-  Platform
+  ToastAndroid
 } from "react-native";
-
+import { IndicatorViewPager, PagerDotIndicator } from "rn-viewpager";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import NetInfo from "@react-native-community/netinfo";
 
+import { connect } from "react-redux";
+import { addToHistory } from "../../../redux/actions/UserClick_Action";
+
 import styles from "./styles";
+
 import * as colors from "../../../utils/colors";
 import callApi from "../../../lib/apicaller";
 import Offline from "../Offline/Offline";
 import Loader from "../../Loader/Loader";
-import { IndicatorViewPager, PagerDotIndicator } from "rn-viewpager";
+
 import realm from "../../../database/realmDB";
 
 const end_point = "random";
@@ -33,8 +36,7 @@ class Explore extends React.Component {
       loading: false,
       icon_favorite: "favorite-border",
       icon_color: colors.white,
-      isConnected: true,
-      realm: null
+      isConnected: true
     };
   }
 
@@ -111,7 +113,7 @@ class Explore extends React.Component {
     let newData = previousArticles.concat([article]);
     if (Object.keys(realmData).length === 0) {
       realm.write(() => {
-        const favArticles = realm.create("Favourites", {
+        realm.create("Favourites", {
           data: JSON.stringify(newData)
         });
       });
@@ -174,8 +176,10 @@ class Explore extends React.Component {
     let curr_date = date.getDate();
     let month = monthNames[date.getMonth()];
     let date_obj = `${curr_date} ${month} ${year}`;
+
     let article = selectedArticle;
     article.date = date_obj;
+
     let realmData = realm.objects("History");
     let previousArticles = realmData[0] ? JSON.parse(realmData[0].data) : [];
     let index = previousArticles.findIndex(
@@ -193,6 +197,9 @@ class Explore extends React.Component {
         realmData[0].data = JSON.stringify(newData);
       });
     }
+
+    this.props.addToHistory(newData);
+
     this.props.navigation.navigate("ArticleFeed", {
       param: article
     });
@@ -238,7 +245,7 @@ class Explore extends React.Component {
       );
     } else {
       return (
-        <View style={{ flex: 1, backgroundColor: colors.grey }}>
+        <View style={styles.container}>
           <StatusBar translucent={false} barStyle="light-content" />
           <IndicatorViewPager
             style={{ flex: 1 }}
@@ -250,17 +257,11 @@ class Explore extends React.Component {
                   <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() => this.insertInHistory(article)}
-                    style={{
-                      backgroundColor: "white",
-                      flex: 1,
-                      paddingBottom: 10
-                    }}
+                    style={styles.touchableStyle}
                   >
                     <View style={styles.image_view_style}>
                       <Image
-                        resizeMode={
-                          Platform.OS === "ios" ? "center" : "contain"
-                        }
+                        resizeMode="contain"
                         style={styles.imageStyle}
                         source={{ uri: `${article.image}` }}
                       />
@@ -275,19 +276,8 @@ class Explore extends React.Component {
                         onPress={() => this.saveArticle(article)}
                       />
                     </View>
-                    <Text
-                      style={{
-                        marginLeft: 20,
-                        marginTop: 25,
-                        fontSize: 18,
-                        fontWeight: "bold"
-                      }}
-                    >
-                      {article.title}
-                    </Text>
-                    <Text style={{ flex: 1, margin: 20, fontSize: 15 }}>
-                      {article.teaser}
-                    </Text>
+                    <Text style={styles.titleStyle}>{article.title}</Text>
+                    <Text style={styles.teaserStyle}>{article.teaser}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.absoluteIconStyle}>
                     <Icon
@@ -316,4 +306,15 @@ class Explore extends React.Component {
   }
 }
 
-export default Explore;
+const mapStateToProps = state => {
+  const { UserData } = state;
+
+  return { UserData };
+};
+
+// export default Explore;
+
+export default connect(
+  mapStateToProps,
+  { addToHistory }
+)(Explore);

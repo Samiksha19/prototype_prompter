@@ -19,9 +19,9 @@ import {
 } from "react-navigation";
 import { width, ICON_SIZE } from "@constants";
 import * as colors from "../utils/colors";
+import { Provider } from "react-redux";
+import store from "../redux/configureStore";
 import Icon from "react-native-vector-icons/MaterialIcons";
-// import realm from "../realm";
-// import { RealmProvider } from "react-native-realm";
 
 import SplashScreen from "../components/screens/SplashScreen/Splash";
 import ExploreScreen from "../components/screens/ExploreScreen/Explore";
@@ -29,6 +29,7 @@ import ArticleRenderScreen from "../components/screens/ArticleRenderScreen/Artic
 import FavoriteScreen from "../components/screens/FavoriteScreen/Favorite";
 import HistoryScreen from "../components/screens/HistoryScreen/History";
 import SearchScreen from "../components/screens/Search/Search";
+import styles from "./mainDrawerStyles";
 
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
@@ -183,33 +184,14 @@ class Main extends Component {
 
         <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
           {/* <DrawerItems {...props} /> */}
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: colors.grey,
-              marginBottom: 40
-            }}
-          >
+          <View style={styles.drawerBackground}>
             <Image
-              source={require("../images/drawerImage.jpeg")}
-              style={{
-                width: width,
-                height: 200,
-                backgroundColor: colors.purple
-              }}
+              source={{ uri: "http://www.f418.eu/share/f418.png" }}
+              style={styles.drawerImageStyle}
             />
-
-            <Text
-              style={{
-                flex: 1,
-                fontSize: 14,
-                fontWeight: "100",
-                marginHorizontal: 8,
-                marginTop: 8
-              }}
-            >
+            <Text style={styles.drawerText}>
               {
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                "We aim to make the prototyping step of the Design Thinking process more accessible to everybody. This app offers both inexperienced and professional design thinkers information to learn about different rapid prototyping methods. It helps you decide on which method is most suitable to their challenge."
               }
             </Text>
           </View>
@@ -251,9 +233,9 @@ class Main extends Component {
     );
 
     return (
-      //   <RealmProvider realm={realm}>
-      <Stack />
-      //   </RealmProvider>
+      <Provider store={store}>
+        <Stack />
+      </Provider>
     );
   }
 }
