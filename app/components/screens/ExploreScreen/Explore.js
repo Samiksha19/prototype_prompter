@@ -20,7 +20,6 @@ import Loader from "../../Loader/Loader";
 import { IndicatorViewPager, PagerDotIndicator } from "rn-viewpager";
 import realm from "../../../database/realmDB";
 
-const Realm = require("realm");
 const end_point = "random";
 const method = "GET";
 
@@ -174,7 +173,7 @@ class Explore extends React.Component {
     let year = date.getFullYear();
     let curr_date = date.getDate();
     let month = monthNames[date.getMonth()];
-    let date_obj = `${14} ${month} ${year}`;
+    let date_obj = `${curr_date} ${month} ${year}`;
     let article = selectedArticle;
     article.date = date_obj;
     let realmData = realm.objects("History");
@@ -182,19 +181,17 @@ class Explore extends React.Component {
     let index = previousArticles.findIndex(
       article => article.title === selectedArticle.title
     );
-    if (index === -1) {
-      let newData = previousArticles.concat([article]);
-      if (Object.keys(realmData).length === 0) {
-        realm.write(() => {
-          realm.create("History", {
-            data: JSON.stringify(newData)
-          });
+    let newData = previousArticles.concat([article]);
+    if (Object.keys(realmData).length === 0) {
+      realm.write(() => {
+        realm.create("History", {
+          data: JSON.stringify(newData)
         });
-      } else {
-        realm.write(() => {
-          realmData[0].data = JSON.stringify(newData);
-        });
-      }
+      });
+    } else {
+      realm.write(() => {
+        realmData[0].data = JSON.stringify(newData);
+      });
     }
     this.props.navigation.navigate("ArticleFeed", {
       param: article

@@ -1,10 +1,16 @@
 import React from "react";
-import { View, Text, StatusBar } from "react-native";
+import { View, Text, FlatList, Image } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import styles from "../../Header/styles";
-import Header from "../../Header/Header";
-
+import styles from "./styles";
+import _ from "lodash";
 class History extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      historyArticles: []
+    };
+  }
+
   static navigationOptions = ({ navigation, screenProps }) => {
     return {
       headerLeft: (
@@ -29,19 +35,45 @@ class History extends React.Component {
     };
   };
 
+  componentDidMount() {
+    let data = realm.objects("History")[0]
+      ? JSON.parse(realm.objects("History")[0].data)
+      : [];
+    var grouped = _.mapValues(_.groupBy(data, "date"), clist =>
+      clist.map(article => article)
+    );
+    let nested_data = [];
+    Object.keys(grouped).map(v =>
+      nested_data.push({ title: v, data: grouped[v] })
+    );
+    this.setState({
+      historyArticles: nested_data
+    });
+  }
+
   render() {
-    const { navigation } = this.props;
     return (
-      <View>
-        <StatusBar translucent={false} barStyle="light-content" />
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <Text style={{ color: "#000" }}>Under Development</Text>
-        </View>
+      <View style={styles.container}>
+        <FlatList
+          data={this.state.historyArticles}
+          extraData={this.state}
+          keyExtractor={(item, index) => item + index}
+          renderItem={(article, index) => (
+            <View key={index} style={styles.cardStyle}>
+              <Text style={styles.titleStyle}>{article.item.title}</Text>
+              {article.item.data.map((item, index) => (
+                <View style={styles.dataStyle} key={index}>
+                  <Image
+                    resizeMode="contain"
+                    style={styles.imageStyle}
+                    source={{ uri: item.image }}
+                  />
+                  <Text style={styles.titleTextStyle}>{item.title}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+        />
       </View>
     );
   }
