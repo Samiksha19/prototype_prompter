@@ -3,10 +3,7 @@ import { View, FlatList, StatusBar, Text } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import styles from "./styles";
 import FavoriteList from "../../FavoriteList/FavoriteList";
-import * as colors from "../../../utils/colors";
 import realm from "../../../database/realmDB";
-
-const Realm = require("realm");
 
 class Favorite extends React.Component {
   constructor() {
@@ -49,7 +46,7 @@ class Favorite extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: colors.grey, paddingBottom: 5 }}>
+      <View style={styles.container}>
         <StatusBar translucent={false} barStyle="light-content" />
         {this.state.favorites.length !== 0 ? (
           <FlatList
@@ -61,9 +58,7 @@ class Favorite extends React.Component {
             )}
           />
         ) : (
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
+          <View style={styles.blankScreenStyle}>
             <Text>No Articels Added</Text>
           </View>
         )}
