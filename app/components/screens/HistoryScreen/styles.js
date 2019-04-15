@@ -5,6 +5,7 @@ export default (styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.grey,
+    paddingHorizontal: 10,
     paddingBottom: 5
   },
   menuIcon: {
@@ -15,8 +16,7 @@ export default (styles = StyleSheet.create({
   cardStyle: {
     flex: 1,
     backgroundColor: "white",
-    margin: 10,
-    marginRight: 20
+    margin: 10
   },
   titleStyle: {
     fontWeight: "bold",

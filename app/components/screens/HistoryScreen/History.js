@@ -3,10 +3,8 @@ import { View, Text, FlatList, Image } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import styles from "./styles";
 import _ from "lodash";
-import Store from "../../../redux/configureStore";
 import { connect } from "react-redux";
 import { addToHistory } from "../../../redux/actions/UserClick_Action";
-import { UserDataReducer } from "../../../redux/reducers/UserClick_Reducer";
 
 class History extends React.Component {
   constructor() {
@@ -66,7 +64,6 @@ class History extends React.Component {
     Object.keys(grouped).map(v =>
       nested_data.push({ title: v, data: grouped[v] })
     );
-
     return {
       historyArticles: nested_data
     };
@@ -102,7 +99,7 @@ class History extends React.Component {
           />
         ) : (
           <View style={styles.blankScreenStyle}>
-            <Text>{"No articles added"}</Text>
+            <Text>{"No Articles Added"}</Text>
           </View>
         )}
       </View>
