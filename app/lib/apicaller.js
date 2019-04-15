@@ -1,4 +1,5 @@
-export const API_URL = "http://pp.f418.eu/article";
+export const API_URL = "http://pp.f418.eu/article/random/3";
+
 export default async function callApi(end_point, method) {
   let payload = {
     method,
@@ -8,13 +9,11 @@ export default async function callApi(end_point, method) {
       "Cache-Control": "no-cache"
     }
   };
-
-  return fetch(`${API_URL}/${end_point}`, payload)
+  return fetch(`${API_URL}`, payload)
     .then(response => {
       return response.json();
     })
     .then(data => {
-      console.log(data);
       return data;
     })
     .catch(error => {
