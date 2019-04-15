@@ -1,16 +1,20 @@
 import { StyleSheet } from "react-native";
-import * as FontSizes from "../../../utils/fontsSizes";
 import * as colors from "../../../utils/colors";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     justifyContent: "center",
     alignItems: "center"
   },
   textStyle: {
-    fontSize: 22
+    fontSize: 22,
+    color: colors.black
+  },
+  imageStyle: {
+    height: 250,
+    width: 250
   }
 });
 
