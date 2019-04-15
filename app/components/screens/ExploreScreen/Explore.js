@@ -12,7 +12,11 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import NetInfo from "@react-native-community/netinfo";
 
 import { connect } from "react-redux";
-import { addToHistory } from "../../../redux/actions/UserClick_Action";
+import {
+  addToHistory,
+  addToFavs,
+  deleteFromFavs
+} from "../../../redux/actions/UserClick_Action";
 
 import styles from "./styles";
 
@@ -97,33 +101,6 @@ class Explore extends React.Component {
     }
   }
 
-  saveArticle(article) {
-    {
-      this.state.icon_color === colors.white
-        ? this.setState({
-            icon_color: colors.red
-          })
-        : this.setState({
-            icon_color: colors.white
-          });
-    }
-    let realmData = realm.objects("Favourites");
-    let previousArticles = realmData[0] ? JSON.parse(realmData[0].data) : [];
-
-    let newData = previousArticles.concat([article]);
-    if (Object.keys(realmData).length === 0) {
-      realm.write(() => {
-        realm.create("Favourites", {
-          data: JSON.stringify(newData)
-        });
-      });
-    } else {
-      realm.write(() => {
-        realmData[0].data = JSON.stringify(newData);
-      });
-    }
-  }
-
   async refreshArticle() {
     this.setState({ loading: true });
     try {
@@ -156,6 +133,45 @@ class Explore extends React.Component {
     });
   };
 
+  saveArticle(article) {
+    let realmData = realm.objects("Favourites");
+    let previousArticles = realmData[0] ? JSON.parse(realmData[0].data) : [];
+    if (previousArticles !== []) {
+      let check = false;
+      for (const index of previousArticles) {
+        if (article.title === index.title) {
+          previousArticles = previousArticles.filter(item => item !== index);
+          check = true;
+        }
+      }
+      let newData;
+      if (check) {
+        realm.write(() => {
+          realmData[0].data = JSON.stringify(previousArticles);
+        });
+        this.props.deleteFromFavs(previousArticles);
+        alert("Article is removed from favorites");
+        this.setState({ icon_color: colors.white });
+      } else {
+        newData = previousArticles.concat([article]);
+        if (Object.keys(realmData).length === 0) {
+          realm.write(() => {
+            realm.create("Favourites", {
+              data: JSON.stringify(newData)
+            });
+          });
+        } else {
+          realm.write(() => {
+            realmData[0].data = JSON.stringify(newData);
+          });
+        }
+        this.props.addToFavs(newData);
+        alert("Article is added in favorites");
+        this.setState({ icon_color: colors.red });
+      }
+    }
+  }
+
   insertInHistory(selectedArticle) {
     const monthNames = [
       "January",
@@ -182,23 +198,39 @@ class Explore extends React.Component {
 
     let realmData = realm.objects("History");
     let previousArticles = realmData[0] ? JSON.parse(realmData[0].data) : [];
-    let index = previousArticles.findIndex(
-      article => article.title === selectedArticle.title
-    );
-    let newData = previousArticles.concat([article]);
-    if (Object.keys(realmData).length === 0) {
-      realm.write(() => {
-        realm.create("History", {
-          data: JSON.stringify(newData)
-        });
-      });
-    } else {
-      realm.write(() => {
-        realmData[0].data = JSON.stringify(newData);
-      });
-    }
 
-    this.props.addToHistory(newData);
+    if (previousArticles !== []) {
+      let check = false;
+
+      for (const ind of previousArticles) {
+        if (ind.title === selectedArticle.title) {
+          check = true;
+        }
+      }
+      if (check) {
+        let str = "DO_NOTHING!";
+      } else {
+        let index = previousArticles.findIndex(
+          article => article.title === selectedArticle.title
+        );
+
+        let newData = previousArticles.concat([article]);
+
+        if (Object.keys(realmData).length === 0) {
+          realm.write(() => {
+            realm.create("History", {
+              data: JSON.stringify(newData)
+            });
+          });
+        } else {
+          realm.write(() => {
+            realmData[0].data = JSON.stringify(newData);
+          });
+        }
+
+        this.props.addToHistory(newData);
+      }
+    }
 
     this.props.navigation.navigate("ArticleFeed", {
       param: article
@@ -268,7 +300,7 @@ class Explore extends React.Component {
                     </View>
                     <View style={styles.seperatorStyle} />
                     <View style={styles.icon_image_view_style}>
-                      {/* {this.renderFavoriteIcon(article)} */}
+                      {this.renderFavoriteIcon(article)}
                       <Icon
                         name="favorite"
                         color={this.state.icon_color}
@@ -307,14 +339,12 @@ class Explore extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { UserData } = state;
+  const { UserData, UserFav } = state;
 
-  return { UserData };
+  return { UserData, UserFav };
 };
-
-// export default Explore;
 
 export default connect(
   mapStateToProps,
-  { addToHistory }
+  { addToHistory, addToFavs, deleteFromFavs }
 )(Explore);

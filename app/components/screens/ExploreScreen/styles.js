@@ -31,9 +31,10 @@ export default (styles = StyleSheet.create({
     paddingTop: 20
   },
   imageStyle: {
-    width: "0%",
-    height: "100%",
-    alignSelf: "flex-end"
+    width: "95%",
+    height: "95%",
+    paddingTop: 5,
+    alignSelf: "center"
   },
   cardStyle: {
     flex: 1,
@@ -100,11 +101,11 @@ export default (styles = StyleSheet.create({
   },
   icon_image_view_style: {
     position: "absolute",
-    top: 5,
-    right: 5,
-    height: 40,
-    width: 40,
-    borderRadius: 4,
+    top: 10,
+    right: 10,
+    height: 35,
+    width: 35,
+    borderRadius: 2,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.transparent
@@ -118,7 +119,8 @@ export default (styles = StyleSheet.create({
   },
   image_view_style: {
     width: "100%",
-    height: 230
+    paddingHorizontal: 5,
+    height: 250
   },
   titleStyle: {
     marginLeft: 20,
