@@ -1,22 +1,30 @@
 import * as action_types from "../action_types";
-import * as colors from "../../utils/colors";
 
-const initialState = {
-  UserData: []
-};
-
-export const UserDataReducer = (state = initialState, action = {}) => {
+export const UserDataReducer = (state = {}, action = {}) => {
   switch (action.type) {
-    case action_types.ADD_TO_FAVORITE:
+    case action_types.ADD_TO_HISTORY:
       return {
         ...state,
         UserData: action.data
       };
 
-    case action_types.ADD_TO_HISTORY:
+    default:
+      return state;
+  }
+};
+
+export const UserFavReducer = (state = {}, action = {}) => {
+  switch (action.type) {
+    case action_types.ADD_TO_FAVORITE:
       return {
         ...state,
-        UserData: action.data
+        UserFav: action.data
+      };
+
+    case action_types.DELETE_FROM_FAVORITES:
+      return {
+        ...state,
+        UserFav: action.data
       };
 
     default:
