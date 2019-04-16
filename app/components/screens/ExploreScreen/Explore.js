@@ -74,6 +74,7 @@ class Explore extends React.Component {
         this.setState({ isConnected: false });
       }
     });
+    this.handleApiCall();
   }
 
   componentDidMount() {
@@ -86,12 +87,23 @@ class Explore extends React.Component {
         this.setState({ isConnected: false });
       }
     });
-    this.handleApiCall();
   }
 
   async handleApiCall() {
     try {
       let response = await callApi(end_point, method);
+      let realmData = realm.objects("Favourites");
+      let user_favorties = realmData[0] ? JSON.parse(realmData[0].data) : [];
+
+      for (const index of response) {
+        index.icon_color = colors.white;
+
+        for (const favs_index of user_favorties) {
+          if (index.title === favs_index.title) {
+            index.icon_color = colors.red;
+          }
+        }
+      }
       this.setState({
         articles: response,
         loading: false
@@ -103,15 +115,7 @@ class Explore extends React.Component {
 
   async refreshArticle() {
     this.setState({ loading: true });
-    try {
-      let response = await callApi(end_point, method);
-      this.setState({
-        articles: response,
-        loading: false
-      });
-    } catch (err) {
-      alert(err);
-    }
+    this.handleApiCall();
   }
 
   handleConnectivityChange = isConnected => {
@@ -136,39 +140,39 @@ class Explore extends React.Component {
   saveArticle(article) {
     let realmData = realm.objects("Favourites");
     let previousArticles = realmData[0] ? JSON.parse(realmData[0].data) : [];
-    if (previousArticles !== []) {
-      let check = false;
-      for (const index of previousArticles) {
-        if (article.title === index.title) {
-          previousArticles = previousArticles.filter(item => item !== index);
-          check = true;
-        }
+    let check = false;
+    for (const index of previousArticles) {
+      if (article.title === index.title) {
+        previousArticles = previousArticles.filter(item => item !== index);
+        article.icon_color = colors.white;
+        check = true;
       }
-      let newData;
-      if (check) {
+    }
+    let newData;
+    if (check) {
+      realm.write(() => {
+        realmData[0].data = JSON.stringify(previousArticles);
+      });
+      this.props.deleteFromFavs(previousArticles);
+      alert("Article is removed from favorites");
+      this.setState({ icon_color: colors.white });
+    } else {
+      article.icon_color = colors.red;
+      newData = previousArticles.concat([article]);
+      if (Object.keys(realmData).length === 0) {
         realm.write(() => {
-          realmData[0].data = JSON.stringify(previousArticles);
+          realm.create("Favourites", {
+            data: JSON.stringify(newData)
+          });
         });
-        this.props.deleteFromFavs(previousArticles);
-        alert("Article is removed from favorites");
-        this.setState({ icon_color: colors.white });
       } else {
-        newData = previousArticles.concat([article]);
-        if (Object.keys(realmData).length === 0) {
-          realm.write(() => {
-            realm.create("Favourites", {
-              data: JSON.stringify(newData)
-            });
-          });
-        } else {
-          realm.write(() => {
-            realmData[0].data = JSON.stringify(newData);
-          });
-        }
-        this.props.addToFavs(newData);
-        alert("Article is added in favorites");
-        this.setState({ icon_color: colors.red });
+        realm.write(() => {
+          realmData[0].data = JSON.stringify(newData);
+        });
       }
+      this.props.addToFavs(newData);
+      alert("Article is added in favorites");
+      this.setState({ icon_color: colors.red });
     }
   }
 
@@ -199,37 +203,33 @@ class Explore extends React.Component {
     let realmData = realm.objects("History");
     let previousArticles = realmData[0] ? JSON.parse(realmData[0].data) : [];
 
-    if (previousArticles !== []) {
-      let check = false;
+    let check = false;
 
-      for (const ind of previousArticles) {
-        if (ind.title === selectedArticle.title) {
-          check = true;
-        }
+    for (const ind of previousArticles) {
+      if (ind.title === selectedArticle.title && ind.date === date_obj) {
+        check = true;
       }
-      if (check) {
-        let str = "DO_NOTHING!";
+    }
+    if (!check) {
+      let index = previousArticles.findIndex(
+        article => article.title === selectedArticle.title
+      );
+
+      let newData = previousArticles.concat([article]);
+
+      if (Object.keys(realmData).length === 0) {
+        realm.write(() => {
+          realm.create("History", {
+            data: JSON.stringify(newData)
+          });
+        });
       } else {
-        let index = previousArticles.findIndex(
-          article => article.title === selectedArticle.title
-        );
-
-        let newData = previousArticles.concat([article]);
-
-        if (Object.keys(realmData).length === 0) {
-          realm.write(() => {
-            realm.create("History", {
-              data: JSON.stringify(newData)
-            });
-          });
-        } else {
-          realm.write(() => {
-            realmData[0].data = JSON.stringify(newData);
-          });
-        }
-
-        this.props.addToHistory(newData);
+        realm.write(() => {
+          realmData[0].data = JSON.stringify(newData);
+        });
       }
+
+      this.props.addToHistory(newData);
     }
 
     this.props.navigation.navigate("ArticleFeed", {
@@ -249,18 +249,6 @@ class Explore extends React.Component {
     }
   }
 
-  renderFavoriteIcon(article) {
-    let db_data = realm.objects("Favourites");
-    // return(
-    //     <Icon
-    //     name="favorite"
-    //     color={this.state.icon_color}
-    //     size={28}
-    //     onPress={() => this.saveArticle(article)}
-    //   />
-    // )
-  }
-
   componentWillUnmount() {
     NetInfo.isConnected.removeEventListener(
       "connectionChange",
@@ -278,7 +266,11 @@ class Explore extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          <StatusBar translucent={false} barStyle="light-content" />
+          <StatusBar
+            translucent={false}
+            barStyle="light-content"
+            backgroundColor={colors.purple}
+          />
           <IndicatorViewPager
             style={{ flex: 1 }}
             indicator={this._renderDotIndicator()}
@@ -300,10 +292,9 @@ class Explore extends React.Component {
                     </View>
                     <View style={styles.seperatorStyle} />
                     <View style={styles.icon_image_view_style}>
-                      {this.renderFavoriteIcon(article)}
                       <Icon
                         name="favorite"
-                        color={this.state.icon_color}
+                        color={article.icon_color || colors.white}
                         size={28}
                         onPress={() => this.saveArticle(article)}
                       />

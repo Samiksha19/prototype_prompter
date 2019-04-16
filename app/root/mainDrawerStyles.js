@@ -20,5 +20,5 @@ export default (styles = StyleSheet.create({
     marginHorizontal: 8,
     marginTop: 8
   },
-  imageBackground: { backgroundColor: "#fff" }
+  imageBackground: { backgroundColor: colors.white }
 }));

@@ -3,7 +3,7 @@ import * as colors from "../../../utils/colors";
 
 export default (styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.grey },
-  teaserStyle: { flex: 1, margin: 20, fontSize: 15 },
+  teaserStyle: { flex: 1, margin: 20, fontSize: 15, color: colors.black },
   Titlecontainer: {
     width: "70%",
     alignItems: "center"
@@ -25,7 +25,7 @@ export default (styles = StyleSheet.create({
   },
   mainCarouselStyle: {
     flex: 1,
-    backgroundColor: "#EDEDED",
+    backgroundColor: colors.grey,
     paddingHorizontal: 20,
     paddingBottom: 65,
     paddingTop: 20
@@ -123,6 +123,7 @@ export default (styles = StyleSheet.create({
     height: 250
   },
   titleStyle: {
+    color: colors.black,
     marginLeft: 20,
     marginTop: 25,
     fontSize: 18,
