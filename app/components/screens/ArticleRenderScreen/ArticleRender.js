@@ -3,6 +3,13 @@ import { View, Text, Image, ScrollView, Platform } from "react-native";
 import styles from "./styles";
 
 class ArticleRender extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tab: "history"
+    };
+  }
+
   render() {
     const { navigation } = this.props;
     const article = navigation.getParam("param", " ");

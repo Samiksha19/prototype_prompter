@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, Image } from "react-native";
+import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import styles from "./styles";
 import _ from "lodash";
@@ -85,13 +85,24 @@ class History extends React.Component {
               <View key={index} style={styles.cardStyle}>
                 <Text style={styles.titleStyle}>{article.item.title}</Text>
                 {article.item.data.map((item, index) => (
-                  <View style={styles.dataStyle} key={index}>
-                    <Image
-                      resizeMode="contain"
-                      style={styles.imageStyle}
-                      source={{ uri: item.image }}
-                    />
-                    <Text style={styles.titleTextStyle}>{item.title}</Text>
+                  <View key={index}>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      onPress={() =>
+                        this.props.navigation.navigate("ArticleFeed", {
+                          param: item
+                        })
+                      }
+                    >
+                      <View style={styles.dataStyle}>
+                        <Image
+                          resizeMode="contain"
+                          style={styles.imageStyle}
+                          source={{ uri: item.image }}
+                        />
+                        <Text style={styles.titleTextStyle}>{item.title}</Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
                 ))}
               </View>

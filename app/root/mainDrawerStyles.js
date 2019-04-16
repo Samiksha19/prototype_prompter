@@ -18,7 +18,8 @@ export default (styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "100",
     marginHorizontal: 8,
-    marginTop: 8
+    marginTop: 8,
+    color: colors.black
   },
   imageBackground: { backgroundColor: colors.white }
 }));

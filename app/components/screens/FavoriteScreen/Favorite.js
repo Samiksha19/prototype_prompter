@@ -1,9 +1,14 @@
 import React from "react";
-import { View, FlatList, StatusBar, Text } from "react-native";
+import {
+  View,
+  FlatList,
+  StatusBar,
+  Text,
+  TouchableOpacity
+} from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import styles from "./styles";
-import FavoriteList from "../../FavoriteList/FavoriteList";
 import { addToFavs } from "../../../redux/actions/UserClick_Action";
 import realm from "../../../database/realmDB";
 
@@ -68,12 +73,23 @@ class Favorite extends React.Component {
             keyExtractor={(x, i) => i.toString()}
             extraData={this.state}
             renderItem={({ item }) => (
-              <FavoriteList key={item.title} obj={item} />
+              <View style={styles.containerListStyle}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() =>
+                    this.props.navigation.navigate("ArticleFeed", {
+                      param: item
+                    })
+                  }
+                >
+                  <Text style={styles.titleListStyle}>{item.title}</Text>
+                </TouchableOpacity>
+              </View>
             )}
           />
         ) : (
           <View style={styles.blankScreenStyle}>
-            <Text>No Articles Added</Text>
+            <Text>{"No Articles Added"}</Text>
           </View>
         )}
       </View>

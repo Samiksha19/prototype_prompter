@@ -90,7 +90,17 @@ class Main extends Component {
         FavoriteFeed: {
           screen: FavoriteScreen,
           navigationOptions: {
-            headerTitle: "Favorite",
+            headerTitle: "Favorites",
+            headerStyle: {
+              backgroundColor: colors.purple
+            },
+            headerTintColor: "#fff"
+          }
+        },
+        ArticleFeed: {
+          screen: ArticleRenderScreen,
+          navigationOptions: {
+            headerTitle: "Article",
             headerStyle: {
               backgroundColor: colors.purple
             },
@@ -121,6 +131,16 @@ class Main extends Component {
             headerTintColor: "#fff"
           }
         },
+        ArticleFeed: {
+          screen: ArticleRenderScreen,
+          navigationOptions: {
+            headerTitle: "Article",
+            headerStyle: {
+              backgroundColor: colors.purple
+            },
+            headerTintColor: "#fff"
+          }
+        },
         SearchFeed: {
           screen: SearchScreen,
           navigationOptions: {
@@ -144,10 +164,10 @@ class Main extends Component {
             )
           }
         },
-        Favorite: {
+        Favorites: {
           screen: FavoriteFeedScreen,
           navigationOptions: {
-            title: "Favorite",
+            title: "Favorites",
             tabBarIcon: ({ tintColor }) => (
               <Icon name="favorite" size={ICON_SIZE} color={tintColor} />
             )
