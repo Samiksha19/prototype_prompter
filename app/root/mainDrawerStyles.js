@@ -8,9 +8,10 @@ export default (styles = StyleSheet.create({
     marginBottom: 40
   },
   drawerImageStyle: {
-    width: "100%",
+    width: "95%",
     height: 200,
-    backgroundColor: colors.purple
+    alignSelf: "center",
+    backgroundColor: colors.white
   },
   drawerText: {
     flex: 1,
@@ -18,5 +19,6 @@ export default (styles = StyleSheet.create({
     fontWeight: "100",
     marginHorizontal: 8,
     marginTop: 8
-  }
+  },
+  imageBackground: { backgroundColor: "#fff" }
 }));
