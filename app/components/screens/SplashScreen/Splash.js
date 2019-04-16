@@ -16,12 +16,13 @@ class SplashScreen extends React.Component {
     return (
       <View style={styles.container}>
         <StatusBar translucent={false} backgroundColor={colors.purple} />
-        <Image
-          resizeMode="contain"
-          source={require("../../../images/splash_icon.png")}
-          style={styles.imageStyle}
-        />
-        <Text style={styles.textStyle}>{"Prototype Prompter"}</Text>
+        <View>
+          <Image
+            resizeMode="center"
+            source={require("../../../images/splash_icon.png")}
+            style={styles.imageStyle}
+          />
+        </View>
       </View>
     );
   }

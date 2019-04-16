@@ -10,11 +10,14 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 22,
-    color: colors.black
+    color: colors.black,
+    textAlign: "center"
   },
   imageStyle: {
     height: 250,
-    width: 250
+    width: 250,
+    flex: 1,
+    alignSelf: "center"
   }
 });
 

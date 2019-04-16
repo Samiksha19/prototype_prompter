@@ -19,6 +19,8 @@ export default (styles = StyleSheet.create({
     margin: 10
   },
   titleStyle: {
+    color: colors.black,
+    fontSize: 16,
     fontWeight: "bold",
     marginVertical: 10,
     paddingHorizontal: 10
@@ -31,7 +33,12 @@ export default (styles = StyleSheet.create({
     alignItems: "center"
   },
   imageStyle: { flex: 1, height: 45 },
-  titleTextStyle: { flex: 3, fontSize: 16, marginLeft: 10 },
+  titleTextStyle: {
+    flex: 3,
+    fontSize: 16,
+    marginLeft: 10,
+    color: colors.black
+  },
   blankScreenStyle: {
     flex: 1,
     justifyContent: "center",
