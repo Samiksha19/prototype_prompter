@@ -109,24 +109,29 @@ class Main extends Component {
       }
     );
 
-    const HistoryFeedScreen = createStackNavigator({
-      HistoryFeed: {
-        screen: HistoryScreen,
-        navigationOptions: {
-          headerTitle: "History",
-          headerStyle: {
-            backgroundColor: colors.purple
-          },
-          headerTintColor: "#fff"
+    const HistoryFeedScreen = createStackNavigator(
+      {
+        HistoryFeed: {
+          screen: HistoryScreen,
+          navigationOptions: {
+            headerTitle: "History",
+            headerStyle: {
+              backgroundColor: colors.purple
+            },
+            headerTintColor: "#fff"
+          }
+        },
+        SearchFeed: {
+          screen: SearchScreen,
+          navigationOptions: {
+            headerMode: "none"
+          }
         }
       },
-      SearchFeed: {
-        screen: SearchScreen,
-        navigationOptions: {
-          headerMode: "none"
-        }
+      {
+        initialRouteName: "HistoryFeed"
       }
-    });
+    );
 
     const HomeWithTabs = createBottomTabNavigator(
       {
@@ -185,13 +190,27 @@ class Main extends Component {
         <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
           {/* <DrawerItems {...props} /> */}
           <View style={styles.drawerBackground}>
-            <Image
-              source={{ uri: "http://www.f418.eu/share/f418.png" }}
-              style={styles.drawerImageStyle}
-            />
+            <View style={styles.imageBackground}>
+              <Image
+                resizeMode={Platform.OS === "ios" ? "center" : "contain"}
+                source={{ uri: "http://www.f418.eu/share/f418.png" }}
+                style={styles.drawerImageStyle}
+              />
+            </View>
+
             <Text style={styles.drawerText}>
               {
-                "We aim to make the prototyping step of the Design Thinking process more accessible to everybody. This app offers both inexperienced and professional design thinkers information to learn about different rapid prototyping methods. It helps you decide on which method is most suitable to their challenge."
+                "We aim to make the prototyping step of the Design Thinking process more accessible to everybody."
+              }
+            </Text>
+            <Text style={styles.drawerText}>
+              {
+                "This app offers both inexperienced and professional design thinkers information to learn about different rapid prototyping methods."
+              }
+            </Text>
+            <Text style={styles.drawerText}>
+              {
+                "It helps you decide on which method is most suitable to their challenge."
               }
             </Text>
           </View>
