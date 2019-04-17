@@ -32,5 +32,10 @@ export default (styles = StyleSheet.create({
   imageViewStyle: {
     width: "100%",
     height: 250
+  },
+  menuIcon: {
+    marginRight: 10,
+    backgroundColor: colors.purple,
+    marginLeft: 10
   }
 }));
