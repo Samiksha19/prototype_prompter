@@ -233,7 +233,9 @@ class Explore extends React.Component {
     }
 
     this.props.navigation.navigate("ArticleFeed", {
-      param: article
+      param: article,
+      headerTitle: article.title,
+      icon_color: article.icon_color
     });
   }
 

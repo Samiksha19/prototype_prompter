@@ -78,7 +78,9 @@ class Favorite extends React.Component {
                   activeOpacity={0.8}
                   onPress={() =>
                     this.props.navigation.navigate("ArticleFeed", {
-                      param: item
+                      param: item,
+                      headerTitle: item.title,
+                      icon_color: true
                     })
                   }
                 >

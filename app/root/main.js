@@ -66,7 +66,6 @@ class Main extends Component {
         ArticleFeed: {
           screen: ArticleRenderScreen,
           navigationOptions: {
-            headerTitle: "Article",
             headerStyle: {
               backgroundColor: colors.purple
             },
@@ -100,7 +99,6 @@ class Main extends Component {
         ArticleFeed: {
           screen: ArticleRenderScreen,
           navigationOptions: {
-            headerTitle: "Article",
             headerStyle: {
               backgroundColor: colors.purple
             },
@@ -134,7 +132,6 @@ class Main extends Component {
         ArticleFeed: {
           screen: ArticleRenderScreen,
           navigationOptions: {
-            headerTitle: "Article",
             headerStyle: {
               backgroundColor: colors.purple
             },

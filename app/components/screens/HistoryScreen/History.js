@@ -90,7 +90,9 @@ class History extends React.Component {
                       activeOpacity={0.6}
                       onPress={() =>
                         this.props.navigation.navigate("ArticleFeed", {
-                          param: item
+                          param: item,
+                          headerTitle: item.title,
+                          icon_color: false
                         })
                       }
                     >
