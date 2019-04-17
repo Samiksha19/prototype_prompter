@@ -274,7 +274,7 @@ class Explore extends React.Component {
             backgroundColor={colors.purple}
           />
           <IndicatorViewPager
-            style={{ flex: 1 }}
+            style={{ flex: 2 }}
             indicator={this._renderDotIndicator()}
           >
             {this.state.articles !== undefined &&
@@ -285,14 +285,12 @@ class Explore extends React.Component {
                     onPress={() => this.insertInHistory(article)}
                     style={styles.touchableStyle}
                   >
-                    <View style={styles.image_view_style}>
-                      <Image
-                        resizeMode="contain"
-                        style={styles.imageStyle}
-                        source={{ uri: `${article.image}` }}
-                      />
-                    </View>
-                    <View style={styles.seperatorStyle} />
+                    <Text style={styles.titleStyle}>{article.title}</Text>
+                    <Image
+                      resizeMode="contain"
+                      style={styles.imageStyle}
+                      source={{ uri: `${article.image}` }}
+                    />
                     <View style={styles.icon_image_view_style}>
                       <Icon
                         name="favorite"
@@ -301,7 +299,7 @@ class Explore extends React.Component {
                         onPress={() => this.saveArticle(article)}
                       />
                     </View>
-                    <Text style={styles.titleStyle}>{article.title}</Text>
+
                     <Text style={styles.teaserStyle}>{article.teaser}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.absoluteIconStyle}>

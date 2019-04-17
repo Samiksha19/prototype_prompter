@@ -31,8 +31,8 @@ export default (styles = StyleSheet.create({
     paddingTop: 20
   },
   imageStyle: {
-    width: "95%",
-    height: "95%",
+    width: "80%",
+    height: "40%",
     paddingTop: 5,
     alignSelf: "center"
   },
@@ -101,21 +101,14 @@ export default (styles = StyleSheet.create({
   },
   icon_image_view_style: {
     position: "absolute",
-    top: 10,
-    right: 10,
+    top: 20,
+    right: 20,
     height: 35,
     width: 35,
     borderRadius: 2,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.transparent
-  },
-  seperatorStyle: {
-    width: "90%",
-    alignSelf: "center",
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: colors.black,
-    marginHorizontal: 5
   },
   image_view_style: {
     width: "100%",
@@ -126,6 +119,7 @@ export default (styles = StyleSheet.create({
     color: colors.black,
     marginLeft: 20,
     marginTop: 25,
+    marginBottom: 10,
     fontSize: 18,
     fontWeight: "bold"
   },
