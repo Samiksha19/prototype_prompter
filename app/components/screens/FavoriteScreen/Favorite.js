@@ -9,7 +9,9 @@ import {
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import styles from "./styles";
+import * as colors from "../../../utils/colors";
 import { addToFavs } from "../../../redux/actions/UserClick_Action";
+import Swipeout from "react-native-swipeout";
 import realm from "../../../database/realmDB";
 
 class Favorite extends React.Component {
@@ -61,6 +63,12 @@ class Favorite extends React.Component {
   }
 
   render() {
+    var swipeoutBtns = [
+      {
+        text: "Delete Article"
+      }
+    ];
+
     return (
       <View style={styles.container}>
         <StatusBar translucent={false} barStyle="light-content" />
@@ -73,20 +81,26 @@ class Favorite extends React.Component {
             keyExtractor={(x, i) => i.toString()}
             extraData={this.state}
             renderItem={({ item }) => (
-              <View style={styles.containerListStyle}>
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() =>
-                    this.props.navigation.navigate("ArticleFeed", {
-                      param: item,
-                      headerTitle: item.title,
-                      icon_color: true
-                    })
-                  }
-                >
-                  <Text style={styles.titleListStyle}>{item.title}</Text>
-                </TouchableOpacity>
-              </View>
+              <Swipeout
+                right={swipeoutBtns}
+                autoClose={true}
+                backgroundColor={colo}
+              >
+                <View style={styles.containerListStyle}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() =>
+                      this.props.navigation.navigate("ArticleFeed", {
+                        param: item,
+                        headerTitle: item.title,
+                        icon_color: item.icon_color
+                      })
+                    }
+                  >
+                    <Text style={styles.titleListStyle}>{item.title}</Text>
+                  </TouchableOpacity>
+                </View>
+              </Swipeout>
             )}
           />
         ) : (
