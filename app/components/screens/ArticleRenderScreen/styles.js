@@ -22,7 +22,7 @@ export default (styles = StyleSheet.create({
   propertiesStyle: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start"
+    alignItems: "center"
   },
   tableStyles: {
     marginVertical: 10

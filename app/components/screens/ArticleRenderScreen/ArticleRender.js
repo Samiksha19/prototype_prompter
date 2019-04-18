@@ -35,6 +35,7 @@ class ArticleRender extends React.Component {
         <Icon
           style={styles.menuIcon}
           name="favorite"
+          selectionColor={colors.white}
           color={navigation.getParam("ic_color", " ") || colors.white}
           size={27}
           onPress={navigation.getParam("saveArticle")}
@@ -104,7 +105,6 @@ class ArticleRender extends React.Component {
     const { navigation } = this.props;
 
     const article = navigation.getParam("param", " ");
-    let textBlockComputedStyle = [];
 
     return (
       <View style={styles.containerStyle}>
@@ -187,8 +187,8 @@ class ArticleRender extends React.Component {
           </Text>
           <View style={styles.descriptionViewStyle}>
             <RNMarkdownFormatter
-              defaultStyles={textBlockComputedStyle} // or textBlockComputedStyle
-              numberOfLines={0} // 1(no wrap text) or 0(wrap text)
+              defaultStyles={[]}
+              numberOfLines={0}
               text={article.description}
               regexArray={[
                 {
