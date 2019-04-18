@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { View, Text, Image, ScrollView, Platform } from "react-native";
+import { View, Text, Image, ScrollView, Platform, Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import RNMarkdownFormatter from "react-native-markdown-formatter";
 import realm from "../../../database/realmDB";
 import * as colors from "../../../utils/colors";
 import {
@@ -13,7 +14,6 @@ import { connect } from "react-redux";
 class ArticleRender extends React.Component {
   constructor(props) {
     super(props);
-    console.warn(this.props.navigation.getParam("icon_color", " "));
     this.state = {
       tab: "history",
       icon_color: this.props.navigation.getParam("icon_color", " ")
@@ -24,8 +24,8 @@ class ArticleRender extends React.Component {
     const { navigation } = this.props;
     navigation.setParams({ saveArticle: this.saveArticle });
     navigation.setParams({ ic_color: this.state.icon_color });
-    let icon_color = this.props.navigation.getParam("icon_color", " ");
-    this.setState({ icon_color: icon_color });
+    let tab = navigation.getParam("tab", " ");
+    this.setState({ tab });
   }
 
   static navigationOptions = ({ navigation, screenProps }) => {
@@ -35,8 +35,7 @@ class ArticleRender extends React.Component {
         <Icon
           style={styles.menuIcon}
           name="favorite"
-          color={navigation.getParam("ic_color", " ")}
-          //color={}
+          color={navigation.getParam("ic_color", " ") || colors.white}
           size={27}
           onPress={navigation.getParam("saveArticle")}
         />
@@ -47,10 +46,8 @@ class ArticleRender extends React.Component {
   saveArticle = () => {
     const { navigation } = this.props;
     let article = navigation.getParam("param", " ");
-    debugger;
     let realmData = realm.objects("Favourites");
     let prev_user_favs = realmData[0] ? JSON.parse(realmData[0].data) : [];
-    debugger;
     let check = false;
 
     for (const index of prev_user_favs) {
@@ -58,7 +55,6 @@ class ArticleRender extends React.Component {
         prev_user_favs = prev_user_favs.filter(item => item !== index);
         article.icon_color = colors.white;
         check = true;
-        debugger;
       }
     }
     let newData;
@@ -67,9 +63,17 @@ class ArticleRender extends React.Component {
         realmData[0].data = JSON.stringify(prev_user_favs);
       });
       this.props.deleteFromFavs(prev_user_favs);
-      alert("Article is removed from favorites");
-      debugger;
-      this.setState({ ic_color: colors.white });
+      Alert.alert("Alert", "Article has been deleted from favorites", [
+        {
+          text: "OK",
+          onPress: () => {
+            if (this.state.tab === "favorite") {
+              this.props.navigation.goBack();
+            }
+          }
+        }
+      ]);
+      this.props.navigation.setParams({ ic_color: colors.white });
     } else {
       article.icon_color = colors.red;
       newData = prev_user_favs.concat([article]);
@@ -85,19 +89,23 @@ class ArticleRender extends React.Component {
         });
       }
       this.props.addToFavs(newData);
-      alert("Article is added in favorites");
-      this.setState({ ic_color: colors.red });
-      debugger;
+      alert("Article has been added in favorites");
+      this.props.navigation.setParams({ ic_color: colors.red });
     }
   };
 
   componentWillUnmount() {
-    this.props.navigation.setParams({ saveArticle: null });
+    const { navigation } = this.props;
+    navigation.setParams({ saveArticle: null });
+    navigation.setParams({ ic_color: null });
   }
 
   render() {
     const { navigation } = this.props;
+
     const article = navigation.getParam("param", " ");
+    let textBlockComputedStyle = [];
+
     return (
       <View style={styles.containerStyle}>
         <ScrollView
@@ -150,43 +158,98 @@ class ArticleRender extends React.Component {
           </View>
           <Text style={styles.headerTextStyle}>{"Short instructions"}</Text>
           {article.steps.map((step, index) => (
-            <Text
-              key={index}
-              style={[styles.descriptionTextStyle, { paddingBottom: 4 }]}
-            >
-              {index + 1 + ". "} {step}
-            </Text>
+            <View style={styles.descriptionViewStyle}>
+              <RNMarkdownFormatter
+                defaultStyles={[]} // or textBlockComputedStyle
+                numberOfLines={0} // 1(no wrap text) or 0(wrap text)
+                text={`${index + 1 + ". "}${step}`}
+                regexArray={[
+                  {
+                    type: "hyperlink",
+                    styles: [styles.hyperlinkText],
+                    pattern: ["[]()"],
+                    patternType: "asymmetric",
+                    groups: 2
+                  },
+                  {
+                    type: "italic",
+                    styles: [],
+                    pattern: ["*"],
+                    patternType: "symmetric",
+                    groups: 1
+                  }
+                ]}
+              />
+            </View>
           ))}
           <Text style={[styles.headerTextStyle, { paddingTop: 12 }]}>
             {"Description"}
           </Text>
-          <Text style={styles.descriptionTextStyle}>{article.description}</Text>
+          <View style={styles.descriptionViewStyle}>
+            <RNMarkdownFormatter
+              defaultStyles={textBlockComputedStyle} // or textBlockComputedStyle
+              numberOfLines={0} // 1(no wrap text) or 0(wrap text)
+              text={article.description}
+              regexArray={[
+                {
+                  type: "",
+                  styles: [],
+                  pattern: ["\\$[\\s+](.*?)[\\n|\\r]"],
+                  patternType: "custom",
+                  groups: 1
+                },
+                {
+                  type: "hyperlink",
+                  styles: [styles.hyperlinkText],
+                  pattern: ["[]()"],
+                  patternType: "asymmetric",
+                  groups: 2
+                },
+                {
+                  type: "italic",
+                  styles: [],
+                  pattern: ["*"],
+                  patternType: "symmetric",
+                  groups: 1
+                }
+              ]}
+            />
+          </View>
           <Text style={styles.headerTextStyle}>{"References"}</Text>
-          {article.references.kit !== undefined ? (
-            <Text style={styles.descriptionTextStyle}>
-              {article.references.kit}
-            </Text>
-          ) : null}
-          {article.references.url1 !== undefined ? (
-            <Text style={styles.descriptionTextStyle}>
-              {article.references.url1}
-            </Text>
-          ) : null}
-          {article.references.ref1 !== undefined ? (
-            <Text style={styles.descriptionTextStyle}>
-              {article.references.ref1}
-            </Text>
-          ) : null}
-          {article.references.anotherNotYetUsedLabel !== undefined ? (
-            <Text style={styles.descriptionTextStyle}>
-              {article.references.anotherNotYetUsedLabel}
-            </Text>
-          ) : null}
-          {article.references.randomLabel !== undefined ? (
-            <Text style={styles.descriptionTextStyle}>
-              {article.references.randomLabel}
-            </Text>
-          ) : null}
+          {Object.keys(article.references).map((item, index) => {
+            return (
+              <View style={styles.descriptionViewStyle} key={index}>
+                <RNMarkdownFormatter
+                  defaultStyles={[]}
+                  numberOfLines={0}
+                  text={`[${index + 1}]${" " + article.references[item]}`}
+                  regexArray={[
+                    {
+                      type: "bullet",
+                      styles: [styles.bullet],
+                      pattern: ["\\$[\\s+](.*?)[\\n|\\r]"],
+                      patternType: "custom",
+                      groups: 1
+                    },
+                    {
+                      type: "hyperlink",
+                      styles: [styles.hyperlinkText],
+                      pattern: ["[]()"],
+                      patternType: "asymmetric",
+                      groups: 2
+                    },
+                    {
+                      type: "italic",
+                      styles: [],
+                      pattern: ["*"],
+                      patternType: "symmetric",
+                      groups: 1
+                    }
+                  ]}
+                />
+              </View>
+            );
+          })}
         </ScrollView>
       </View>
     );

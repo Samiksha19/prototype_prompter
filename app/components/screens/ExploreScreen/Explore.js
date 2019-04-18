@@ -235,7 +235,8 @@ class Explore extends React.Component {
     this.props.navigation.navigate("ArticleFeed", {
       param: article,
       headerTitle: article.title,
-      icon_color: article.icon_color
+      icon_color: article.icon_color,
+      tab: "explore"
     });
   }
 
@@ -289,13 +290,13 @@ class Explore extends React.Component {
                     <Image
                       resizeMode="contain"
                       style={styles.imageStyle}
-                      source={{ uri: `${article.image}` }}
+                      source={{ uri: article.image }}
                     />
                     <View style={styles.icon_image_view_style}>
                       <Icon
                         name="favorite"
                         color={article.icon_color || colors.white}
-                        size={28}
+                        size={27}
                         onPress={() => this.saveArticle(article)}
                       />
                     </View>

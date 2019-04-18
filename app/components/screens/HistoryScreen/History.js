@@ -92,7 +92,8 @@ class History extends React.Component {
                         this.props.navigation.navigate("ArticleFeed", {
                           param: item,
                           headerTitle: item.title,
-                          icon_color: false
+                          icon_color: item.icon_color,
+                          tab: "history"
                         })
                       }
                     >

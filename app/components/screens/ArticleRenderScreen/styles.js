@@ -16,10 +16,8 @@ export default (styles = StyleSheet.create({
     paddingBottom: 10,
     color: colors.purple
   },
-  descriptionTextStyle: {
-    fontSize: globals.description_fontsize,
-    paddingBottom: 10,
-    color: "#000"
+  descriptionViewStyle: {
+    paddingBottom: 10
   },
   propertiesStyle: {
     flexDirection: "row",
@@ -27,7 +25,7 @@ export default (styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   tableStyles: {
-    marginVertical: 6
+    marginVertical: 10
   },
   imageViewStyle: {
     width: "100%",
