@@ -1,9 +1,14 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import * as colors from "../../../utils/colors";
 
 export default (styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.grey },
-  teaserStyle: { flex: 1, margin: 20, fontSize: 15, color: colors.black },
+  teaserStyle: {
+    flex: 1,
+    margin: 20,
+    color: colors.black,
+    fontSize: 15
+  },
   Titlecontainer: {
     width: "70%",
     alignItems: "center"
@@ -116,6 +121,7 @@ export default (styles = StyleSheet.create({
     height: 250
   },
   titleStyle: {
+    flex: 1,
     color: colors.black,
     marginLeft: 20,
     marginTop: 25,
@@ -127,5 +133,12 @@ export default (styles = StyleSheet.create({
     backgroundColor: "white",
     flex: 1,
     paddingBottom: 10
+  },
+  titleViewStyle: {
+    marginBottom: 20,
+    marginHorizontal: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   }
 }));

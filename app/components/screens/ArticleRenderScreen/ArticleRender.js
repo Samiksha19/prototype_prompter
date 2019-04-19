@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, Image, ScrollView, Platform, Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import RNMarkdownFormatter from "react-native-markdown-formatter";
+import RNMarkdownFormatter from "../../RNMarkdownFormatter";
 import realm from "../../../database/realmDB";
 import * as colors from "../../../utils/colors";
 import {
@@ -11,6 +11,7 @@ import {
 import styles from "./styles";
 import { connect } from "react-redux";
 
+const URL = "http://pp.f418.eu/article/";
 class ArticleRender extends React.Component {
   constructor(props) {
     super(props);
@@ -36,7 +37,7 @@ class ArticleRender extends React.Component {
           style={styles.menuIcon}
           name="favorite"
           selectionColor={colors.white}
-          color={navigation.getParam("ic_color", " ") || colors.white}
+          color={navigation.getParam("ic_color", "") || colors.white}
           size={27}
           onPress={navigation.getParam("saveArticle")}
         />
@@ -47,6 +48,9 @@ class ArticleRender extends React.Component {
   saveArticle = () => {
     const { navigation } = this.props;
     let article = navigation.getParam("param", " ");
+
+    console.log(article);
+
     let realmData = realm.objects("Favourites");
     let prev_user_favs = realmData[0] ? JSON.parse(realmData[0].data) : [];
     let check = false;
@@ -95,10 +99,76 @@ class ArticleRender extends React.Component {
     }
   };
 
+  renderInstructionsStep = ({ step, index }) => {
+    console.warn("in");
+    let index1 = step.indexOf("*");
+    if (index1 === -1) {
+      return (
+        <View key={index} style={styles.descriptionViewStyle}>
+          <RNMarkdownFormatter
+            defaultStyles={[styles.teaserStyle]}
+            numberOfLines={0}
+            selectable={true}
+            text={`${index + 1 + ". "}${step}`}
+            regexArray={[
+              {
+                type: "hyperlink",
+                styles: [styles.hyperlinkText],
+                pattern: ["[]()"],
+                patternType: "asymmetric",
+                groups: 2
+              }
+            ]}
+          />
+        </View>
+      );
+    } else {
+      let index2 = step.indexOf("*", index1);
+      let str1 = step.slice(0, index1);
+      let str2 = step.slice(index1, index2);
+      let str3 = step.slice(index2);
+      console.warn(index1, index2);
+      console.warn(str1, str2, str3);
+    }
+  };
+
   componentWillUnmount() {
     const { navigation } = this.props;
     navigation.setParams({ saveArticle: null });
     navigation.setParams({ ic_color: null });
+  }
+
+  renderDescription(description) {
+    //let str = description;
+    //let arr = str.split("");
+    //debugger;
+    if (false) {
+      return (
+        <View style={styles.descriptionViewStyle}>
+          <Text>ss</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.descriptionViewStyle}>
+          <RNMarkdownFormatter
+            defaultStyles={[styles.teaserStyle]}
+            selectable={true}
+            numberOfLines={0}
+            text={description || ""}
+            regexArray={[
+              {
+                type: "hyperlink",
+                styles: [styles.hyperlinkText],
+                pattern: ["[]()"],
+                patternType: "asymmetric",
+                groups: 2
+              }
+            ]}
+          />
+        </View>
+      );
+    }
   }
 
   render() {
@@ -123,26 +193,40 @@ class ArticleRender extends React.Component {
               style={[styles.imageStyle, { marginBottom: 15 }]}
             />
           </View>
-          <Text style={styles.descriptionTextStyle}>{article.teaser}</Text>
+          <Text
+            selectable={true}
+            style={[
+              styles.teaserStyle,
+              { paddingBottom: 10, color: colors.black }
+            ]}
+          >
+            {article.teaser}
+          </Text>
           <View style={styles.tableStyles}>
             <View style={[styles.propertiesStyle, { flex: 1 }]}>
               <Text
-                style={[styles.headerTextStyle, { flex: 1, paddingBottom: 4 }]}
+                style={[styles.headerTextStyle, { flex: 1, paddingBottom: 6 }]}
               >
                 {"Duration: "}
               </Text>
-              <Text style={[styles.descriptionTextStyle, { flex: 1 }]}>
-                {article.properties.propDuration}
+              <Text
+                selectable={true}
+                style={[styles.descriptionTextStyle, { color: colors.black }]}
+              >
+                {article.properties.propDuration || ""}
               </Text>
             </View>
             <View style={[styles.propertiesStyle, { flex: 1 }]}>
               <Text
-                style={[styles.headerTextStyle, { flex: 1, paddingBottom: 4 }]}
+                style={[styles.headerTextStyle, { flex: 1, paddingBottom: 6 }]}
               >
                 {"Evaluation Time: "}
               </Text>
-              <Text style={[styles.descriptionTextStyle, { flex: 1 }]}>
-                {article.properties.propEvaluationType}
+              <Text
+                selectable={true}
+                style={[styles.descriptionTextStyle, { color: colors.black }]}
+              >
+                {article.properties.propEvaluationType || ""}
               </Text>
             </View>
             <View style={[styles.propertiesStyle, { flex: 1 }]}>
@@ -151,32 +235,49 @@ class ArticleRender extends React.Component {
               >
                 {"Time Dependency: "}
               </Text>
-              <Text style={[styles.descriptionTextStyle, { flex: 1 }]}>
-                {article.properties.propTimeDependency}
+              <Text
+                selectable={true}
+                style={[styles.descriptionTextStyle, { color: colors.black }]}
+              >
+                {article.properties.propTimeDependency || ""}
+              </Text>
+            </View>
+            <View style={[styles.propertiesStyle, { flex: 1 }]}>
+              <Text
+                style={[styles.headerTextStyle, { flex: 1, paddingBottom: 4 }]}
+              >
+                {"User Participation: "}
+              </Text>
+              <Text
+                selectable={true}
+                style={[styles.descriptionTextStyle, { color: colors.black }]}
+              >
+                {article.properties.propUserParticipation || ""}
               </Text>
             </View>
           </View>
           <Text style={styles.headerTextStyle}>{"Short instructions"}</Text>
           {article.steps.map((step, index) => (
-            <View style={styles.descriptionViewStyle}>
+            <View key={index} style={styles.descriptionViewStyle}>
               <RNMarkdownFormatter
-                defaultStyles={[]} // or textBlockComputedStyle
-                numberOfLines={0} // 1(no wrap text) or 0(wrap text)
+                defaultStyles={[styles.teaserStyle]}
+                numberOfLines={0}
+                selectable={true}
                 text={`${index + 1 + ". "}${step}`}
                 regexArray={[
-                  {
-                    type: "hyperlink",
-                    styles: [styles.hyperlinkText],
-                    pattern: ["[]()"],
-                    patternType: "asymmetric",
-                    groups: 2
-                  },
                   {
                     type: "italic",
                     styles: [],
                     pattern: ["*"],
                     patternType: "symmetric",
                     groups: 1
+                  },
+                  {
+                    type: "hyperlink",
+                    styles: [styles.hyperlinkText],
+                    pattern: ["[]()"],
+                    patternType: "asymmetric",
+                    groups: 2
                   }
                 ]}
               />
@@ -185,50 +286,22 @@ class ArticleRender extends React.Component {
           <Text style={[styles.headerTextStyle, { paddingTop: 12 }]}>
             {"Description"}
           </Text>
-          <View style={styles.descriptionViewStyle}>
-            <RNMarkdownFormatter
-              defaultStyles={[]}
-              numberOfLines={0}
-              text={article.description}
-              regexArray={[
-                {
-                  type: "",
-                  styles: [],
-                  pattern: ["\\$[\\s+](.*?)[\\n|\\r]"],
-                  patternType: "custom",
-                  groups: 1
-                },
-                {
-                  type: "hyperlink",
-                  styles: [styles.hyperlinkText],
-                  pattern: ["[]()"],
-                  patternType: "asymmetric",
-                  groups: 2
-                },
-                {
-                  type: "italic",
-                  styles: [],
-                  pattern: ["*"],
-                  patternType: "symmetric",
-                  groups: 1
-                }
-              ]}
-            />
-          </View>
+          {this.renderDescription(article.description)}
           <Text style={styles.headerTextStyle}>{"References"}</Text>
           {Object.keys(article.references).map((item, index) => {
             return (
               <View style={styles.descriptionViewStyle} key={index}>
                 <RNMarkdownFormatter
-                  defaultStyles={[]}
+                  defaultStyles={[styles.teaserStyle]}
                   numberOfLines={0}
+                  selectable={true}
                   text={`[${index + 1}]${" " + article.references[item]}`}
                   regexArray={[
                     {
-                      type: "bullet",
-                      styles: [styles.bullet],
-                      pattern: ["\\$[\\s+](.*?)[\\n|\\r]"],
-                      patternType: "custom",
+                      type: "italic",
+                      styles: [],
+                      pattern: ["*"],
+                      patternType: "symmetric",
                       groups: 1
                     },
                     {
@@ -237,13 +310,6 @@ class ArticleRender extends React.Component {
                       pattern: ["[]()"],
                       patternType: "asymmetric",
                       groups: 2
-                    },
-                    {
-                      type: "italic",
-                      styles: [],
-                      pattern: ["*"],
-                      patternType: "symmetric",
-                      groups: 1
                     }
                   ]}
                 />

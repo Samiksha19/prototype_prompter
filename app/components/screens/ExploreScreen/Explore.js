@@ -286,22 +286,25 @@ class Explore extends React.Component {
                     onPress={() => this.insertInHistory(article)}
                     style={styles.touchableStyle}
                   >
-                    <Text style={styles.titleStyle}>{article.title}</Text>
+                    <View style={styles.titleViewStyle}>
+                      <Text style={styles.titleStyle}>{article.title}</Text>
+                      <View style={styles.icon_image_view_style}>
+                        <Icon
+                          name="favorite"
+                          color={article.icon_color || colors.white}
+                          size={27}
+                          onPress={() => this.saveArticle(article)}
+                        />
+                      </View>
+                    </View>
                     <Image
                       resizeMode="contain"
                       style={styles.imageStyle}
                       source={{ uri: article.image }}
                     />
-                    <View style={styles.icon_image_view_style}>
-                      <Icon
-                        name="favorite"
-                        color={article.icon_color || colors.white}
-                        size={27}
-                        onPress={() => this.saveArticle(article)}
-                      />
-                    </View>
-
-                    <Text style={styles.teaserStyle}>{article.teaser}</Text>
+                    <Text style={styles.teaserStyle} selectable={true}>
+                      {article.teaser}
+                    </Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.absoluteIconStyle}>
                     <Icon

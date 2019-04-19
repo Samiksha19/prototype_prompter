@@ -35,5 +35,6 @@ export default (styles = StyleSheet.create({
     marginRight: 10,
     backgroundColor: colors.purple,
     marginLeft: 10
-  }
+  },
+  teaserStyle: { flex: 1, color: colors.black, fontSize: 16 }
 }));

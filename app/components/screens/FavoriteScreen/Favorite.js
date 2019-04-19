@@ -115,6 +115,7 @@ class Favorite extends React.Component {
         this.props.UserFav.UserFav.length !== 0 ? (
           <FlatList
             data={this.state.favorites}
+            showsVerticalScrollIndicator={false}
             keyExtractor={(x, i) => i.toString()}
             extraData={this.state}
             renderItem={({ item, index }) => (
@@ -124,14 +125,13 @@ class Favorite extends React.Component {
                     component: (
                       <View style={styles.removeStyle}>
                         <Icon name="delete" size={27} color={colors.white} />
-                        {/* <Text style={styles.removeTextStyle}>{"Remove"}</Text> */}
+                        <Text style={styles.removeTextStyle}>{"Remove"}</Text>
                       </View>
                     ),
                     backgroundColor: colors.white,
                     color: colors.purple,
                     underlayColor: colors.white,
                     onPress: () => {
-                      //   this.saveArticle(item);
                       Alert.alert(
                         "Alert",
                         "Article will be removed from favorites",
