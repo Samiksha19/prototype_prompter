@@ -28,13 +28,15 @@ export default (styles = StyleSheet.create({
   },
   removeStyle: {
     flex: 1,
+    flexDirection: "column",
     backgroundColor: colors.purple,
     justifyContent: "center",
     alignItems: "center"
   },
   removeTextStyle: {
-    color: colors.purple,
-    fontSize: 16,
+    color: colors.white,
+    textAlign: "center",
+    fontSize: 14,
     fontWeight: "100"
   }
 }));

@@ -62,6 +62,12 @@
 		E7AEB906DCD34178B17066E1 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A35D9BFC5034DAE9D4460EC /* libRNVectorIcons.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
+		F232B69E2269E90F00783255 /* CursiveStandardBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F232B6712269E90E00783255 /* CursiveStandardBold.ttf */; };
+		F232B69F2269E90F00783255 /* CursiveStandardBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F232B6712269E90E00783255 /* CursiveStandardBold.ttf */; };
+		F232B6A12269E91B00783255 /* CursiveStandard.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F232B6A02269E91B00783255 /* CursiveStandard.ttf */; };
+		F232B6A22269E91B00783255 /* CursiveStandard.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F232B6A02269E91B00783255 /* CursiveStandard.ttf */; };
+		F232B6F3226A0FE600783255 /* GrandHotel-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F232B6C6226A0FE600783255 /* GrandHotel-Regular.ttf */; };
+		F232B6F4226A0FE600783255 /* GrandHotel-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F232B6C6226A0FE600783255 /* GrandHotel-Regular.ttf */; };
 		FF349B0501AE4B139537E0E1 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCC3C083D0FD42C79081E78F /* MaterialIcons.ttf */; };
 /* End PBXBuildFile section */
 
@@ -444,6 +450,9 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F1557B20C7314BEC8827FC71 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		F232B6712269E90E00783255 /* CursiveStandardBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = CursiveStandardBold.ttf; path = ../app/assets/fonts/CursiveStandardBold.ttf; sourceTree = "<group>"; };
+		F232B6A02269E91B00783255 /* CursiveStandard.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = CursiveStandard.ttf; path = ../app/assets/fonts/CursiveStandard.ttf; sourceTree = "<group>"; };
+		F232B6C6226A0FE600783255 /* GrandHotel-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "GrandHotel-Regular.ttf"; path = "../../../../Downloads/GrandHotel-Regular.ttf"; sourceTree = "<group>"; };
 		FA62A2C60D3C40B5A675C84B /* libc++.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		FCC3C083D0FD42C79081E78F /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		FEA996A609284FDC94AC0F91 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
@@ -788,8 +797,11 @@
 				A6325C2907B949479A4EA126 /* FontAwesome5_Brands.ttf */,
 				D394CB2A0F804372BF3E8D6D /* FontAwesome5_Regular.ttf */,
 				A5FB08163A014146B97A5873 /* FontAwesome5_Solid.ttf */,
+				F232B6A02269E91B00783255 /* CursiveStandard.ttf */,
 				DEF3C683C4214C5B9B6014C1 /* Foundation.ttf */,
+				F232B6C6226A0FE600783255 /* GrandHotel-Regular.ttf */,
 				15C4432B9CF4468AB679506D /* Ionicons.ttf */,
+				F232B6712269E90E00783255 /* CursiveStandardBold.ttf */,
 				EB7A45F316154FE3978D9FAC /* MaterialCommunityIcons.ttf */,
 				FCC3C083D0FD42C79081E78F /* MaterialIcons.ttf */,
 				83EE1D7B5CB643E2A5BDA0A9 /* Octicons.ttf */,
@@ -1301,6 +1313,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F232B69F2269E90F00783255 /* CursiveStandardBold.ttf in Resources */,
+				F232B6F4226A0FE600783255 /* GrandHotel-Regular.ttf in Resources */,
+				F232B6A22269E91B00783255 /* CursiveStandard.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1317,9 +1332,12 @@
 				A7741561AE5B4DC18F236DEC /* FontAwesome.ttf in Resources */,
 				95C1596507524E6887C6FB8C /* FontAwesome5_Brands.ttf in Resources */,
 				2A4FE597D8D1405A966C9525 /* FontAwesome5_Regular.ttf in Resources */,
+				F232B6F3226A0FE600783255 /* GrandHotel-Regular.ttf in Resources */,
 				1562912FEBC749DEA5523D7A /* FontAwesome5_Solid.ttf in Resources */,
 				4F7666342C2A42CC85EBA6A4 /* Foundation.ttf in Resources */,
+				F232B6A12269E91B00783255 /* CursiveStandard.ttf in Resources */,
 				5D833F565A6740B18CA56396 /* Ionicons.ttf in Resources */,
+				F232B69E2269E90F00783255 /* CursiveStandardBold.ttf in Resources */,
 				6396DF61873D4D1B9A190B07 /* MaterialCommunityIcons.ttf in Resources */,
 				FF349B0501AE4B139537E0E1 /* MaterialIcons.ttf in Resources */,
 				1E1271C827D34B419FA8D0A2 /* Octicons.ttf in Resources */,
