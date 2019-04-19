@@ -78,7 +78,7 @@ class History extends React.Component {
           <FlatList
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            data={this.state.historyArticles}
+            data={this.state.historyArticles.reverse()}
             extraData={this.state}
             keyExtractor={(item, index) => item + index}
             renderItem={(article, index) => (

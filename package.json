@@ -6,12 +6,20 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
+  "rnpm": {
+    "assests": [
+      "assets/fonts/Cursivestandard",
+      "assets/fonts/Cursivestandardbold",
+      "assets/fonts/Grand Hotel"
+    ]
+  },
   "dependencies": {
     "@react-native-community/netinfo": "^2.0.0",
     "lodash": "^4.17.11",
     "react": "16.8.3",
     "react-native": "0.59.3",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-markdown-formatter": "^1.0.10",
     "react-native-snap-carousel": "^3.7.5",
     "react-native-swipeout": "^2.3.6",
     "react-native-vector-icons": "^6.4.2",
