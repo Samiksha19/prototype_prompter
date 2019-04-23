@@ -1,11 +1,19 @@
 import React, { Component } from "react";
-import { Text, View, TextInput, StatusBar } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  StatusBar,
+  Image,
+  ScrollView
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
 import * as colors from "../../../utils/colors";
 import { connect } from "react-redux";
 import SearchHistoryList from "../SearchHistory/SearchHistoryList";
 import { addToSearch } from "../../../redux/actions/UserClick_Action";
+import callApi from "../../../lib/apicaller";
 import realm from "../../../database/realmDB";
 import styles from "./styles";
 
@@ -15,7 +23,9 @@ class Search extends React.Component {
     this.state = {
       textInput: "",
       search: [],
-      toggle: false
+      toggle: false,
+      gotData: false,
+      article: null
     };
   }
 
@@ -34,7 +44,10 @@ class Search extends React.Component {
     }
   }
 
-  saveKeyword(keyword) {
+  async saveKeyword(keyword) {
+    this.setState({ toggle: false });
+    let end_point = `search/${keyword}`;
+    let method = "GET";
     let realmData = realm.objects("Search");
     let prevSearchWords = realmData[0] ? JSON.parse(realmData[0].data) : [];
     if (!realmData[0]) {
@@ -53,6 +66,36 @@ class Search extends React.Component {
         });
       }
     }
+    try {
+      let response = await callApi(end_point, method);
+      this.setState({ gotData: true, article: response, toggle: false });
+      console.warn(response);
+    } catch (err) {
+      alert("Failed to fetch data from server.");
+    }
+    debugger;
+  }
+
+  renderCard() {
+    const { article, gotData } = this.state;
+    debugger;
+    if (gotData) {
+      return article.map((element, index) => (
+        <View>
+          <View key={index} style={styles.cardHeaderStyle}>
+            <Image
+              source={{ uri: element.image }}
+              style={styles.cardHeaderImageStyle}
+            />
+            <Text>{element.title}</Text>
+          </View>
+          <View style={styles.cardTeaserViewStyle}>
+            <Text style={styles.cardTeaserTextStyle}>{element.teaser}</Text>
+          </View>
+        </View>
+      ));
+    }
+    debugger;
   }
 
   render() {
@@ -86,7 +129,9 @@ class Search extends React.Component {
               size={18}
               color={colors.white}
               style={styles.menuIcon}
-              onPress={() => this.setState({ textInput: "" })}
+              onPress={() =>
+                this.setState({ textInput: "", toggle: false, gotData: false })
+              }
             />
           </View>
 
@@ -106,6 +151,7 @@ class Search extends React.Component {
         ) : (
           <View />
         )}
+        <ScrollView>{this.renderCard()}</ScrollView>
       </View>
     );
   }
