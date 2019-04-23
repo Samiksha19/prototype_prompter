@@ -31,3 +31,14 @@ export const UserFavReducer = (state = {}, action = {}) => {
       return state;
   }
 };
+
+export const UserSearchReducer = (state = {}, action = {}) => {
+  debugger;
+  switch (action.type) {
+    case action_types.ADD_TO_SEARCH:
+      return {
+        ...state,
+        UserSearch: action
+      };
+  }
+};

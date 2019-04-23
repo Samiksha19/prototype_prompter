@@ -21,6 +21,15 @@ export const addToHistory = newData => {
   };
 };
 
+export const addToSearch = newData => {
+  console.warn(newData);
+  debugger;
+  return {
+    type: action_types.ADD_TO_SEARCH,
+    data: newData
+  };
+};
+
 export const addToHistoryChangeDate = newData => {
   return {
     type: action_types.ADD_TO_HISTORY_CHANGE_DATE,
