@@ -14,6 +14,12 @@ const HistorySchema = {
   }
 };
 
+const SearchSchema = {
+  name: "Search",
+  properties: {
+    data: "string"
+  }
+};
 export default (realm = new Realm({
-  schema: [FavoritesSchema, HistorySchema]
+  schema: [FavoritesSchema, HistorySchema, SearchSchema]
 }));
