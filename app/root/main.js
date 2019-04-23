@@ -17,7 +17,7 @@ import {
   SafeAreaView,
   createStackNavigator
 } from "react-navigation";
-import { width, ICON_SIZE } from "@constants";
+import globals from "../lib/globals";
 import * as colors from "../utils/colors";
 import { Provider } from "react-redux";
 import store from "../redux/configureStore";
@@ -157,7 +157,7 @@ class Main extends Component {
           navigationOptions: {
             title: "Explore",
             tabBarIcon: ({ tintColor }) => (
-              <Icon name="public" size={ICON_SIZE} color={tintColor} />
+              <Icon name="public" size={27} color={tintColor} />
             )
           }
         },
@@ -166,7 +166,7 @@ class Main extends Component {
           navigationOptions: {
             title: "Favorites",
             tabBarIcon: ({ tintColor }) => (
-              <Icon name="favorite" size={ICON_SIZE} color={tintColor} />
+              <Icon name="favorite" size={27} color={tintColor} />
             )
           }
         },
@@ -175,7 +175,7 @@ class Main extends Component {
           navigationOptions: {
             title: "History",
             tabBarIcon: ({ tintColor }) => (
-              <Icon name="history" size={ICON_SIZE} color={tintColor} />
+              <Icon name="history" size={27} color={tintColor} />
             )
           }
         }
@@ -248,7 +248,7 @@ class Main extends Component {
         )
       },
       {
-        drawerWidth: width - width / 3,
+        drawerWidth: globals.deviceWidth - globals.deviceWidth / 3,
         drawerPosition: "left",
         initialRouteName: "HomeNavigation",
         contentComponent: CustomDrawerContentComponent,

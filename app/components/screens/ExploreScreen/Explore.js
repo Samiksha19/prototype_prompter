@@ -27,9 +27,6 @@ import Loader from "../../Loader/Loader";
 
 import realm from "../../../database/realmDB";
 
-const end_point = "random";
-const method = "GET";
-
 class Explore extends React.Component {
   constructor() {
     super();
@@ -90,6 +87,8 @@ class Explore extends React.Component {
   }
 
   async handleApiCall() {
+    let end_point = "article/random/3";
+    let method = "GET";
     try {
       let response = await callApi(end_point, method);
       let realmData = realm.objects("Favourites");
