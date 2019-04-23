@@ -32,13 +32,15 @@ export const UserFavReducer = (state = {}, action = {}) => {
   }
 };
 
-export const UserSearchReducer = (state = {}, action = {}) => {
-  debugger;
+export const UserSearchReducer = (state = [], action = {}) => {
   switch (action.type) {
     case action_types.ADD_TO_SEARCH:
       return {
         ...state,
-        UserSearch: action
+        UserSearch: action.data
       };
+
+    default:
+      return state;
   }
 };

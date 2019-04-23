@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
 import * as colors from "../../../utils/colors";
 import { connect } from "react-redux";
+import SearchHistoryList from "../SearchHistory/SearchHistoryList";
 import { addToSearch } from "../../../redux/actions/UserClick_Action";
 import realm from "../../../database/realmDB";
 import styles from "./styles";
@@ -13,7 +14,8 @@ class Search extends React.Component {
     super(props);
     this.state = {
       textInput: "",
-      search: []
+      search: [],
+      toggle: false
     };
   }
 
@@ -23,48 +25,38 @@ class Search extends React.Component {
     };
   };
 
-  componentDidMount() {
-    let data = realm.objects("Search")
-      ? JSON.parse(realm.objects("Search"))
-      : [];
-    this.setState({ search: data });
-    console.warn(data);
+  componentWillMount() {
+    let searchKeys = realm.objects("Search");
+    let data = searchKeys[0] ? JSON.parse(searchKeys[0].data) : [];
+
+    if (data !== null || undefined) {
+      this.setState({ toggle: true, search: data });
+    }
   }
 
   saveKeyword(keyword) {
     let realmData = realm.objects("Search");
     let prevSearchWords = realmData[0] ? JSON.parse(realmData[0].data) : [];
-    if (prevSearchWords === []) {
+    if (!realmData[0]) {
       prevSearchWords.push(keyword);
-      console.warn(prevSearchWords);
       realm.write(() => {
         realm.create("Search", {
           data: JSON.stringify(prevSearchWords)
         });
       });
-      debugger;
     } else {
-      let check = false;
-      prevSearchWords.map(item => {
-        if (item === keyword) {
-          check = true;
-        }
-      });
-      debugger;
-      if (!check) {
+      let val = prevSearchWords.findIndex(ele => ele === keyword);
+      if (val === -1) {
         prevSearchWords.push(keyword);
-        debugger;
         realm.write(() => {
-          realmData = JSON.stringify(prevSearchWords);
+          realmData[0].data = JSON.stringify(prevSearchWords);
         });
       }
     }
-    console.warn(prevSearchWords);
-    this.props.addToSearch(prevSearchWords);
-    debugger;
   }
 
   render() {
+    const { textInput } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar translucent={false} backgroundColor={colors.purple} />
@@ -85,7 +77,7 @@ class Search extends React.Component {
               returnKeyType="search"
               placeholderTextColor={colors.white}
               selectionColor={colors.white}
-              value={this.state.textInput}
+              value={textInput}
               onChangeText={text => this.setState({ textInput: text })}
             />
 
@@ -103,9 +95,17 @@ class Search extends React.Component {
             size={27}
             color={colors.white}
             style={styles.menuIcon}
-            onPress={() => this.saveKeyword(this.state.textInput)}
+            onPress={() => this.saveKeyword(textInput)}
           />
         </View>
+        {this.state.toggle ? (
+          <SearchHistoryList
+            data={this.state.search}
+            navigation={this.props.navigation}
+          />
+        ) : (
+          <View />
+        )}
       </View>
     );
   }
@@ -120,6 +120,6 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   {
-    UserSearch
+    addToSearch
   }
 )(Search);

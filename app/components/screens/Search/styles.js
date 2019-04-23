@@ -4,7 +4,8 @@ import * as colors from "../../../utils/colors";
 
 export default (styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: colors.white
   },
   headerStyles: {
     flexDirection: "row",
