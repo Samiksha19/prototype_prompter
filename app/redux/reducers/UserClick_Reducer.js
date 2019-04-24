@@ -1,6 +1,6 @@
 import * as action_types from "../action_types";
 
-export const UserDataReducer = (state = {}, action = {}) => {
+export const historyArticlesReducer = (state = {}, action = {}) => {
   switch (action.type) {
     case action_types.ADD_TO_HISTORY:
       return {

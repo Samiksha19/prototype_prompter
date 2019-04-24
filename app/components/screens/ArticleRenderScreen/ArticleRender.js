@@ -11,8 +11,7 @@ import {
 import styles from "./styles";
 import { connect } from "react-redux";
 
-const URL = "http://pp.f418.eu/article/";
-class ArticleRender extends React.Component {
+class ArticleRender extends Component {
   constructor(props) {
     super(props);
     this.state = {

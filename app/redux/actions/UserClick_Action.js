@@ -29,10 +29,3 @@ export const addToSearch = newData => {
     data: newData
   };
 };
-
-export const addToHistoryChangeDate = newData => {
-  return {
-    type: action_types.ADD_TO_HISTORY_CHANGE_DATE,
-    data: newData
-  };
-};

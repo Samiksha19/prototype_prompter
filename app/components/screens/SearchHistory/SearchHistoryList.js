@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import * as colors from "../../../utils/colors";
 import styles from "./styles";
 
-class SearchHistoryList extends React.Component {
+class SearchHistoryList extends Component {
   render() {
     return (
       <ScrollView>

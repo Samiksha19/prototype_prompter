@@ -20,6 +20,7 @@ const SearchSchema = {
     data: "string"
   }
 };
+
 export default (realm = new Realm({
   schema: [FavoritesSchema, HistorySchema, SearchSchema]
 }));
