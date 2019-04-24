@@ -9,7 +9,6 @@ export default (styles = StyleSheet.create({
     backgroundColor: colors.purple,
     marginLeft: 10
   },
-  blankScreenStyle: { flex: 1, justifyContent: "center", alignItems: "center" },
   containerListStyle: {
     flex: 1,
     backgroundColor: colors.white,
@@ -38,5 +37,35 @@ export default (styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 14,
     fontWeight: "100"
+  },
+  blankScreenStyle: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  largeIconStyle: {
+    marginVertical: 35,
+    position: "absolute"
+  },
+  blankScreenHeaderTextStyle: {
+    fontSize: 17,
+    fontWeight: "600",
+    color: colors.gray
+  },
+  detailTextStyle: {
+    fontSize: 16,
+    fontWeight: "100",
+    color: colors.gray,
+    paddingVertical: 16
+  },
+  iconContainerStyle: {
+    width: 80,
+    height: 80,
+    borderWidth: 2,
+    borderColor: colors.gray,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 40
   }
 }));

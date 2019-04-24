@@ -117,7 +117,7 @@ class History extends React.Component {
             <View style={styles.iconContainerStyle}>
               <Icon
                 name="history"
-                size={60}
+                size={50}
                 style={styles.largeIconStyle}
                 color={colors.gray}
               />

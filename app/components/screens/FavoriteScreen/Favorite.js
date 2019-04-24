@@ -179,7 +179,28 @@ class Favorite extends React.Component {
           />
         ) : (
           <View style={styles.blankScreenStyle}>
-            <Text>{"No Articles Added"}</Text>
+            <View style={styles.iconContainerStyle}>
+              <Icon
+                name="favorite"
+                size={50}
+                style={styles.largeIconStyle}
+                color={colors.gray}
+              />
+            </View>
+            <Text style={styles.blankScreenHeaderTextStyle}>
+              {"No Favorite to show"}
+            </Text>
+            <Text style={styles.detailTextStyle}>
+              {"Your favorite article will be displayed here"}
+            </Text>
+            <Text
+              style={[
+                styles.detailTextStyle,
+                { paddingVertical: 0, bottom: 5 }
+              ]}
+            >
+              {"These are saved for offline access also."}
+            </Text>
           </View>
         )}
       </View>
