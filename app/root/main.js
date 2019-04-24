@@ -26,6 +26,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import SplashScreen from "../components/screens/SplashScreen/Splash";
 import ExploreScreen from "../components/screens/ExploreScreen/Explore";
 import ArticleRenderScreen from "../components/screens/ArticleRenderScreen/ArticleRender";
+import SearchedArticleRender from "../components/screens/SearchedArticle/SearchedArticleRender";
 import FavoriteScreen from "../components/screens/FavoriteScreen/Favorite";
 import HistoryScreen from "../components/screens/HistoryScreen/History";
 import SearchScreen from "../components/screens/Search/Search";
@@ -60,7 +61,7 @@ class Main extends Component {
             headerStyle: {
               backgroundColor: colors.purple
             },
-            headerTintColor: "#fff"
+            headerTintColor: colors.white
           }
         },
         ArticleFeed: {
@@ -69,13 +70,22 @@ class Main extends Component {
             headerStyle: {
               backgroundColor: colors.purple
             },
-            headerTintColor: "#fff"
+            headerTintColor: colors.white
           }
         },
         SearchFeed: {
           screen: SearchScreen,
           navigationOptions: {
             headerMode: "none"
+          }
+        },
+        SearchedFeed: {
+          screen: SearchedArticleRender,
+          navigationOptions: {
+            headerStyle: {
+              backgroundColor: colors.purple
+            },
+            headerTintColor: colors.white
           }
         }
       },
@@ -93,7 +103,7 @@ class Main extends Component {
             headerStyle: {
               backgroundColor: colors.purple
             },
-            headerTintColor: "#fff"
+            headerTintColor: colors.white
           }
         },
         ArticleFeed: {
@@ -102,13 +112,22 @@ class Main extends Component {
             headerStyle: {
               backgroundColor: colors.purple
             },
-            headerTintColor: "#fff"
+            headerTintColor: colors.white
           }
         },
         SearchFeed: {
           screen: SearchScreen,
           navigationOptions: {
             headerMode: "none"
+          }
+        },
+        SearchedFeed: {
+          screen: SearchedArticleRender,
+          navigationOptions: {
+            headerStyle: {
+              backgroundColor: colors.purple
+            },
+            headerTintColor: colors.white
           }
         }
       },
@@ -126,7 +145,7 @@ class Main extends Component {
             headerStyle: {
               backgroundColor: colors.purple
             },
-            headerTintColor: "#fff"
+            headerTintColor: colors.white
           }
         },
         ArticleFeed: {
@@ -135,13 +154,22 @@ class Main extends Component {
             headerStyle: {
               backgroundColor: colors.purple
             },
-            headerTintColor: "#fff"
+            headerTintColor: colors.white
           }
         },
         SearchFeed: {
           screen: SearchScreen,
           navigationOptions: {
             headerMode: "none"
+          }
+        },
+        SearchedFeed: {
+          screen: SearchedArticleRender,
+          navigationOptions: {
+            headerStyle: {
+              backgroundColor: colors.purple
+            },
+            headerTintColor: colors.white
           }
         }
       },
