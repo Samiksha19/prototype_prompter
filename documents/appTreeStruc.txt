@@ -1,0 +1,77 @@
+.
+├── App.js
+├── android
+│   
+├── app
+│   ├── assets
+│   │   ├── Images.js
+│   │   
+│   ├── components
+│   │   
+│   │   ├── Loader
+│   │   │   ├── Loader.js
+│   │   │   └── styles.js
+│   │   ├── RNMarkdownFormatter.js // Global file to check italic, bold, link or list in the given paragraph. This has been used to make 				      italic text to cursive and url into link
+│   │   └── screens
+│   │       ├── ArticleRenderScreen // This screen shows the complete details of the article 
+│   │       │   ├── ArticleRender.js
+│   │       │   └── styles.js
+│   │       ├── ExploreScreen // this is explore tab screen where articles have rendered inside carousel view
+│   │       │   ├── Explore.js
+│   │       │   └── styles.js
+│   │       ├── FavoriteScreen // Favourites article have been rendered here which has offline access also
+│   │       │   ├── Favorite.js
+│   │       │   └── styles.js
+│   │       ├── HistoryScreen // The articles which user has read will appear in this tab. this too has offline access
+│   │       │   ├── History.js
+│   │       │   └── styles.js
+│   │       ├── Offline // If the network is not connected the image and retry to connect network text is displayed 
+│   │       │   ├── Offline.js
+│   │       │   └── styles.js
+│   │       ├── Search // screen having search feature 
+│   │       │   ├── Search.js
+│   │       │   └── styles.js
+│   │       ├── SearchHistory // The previously searchedkeywords will be displayed initially on the search screen
+│   │       │   ├── SearchHistoryList.js
+│   │       │   └── styles.js
+│   │       ├── SearchedArticle // article details will be displayed for the article he has been searched for and clicked on article card
+│   │       │   ├── SearchedArticleRender.js
+│   │       │   └── styles.js
+│   │       └── SplashScreen // This is the splash screen, which will be displayed initially when user open the app
+│   │           ├── Splash.js
+│   │           └── styles.js
+│   ├── database // The realm database file using to make application offline
+│   │   └── realmDB.js
+│   ├── images // These are the images used in the app
+│   │   ├── CheckConnection.png
+│   │   └── splash_icon.png
+│   ├── lib
+│   │   ├── apicaller.js // this is the reusable file which has API call in it.
+│   │   └── globals.js // all the values or functions which are globally used are written here
+│   ├── redux // This is the redux(the central store to store data and use globally in the application)
+│   │   ├── action_types.js
+│   │   ├── actions
+│   │   │   └── UserClick_Action.js
+│   │   ├── configureStore.js
+│   │   └── reducers
+│   │       └── UserClick_Reducer.js
+│   ├── root
+│   │   ├── main.js // All stack navigators are displayed here
+│   │   └── mainDrawerStyles.js
+│   ├── styles
+│   │   └── appStyles.js
+│   └── utils
+│       ├── colors.js
+│       └── fontsSizes.js
+├── app.json
+├── babel.config.js
+├── documents
+│   └── packagesInfo.txt
+├── editme.txt
+├── index.js // app starts to run from this file and gives a call to main.js
+├── ios
+├── package-lock.json
+├── package.json
+└── yarn.lock
+
+6792 directories, 43043 files
