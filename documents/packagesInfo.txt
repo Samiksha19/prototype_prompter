@@ -1,0 +1,44 @@
+Packages Information - 
+
+** Dependencies - Dependencies are modules which are required during development and at runtime also **
+1. react (-v 16.8.3)
+2. react-native (-v 0.59.3)
+
+3. lodash (-v 4.17.11) => Lodash makes JavaScript easier by taking the hassle out of working with arrays, numbers, objects, strings, etc.
+				Lodash’s modular methods are great for:
+				1. Iterating arrays, objects, & strings
+				2. Manipulating & testing values
+				3. Creating composite functions
+
+4. @react-native-community/netinfo (-v 2.0.0) => React Native Network Info API for Android & iOS. It allows you to get information on:
+						 1. Connection type
+						 2. Connection quality
+						Using this plugin to check mobile internet connection
+
+5. rn-viewpager (-v 1.2.9) => Container that allows to flip left and right between child views. Each child view of the ViewPagerAndroid will be treated as a separate page and will be stretched to fill the ViewPagerAndroid.
+			      Using this plugin at explore tab to render articles inside carousel view.
+
+6. react-native-swipeout (-v 2.3.6) => swipeout buttons that appear from behind a component. Used at favourites screen to remove article from favourites list when user swipe left on article title.
+
+7. react-native-gesture-handler (-v 1.1.0) => React Native Gesture Handler provides native-driven gesture management APIs for building best possible touch-based experiences in React Native
+
+8. react-native-vector-icons (-v 6.4.2) => Customisable Icons for React Native.
+
+9. react-navigation (-v 3.6.1) => React Navigation's stack navigator provides a way for your app to transition between screens and manage navigation history.
+
+10. realm (-v 2.26.0) => Realm Database is an alternative to SQLite and Core Data. This is the local database to make application offline.
+
+** Redux Store Packages => Redux creates centralised store to, store data. The data can be changed from anywhere in the application and changes will be reflected to every component of application.**
+11. react-redux (-v 6.0.1)
+12. redux (-v 4.0.1)
+13. redux-api-middleware (-v 3.0.1)
+14. redux-logger (-v 3.0.6)
+15. redux-thunk (-v 2.3.0)
+
+** Dev-dependencies - devDependencies are modules which are only required during development.**
+1. @babel/core (-v 7.4.3)
+2. @babel/runtime (-v 7.4.3)
+3. babel-jest (-v 24.7.0)
+4. jest (-v 24.7.0)
+5. metro-react-native-babel-preset (-v 0.53.1)
+6. react-test-renderer (-v 16.8.3)
