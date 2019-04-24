@@ -1,4 +1,4 @@
-import { Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import * as colors from "../../../utils/colors";
 
 export default (styles = StyleSheet.create({
@@ -42,5 +42,20 @@ export default (styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center"
+  },
+  largeIconStyle: {
+    alignSelf: "center",
+    marginVertical: 35
+  },
+  blankScreenHeaderTextStyle: {
+    fontSize: 17,
+    fontWeight: "600",
+    color: colors.gray
+  },
+  detailTextStyle: {
+    fontSize: 16,
+    fontWeight: "100",
+    color: colors.gray,
+    paddingVertical: 16
   }
 }));

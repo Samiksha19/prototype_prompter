@@ -5,6 +5,7 @@ import styles from "./styles";
 import _ from "lodash";
 import { connect } from "react-redux";
 import { addToHistory } from "../../../redux/actions/UserClick_Action";
+import * as colors from "../../../utils/colors";
 
 class History extends React.Component {
   constructor() {
@@ -113,7 +114,26 @@ class History extends React.Component {
           />
         ) : (
           <View style={styles.blankScreenStyle}>
-            <Text>{"No Articles Added"}</Text>
+            <Icon
+              name="history"
+              size={80}
+              style={styles.largeIconStyle}
+              color={colors.gray}
+            />
+            <Text style={styles.blankScreenHeaderTextStyle}>
+              {"No History to show"}
+            </Text>
+            <Text style={styles.detailTextStyle}>
+              {"Keep track of what you've been reading here"}
+            </Text>
+            <Text
+              style={[
+                styles.detailTextStyle,
+                { paddingVertical: 0, bottom: 5 }
+              ]}
+            >
+              {"These are saved for offline access also."}
+            </Text>
           </View>
         )}
       </View>
