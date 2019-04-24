@@ -113,6 +113,15 @@ class Search extends React.Component {
     }
   }
 
+  handleBackPress() {
+    const { textInput } = this.state;
+    if (textInput.length > 0) {
+      this.setState({ textInput: "" });
+    } else {
+      this.props.navigation.goBack();
+    }
+  }
+
   render() {
     const { textInput } = this.state;
     return (
@@ -123,7 +132,7 @@ class Search extends React.Component {
             name="arrow-back"
             size={27}
             color={colors.white}
-            onPress={() => this.props.navigation.goBack()}
+            onPress={() => this.handleBackPress()}
             style={styles.menuIcon}
           />
 

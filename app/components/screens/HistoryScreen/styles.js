@@ -44,8 +44,8 @@ export default (styles = StyleSheet.create({
     alignItems: "center"
   },
   largeIconStyle: {
-    alignSelf: "center",
-    marginVertical: 35
+    marginVertical: 35,
+    position: "absolute"
   },
   blankScreenHeaderTextStyle: {
     fontSize: 17,
@@ -57,5 +57,15 @@ export default (styles = StyleSheet.create({
     fontWeight: "100",
     color: colors.gray,
     paddingVertical: 16
+  },
+  iconContainerStyle: {
+    width: 80,
+    height: 80,
+    borderWidth: 2,
+    borderColor: colors.gray,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 40
   }
 }));

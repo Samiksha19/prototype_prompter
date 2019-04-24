@@ -114,12 +114,14 @@ class History extends React.Component {
           />
         ) : (
           <View style={styles.blankScreenStyle}>
-            <Icon
-              name="history"
-              size={80}
-              style={styles.largeIconStyle}
-              color={colors.gray}
-            />
+            <View style={styles.iconContainerStyle}>
+              <Icon
+                name="history"
+                size={60}
+                style={styles.largeIconStyle}
+                color={colors.gray}
+              />
+            </View>
             <Text style={styles.blankScreenHeaderTextStyle}>
               {"No History to show"}
             </Text>
