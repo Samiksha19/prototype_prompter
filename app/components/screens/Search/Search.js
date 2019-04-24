@@ -25,7 +25,7 @@ class Search extends React.Component {
       textInput: "",
       search: [],
       toggle: true,
-      gotData: false,
+      searchArticleRes: false,
       article: null
     };
   }
@@ -74,7 +74,7 @@ class Search extends React.Component {
     try {
       let response = await callApi(end_point, method);
       if (response) {
-        this.setState({ article: response, gotData: true, toggle: false });
+        this.setState({ article: response, searchArticleRes: true, toggle: false });
       }
     } catch (err) {
       alert("Failed to fetch data from server.");
@@ -82,8 +82,8 @@ class Search extends React.Component {
   }
 
   renderCard() {
-    const { article, gotData } = this.state;
-    if (gotData) {
+    const { article, searchArticleRes } = this.state;
+    if (searchArticleRes) {
       return article.map((element, index) => (
         <TouchableOpacity
           activeOpacity={0.6}
@@ -145,7 +145,7 @@ class Search extends React.Component {
               color={colors.white}
               style={styles.menuIcon}
               onPress={() =>
-                this.setState({ textInput: "", toggle: true, gotData: false })
+                this.setState({ textInput: "", toggle: true, searchArticleRes: false })
               }
             />
           </View>
