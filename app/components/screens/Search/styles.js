@@ -12,7 +12,8 @@ export default (styles = StyleSheet.create({
     height: Platform.OS === "ios" ? 65 : 50,
     backgroundColor: colors.purple,
     justifyContent: "space-around",
-    alignItems: "flex-end"
+    alignItems: "flex-end",
+    paddingBottom: 6
   },
   welcomeTxt: {
     alignSelf: "center",
@@ -21,13 +22,15 @@ export default (styles = StyleSheet.create({
   },
   menuIcon: {
     backgroundColor: colors.purple,
-    marginHorizontal: 10
+    marginHorizontal: 10,
+    marginBottom: 2
   },
   headerTextInputStyle: {
     flex: 1,
     color: colors.white,
     fontSize: 16,
-    paddingLeft: 5
+    paddingLeft: 5,
+    paddingBottom: 5
   },
   textInputViewStyle: {
     flexDirection: "row",
@@ -38,24 +41,32 @@ export default (styles = StyleSheet.create({
     marginBottom: 5,
     borderBottomColor: colors.white
   },
-  cardHeaderStyle: {
+  cardStyle: {
     marginHorizontal: 20,
     marginVertical: 15,
     backgroundColor: colors.white,
+    paddingVertical: 15
+  },
+  cardHeaderStyle: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "center",
-    paddingVertical: 15
+    alignItems: "center"
   },
   cardHeaderImageStyle: {
     height: 50,
     width: 50,
     marginHorizontal: 22
   },
+  headerTitleStyle: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: "100"
+  },
   cardTeaserViewStyle: {
-    marginVertical: 15,
-    marginHorizontal: 20,
     backgroundColor: colors.white,
     padding: 20
+  },
+  cardTeaserTextStyle: {
+    fontSize: 15
   }
 }));

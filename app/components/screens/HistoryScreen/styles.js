@@ -5,8 +5,7 @@ export default (styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.grey,
-    paddingHorizontal: 10,
-    paddingBottom: 5
+    paddingHorizontal: 10
   },
   menuIcon: {
     backgroundColor: colors.purple,

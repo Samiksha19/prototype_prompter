@@ -5,12 +5,12 @@ import * as colors from "../../../utils/colors";
 import styles from "./styles";
 
 class SearchHistoryList extends React.Component {
-  componentDidMount() {
-    console.warn(this.props.data);
-  }
   render() {
     return (
       <ScrollView>
+        <Text style={styles.searchTopTextStyle}>
+          {"Previously Searched Keywords"}
+        </Text>
         {this.props.data.map((element, index) => (
           <View key={index}>
             <TouchableOpacity
@@ -19,7 +19,7 @@ class SearchHistoryList extends React.Component {
               style={styles.elementStyle}
             >
               <Text style={styles.listTextStyle}>{element}</Text>
-              <Icon name="history" size={27} color={colors.purple} />
+              <Icon name="history" size={27} color={colors.gray} />
             </TouchableOpacity>
             <View style={styles.viewBorderStyle} />
           </View>

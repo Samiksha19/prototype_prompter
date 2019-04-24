@@ -5,7 +5,8 @@ import {
   TextInput,
   StatusBar,
   Image,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
@@ -23,7 +24,7 @@ class Search extends React.Component {
     this.state = {
       textInput: "",
       search: [],
-      toggle: false,
+      toggle: true,
       gotData: false,
       article: null
     };
@@ -31,7 +32,8 @@ class Search extends React.Component {
 
   static navigationOptions = ({ navigation, screenProps }) => {
     return {
-      header: null
+      header: null,
+      headerBackTitle: null
     };
   };
 
@@ -45,7 +47,10 @@ class Search extends React.Component {
   }
 
   async saveKeyword(keyword) {
-    this.setState({ toggle: false });
+    if (keyword === "" || keyword.length < 3) {
+      alert("No results");
+      return 0;
+    }
     let end_point = `search/${keyword}`;
     let method = "GET";
     let realmData = realm.objects("Search");
@@ -68,34 +73,44 @@ class Search extends React.Component {
     }
     try {
       let response = await callApi(end_point, method);
-      this.setState({ gotData: true, article: response, toggle: false });
-      console.warn(response);
+      if (response) {
+        this.setState({ article: response, gotData: true, toggle: false });
+      }
     } catch (err) {
       alert("Failed to fetch data from server.");
     }
-    debugger;
   }
 
   renderCard() {
     const { article, gotData } = this.state;
-    debugger;
     if (gotData) {
       return article.map((element, index) => (
-        <View>
-          <View key={index} style={styles.cardHeaderStyle}>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={() =>
+            this.props.navigation.navigate("SearchedFeed", {
+              param: element,
+              headerTitle: element.title
+            })
+          }
+          key={index}
+          style={styles.cardStyle}
+        >
+          <View style={styles.cardHeaderStyle}>
             <Image
               source={{ uri: element.image }}
               style={styles.cardHeaderImageStyle}
             />
-            <Text>{element.title}</Text>
+            <Text style={styles.headerTitleStyle}>{element.title}</Text>
           </View>
           <View style={styles.cardTeaserViewStyle}>
-            <Text style={styles.cardTeaserTextStyle}>{element.teaser}</Text>
+            <Text style={styles.cardTeaserTextStyle} numberOfLines={4}>
+              {element.teaser}
+            </Text>
           </View>
-        </View>
+        </TouchableOpacity>
       ));
     }
-    debugger;
   }
 
   render() {
@@ -130,7 +145,7 @@ class Search extends React.Component {
               color={colors.white}
               style={styles.menuIcon}
               onPress={() =>
-                this.setState({ textInput: "", toggle: false, gotData: false })
+                this.setState({ textInput: "", toggle: true, gotData: false })
               }
             />
           </View>
@@ -144,14 +159,10 @@ class Search extends React.Component {
           />
         </View>
         {this.state.toggle ? (
-          <SearchHistoryList
-            data={this.state.search}
-            navigation={this.props.navigation}
-          />
+          <SearchHistoryList data={this.state.search} />
         ) : (
-          <View />
+          <ScrollView>{this.renderCard()}</ScrollView>
         )}
-        <ScrollView>{this.renderCard()}</ScrollView>
       </View>
     );
   }
