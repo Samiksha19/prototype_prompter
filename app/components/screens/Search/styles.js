@@ -68,5 +68,61 @@ export default (styles = StyleSheet.create({
   },
   cardTeaserTextStyle: {
     fontSize: 15
+  },
+  modalStyle: {
+    margin: 0,
+    padding: 0,
+    marginTop: 20
+  },
+  modalViewStyle: {
+    backgroundColor: colors.white,
+    borderRadius: 8,
+    marginHorizontal: 12,
+    paddingBottom: 10
+  },
+  modalHeaderTextStyle: {
+    color: colors.purple,
+    fontSize: 16,
+    fontWeight: "200",
+    marginTop: 20,
+    paddingLeft: 22
+  },
+  tagsViewStyle: {
+    padding: 20
+  },
+  tagsTextViewStyle: {
+    borderWidth: 1,
+    borderColor: colors.purple,
+    borderRadius: 25,
+    backgroundColor: colors.white,
+    paddingVertical: 10,
+    paddingHorizontal: 14
+  },
+  tagsTextStyle: {
+    color: colors.purple,
+    fontSize: 15,
+    fontWeight: "100"
+  },
+  borderStyle: {
+    height: 2,
+    backgroundColor: colors.black,
+    marginVertical: 10
+  },
+  modalBottomViewStyle: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center"
+  },
+  modalBottomViewTextViewStyle: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center"
+  },
+  modalBottomButtonStyle: {
+    marginHorizontal: 15,
+    marginVertical: 12,
+    fontSize: 15,
+    color: colors.purple,
+    fontWeight: "100"
   }
 }));

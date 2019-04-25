@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
+import Modal from "react-native-modal";
 import * as colors from "../../../utils/colors";
 import { connect } from "react-redux";
 import SearchHistoryList from "../SearchHistory/SearchHistoryList";
@@ -18,6 +19,19 @@ import callApi from "../../../lib/apicaller";
 import realm from "../../../database/realmDB";
 import styles from "./styles";
 
+const DATA = [
+  "Live",
+  "4K",
+  "HD",
+  "SubTitles/CC",
+  "Creative Commons",
+  "360",
+  "VR180",
+  "3D",
+  "HDR",
+  "Location",
+  "Purchased"
+];
 class Search extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +40,8 @@ class Search extends React.Component {
       search: [],
       toggle: true,
       searchArticleRes: false,
-      article: null
+      article: null,
+      isVisible: false
     };
   }
 
@@ -73,11 +88,45 @@ class Search extends React.Component {
     }
     try {
       let response = await callApi(end_point, method);
-      if (response) {
-        this.setState({ article: response, searchArticleRes: true, toggle: false });
+      debugger;
+      if (response.length > 0) {
+        debugger;
+        this.setState({
+          article: response,
+          searchArticleRes: true,
+          toggle: false
+        });
+      } else {
+        debugger;
+        alert("No data retrieved.");
       }
     } catch (err) {
       alert("Failed to fetch data from server.");
+    }
+  }
+
+  renderIcon() {
+    const { searchArticleRes, textInput } = this.state;
+    if (searchArticleRes) {
+      return (
+        <Icon2
+          name="sound-mix"
+          size={27}
+          color={colors.white}
+          style={styles.menuIcon}
+          onPress={() => this.setState({ isVisible: true })}
+        />
+      );
+    } else {
+      return (
+        <Icon
+          name="search"
+          size={27}
+          color={colors.white}
+          style={styles.menuIcon}
+          onPress={() => this.saveKeyword(textInput)}
+        />
+      );
     }
   }
 
@@ -154,24 +203,60 @@ class Search extends React.Component {
               color={colors.white}
               style={styles.menuIcon}
               onPress={() =>
-                this.setState({ textInput: "", toggle: true, searchArticleRes: false })
+                this.setState({
+                  textInput: "",
+                  toggle: true,
+                  searchArticleRes: false
+                })
               }
             />
           </View>
 
-          <Icon
-            name="search"
-            size={27}
-            color={colors.white}
-            style={styles.menuIcon}
-            onPress={() => this.saveKeyword(textInput)}
-          />
+          {this.renderIcon()}
         </View>
         {this.state.toggle ? (
           <SearchHistoryList data={this.state.search} />
         ) : (
           <ScrollView>{this.renderCard()}</ScrollView>
         )}
+        <Modal
+          isVisible={this.state.isVisible}
+          animationIn="slideInDown"
+          animationOut="slideOutUp"
+          avoidKeyboard={true}
+          style={styles.modalStyle}
+          backdropOpacity={0.2}
+          onBackButtonPress={() =>
+            this.setState({ isVisible: !this.state.isVisible })
+          }
+          onBackdropPress={() =>
+            this.setState({ isVisible: !this.state.isVisible })
+          }
+        >
+          <ScrollView style={styles.modalViewStyle}>
+            <Text style={styles.modalHeaderTextStyle}>Features</Text>
+
+            <View style={styles.tagsViewStyle}>
+              {DATA.map((element, index) => (
+                <View style={styles.tagsTextViewStyle} key={index}>
+                  <Text style={styles.tagsTextStyle}>{element}</Text>
+                </View>
+              ))}
+            </View>
+            <View style={styles.borderStyle} />
+            <View style={styles.modalBottomViewStyle}>
+              <View style={styles.modalBottomViewTextViewStyle}>
+                <TouchableOpacity activeOpacity={0.4}>
+                  <Text style={styles.modalBottomButtonStyle}>CANCEL</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity activeOpacity={0.4}>
+                  <Text style={styles.modalBottomButtonStyle}>APPLY</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+        </Modal>
       </View>
     );
   }
