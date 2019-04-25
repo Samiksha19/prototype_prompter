@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { View, Text, NetInfo, Image } from "react-native";
+import { View, Text, NetInfo, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as colors from "../../../utils/colors";
 import styles from "./styles";
@@ -39,7 +39,13 @@ class Offline extends PureComponent {
   render() {
     if (!this.state.isConnected) {
       return (
-        <View style={styles.containerStyle}>
+        <TouchableOpacity
+          style={styles.containerStyle}
+          activeOpacity={0.6}
+          onPress={() => {
+            this.props.retryApiCall();
+          }}
+        >
           <Image
             source={require("../../../images/CheckConnection.png")}
             style={styles.offline_imageStyle}
@@ -51,16 +57,9 @@ class Offline extends PureComponent {
           </Text>
           <View style={styles.refreshViewStyle}>
             <Text style={styles.refresh}>Retry</Text>
-            <Icon
-              name="refresh"
-              color={colors.white}
-              size={28}
-              onPress={() => {
-                this.props.retryApiCall();
-              }}
-            />
+            <Icon name="refresh" color={colors.white} size={28} />
           </View>
-        </View>
+        </TouchableOpacity>
       );
     }
     return null;

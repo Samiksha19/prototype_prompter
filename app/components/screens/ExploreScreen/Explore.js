@@ -69,9 +69,10 @@ class Explore extends React.Component {
     NetInfo.getConnectionInfo().then(connectionInfo => {
       if (connectionInfo.type === "none") {
         this.setState({ isConnected: false });
+      } else {
+        this.handleApiCall();
       }
     });
-    this.handleApiCall();
   }
 
   componentDidMount() {
@@ -94,15 +95,16 @@ class Explore extends React.Component {
       let realmData = realm.objects("Favourites");
       let user_favorties = realmData[0] ? JSON.parse(realmData[0].data) : [];
 
-      for (const index of response) {
+      response.map((element, index) => {
         index.icon_color = colors.white;
-
-        for (const favs_index of user_favorties) {
-          if (index.title === favs_index.title) {
-            index.icon_color = colors.red;
-          }
+        let value = user_favorties.findIndex(
+          article => element.title === article.title
+        );
+        if (value !== -1) {
+          index.icon_color = colors.red;
         }
-      }
+      });
+
       this.setState({
         articles: response,
         loading: false
@@ -243,11 +245,7 @@ class Explore extends React.Component {
     if (this.state.isConnected) {
       this.handleApiCall();
     } else {
-      ToastAndroid.showWithGravity(
-        "No Internet Connection!",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      alert("No Internet Connection");
     }
   }
 
