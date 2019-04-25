@@ -41,7 +41,9 @@ class Search extends React.Component {
       toggle: true,
       searchArticleRes: false,
       article: null,
-      isVisible: false
+      isVisible: false,
+      tagsBackgroundColor: "",
+      tagsTextColor: colors.purple
     };
   }
 
@@ -88,16 +90,13 @@ class Search extends React.Component {
     }
     try {
       let response = await callApi(end_point, method);
-      debugger;
       if (response.length > 0) {
-        debugger;
         this.setState({
           article: response,
           searchArticleRes: true,
           toggle: false
         });
       } else {
-        debugger;
         alert("No data retrieved.");
       }
     } catch (err) {
@@ -117,17 +116,17 @@ class Search extends React.Component {
           onPress={() => this.setState({ isVisible: true })}
         />
       );
-    } else {
-      return (
-        <Icon
-          name="search"
-          size={27}
-          color={colors.white}
-          style={styles.menuIcon}
-          onPress={() => this.saveKeyword(textInput)}
-        />
-      );
     }
+
+    return (
+      <Icon
+        name="search"
+        size={27}
+        color={colors.white}
+        style={styles.menuIcon}
+        onPress={() => this.saveKeyword(textInput)}
+      />
+    );
   }
 
   renderCard() {
@@ -165,14 +164,14 @@ class Search extends React.Component {
   handleBackPress() {
     const { textInput } = this.state;
     if (textInput.length > 0) {
-      this.setState({ textInput: "" });
+      this.setState({ textInput: "", toggle: true, searchArticleRes: false });
     } else {
       this.props.navigation.goBack();
     }
   }
 
   render() {
-    const { textInput } = this.state;
+    const { textInput, tagsBackgroundColor, tagsTextColor } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar translucent={false} backgroundColor={colors.purple} />
@@ -233,20 +232,42 @@ class Search extends React.Component {
             this.setState({ isVisible: !this.state.isVisible })
           }
         >
-          <ScrollView style={styles.modalViewStyle}>
+          <View style={styles.modalViewStyle}>
             <Text style={styles.modalHeaderTextStyle}>Features</Text>
 
             <View style={styles.tagsViewStyle}>
               {DATA.map((element, index) => (
-                <View style={styles.tagsTextViewStyle} key={index}>
-                  <Text style={styles.tagsTextStyle}>{element}</Text>
-                </View>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() =>
+                    this.setState({
+                      tagsBackgroundColor: colors.purple,
+                      tagsTextColor: colors.white
+                    })
+                  }
+                  style={[
+                    styles.tagsTextViewStyle,
+                    { backgroundColor: tagsBackgroundColor }
+                  ]}
+                  key={index}
+                >
+                  <Text
+                    style={[styles.tagsTextStyle, { color: tagsTextColor }]}
+                  >
+                    {element}
+                  </Text>
+                </TouchableOpacity>
               ))}
             </View>
+
             <View style={styles.borderStyle} />
+
             <View style={styles.modalBottomViewStyle}>
               <View style={styles.modalBottomViewTextViewStyle}>
-                <TouchableOpacity activeOpacity={0.4}>
+                <TouchableOpacity
+                  activeOpacity={0.4}
+                  onPress={() => this.setState({ isVisible: false })}
+                >
                   <Text style={styles.modalBottomButtonStyle}>CANCEL</Text>
                 </TouchableOpacity>
 
@@ -255,7 +276,7 @@ class Search extends React.Component {
                 </TouchableOpacity>
               </View>
             </View>
-          </ScrollView>
+          </View>
         </Modal>
       </View>
     );

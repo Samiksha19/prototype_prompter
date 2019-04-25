@@ -71,41 +71,44 @@ export default (styles = StyleSheet.create({
   },
   modalStyle: {
     margin: 0,
-    padding: 0,
-    marginTop: 20
+    padding: 0
   },
   modalViewStyle: {
     backgroundColor: colors.white,
     borderRadius: 8,
-    marginHorizontal: 12,
-    paddingBottom: 10
+    marginHorizontal: 10,
+    paddingBottom: 5
   },
   modalHeaderTextStyle: {
     color: colors.purple,
-    fontSize: 16,
-    fontWeight: "200",
+    fontSize: 17,
+    fontWeight: "300",
     marginTop: 20,
     paddingLeft: 22
   },
   tagsViewStyle: {
-    padding: 20
+    padding: 12,
+    flexDirection: "row",
+    flexWrap: "wrap-reverse"
   },
   tagsTextViewStyle: {
     borderWidth: 1,
+    alignSelf: "flex-start",
     borderColor: colors.purple,
     borderRadius: 25,
     backgroundColor: colors.white,
     paddingVertical: 10,
-    paddingHorizontal: 14
+    paddingHorizontal: 14,
+    marginTop: 10,
+    marginLeft: 6
   },
   tagsTextStyle: {
-    color: colors.purple,
     fontSize: 15,
     fontWeight: "100"
   },
   borderStyle: {
     height: 2,
-    backgroundColor: colors.black,
+    backgroundColor: colors.gray,
     marginVertical: 10
   },
   modalBottomViewStyle: {
