@@ -6,7 +6,8 @@ import {
   StatusBar,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
@@ -18,20 +19,8 @@ import { addToSearch } from "../../../redux/actions/UserClick_Action";
 import callApi from "../../../lib/apicaller";
 import realm from "../../../database/realmDB";
 import styles from "./styles";
+import TagList from "./TagList";
 
-const DATA = [
-  "Live",
-  "4K",
-  "HD",
-  "SubTitles/CC",
-  "Creative Commons",
-  "360",
-  "VR180",
-  "3D",
-  "HDR",
-  "Location",
-  "Purchased"
-];
 class Search extends React.Component {
   constructor(props) {
     super(props);
@@ -41,9 +30,7 @@ class Search extends React.Component {
       toggle: true,
       searchArticleRes: false,
       article: null,
-      isVisible: false,
-      tagsBackgroundColor: "",
-      tagsTextColor: colors.purple
+      isVisible: false
     };
   }
 
@@ -68,8 +55,6 @@ class Search extends React.Component {
       alert("No results");
       return 0;
     }
-    let end_point = `search/${keyword}`;
-    let method = "GET";
     let realmData = realm.objects("Search");
     let prevSearchWords = realmData[0] ? JSON.parse(realmData[0].data) : [];
     if (!realmData[0]) {
@@ -88,6 +73,12 @@ class Search extends React.Component {
         });
       }
     }
+    this.fetchData(keyword);
+  }
+
+  async fetchData(keyword) {
+    let end_point = `search/${keyword}`;
+    let method = "GET";
     try {
       let response = await callApi(end_point, method);
       if (response.length > 0) {
@@ -96,6 +87,7 @@ class Search extends React.Component {
           searchArticleRes: true,
           toggle: false
         });
+        this.renderCard();
       } else {
         alert("No data retrieved.");
       }
@@ -131,7 +123,7 @@ class Search extends React.Component {
 
   renderCard() {
     const { article, searchArticleRes } = this.state;
-    if (searchArticleRes) {
+    if (searchArticleRes && article) {
       return article.map((element, index) => (
         <TouchableOpacity
           activeOpacity={0.6}
@@ -162,16 +154,39 @@ class Search extends React.Component {
   }
 
   handleBackPress() {
-    const { textInput } = this.state;
-    if (textInput.length > 0) {
-      this.setState({ textInput: "", toggle: true, searchArticleRes: false });
+    const { toggle, textInput } = this.state;
+    if (toggle) {
+      if (textInput.length === 0) {
+        this.props.navigation.goBack();
+      } else {
+        this.setState({ textInput: "", searchArticleRes: false });
+      }
     } else {
-      this.props.navigation.goBack();
+      this.setState({ textInput: "", toggle: true, searchArticleRes: false });
+    }
+  }
+
+  async handleSearchHistoryListPress(key) {
+    this.setState({ toggle: false, searchArticleRes: true });
+    await this.fetchData(key);
+  }
+
+  handleTextInputOnFocus() {
+    const { toggle } = this.state;
+    if (!toggle) {
+      this.setState({ searchArticleRes: false });
+    }
+  }
+
+  handleTextInputOnBlur() {
+    const { toggle } = this.state;
+    if (!toggle) {
+      this.setState({ searchArticleRes: true });
     }
   }
 
   render() {
-    const { textInput, tagsBackgroundColor, tagsTextColor } = this.state;
+    const { textInput } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar translucent={false} backgroundColor={colors.purple} />
@@ -187,9 +202,10 @@ class Search extends React.Component {
           <View style={styles.textInputViewStyle}>
             <TextInput
               style={styles.headerTextInputStyle}
-              autoFocus={true}
               placeholder="Search"
               returnKeyType="search"
+              onFocus={() => this.handleTextInputOnFocus()}
+              onBlur={() => this.handleTextInputOnBlur()}
               placeholderTextColor={colors.white}
               selectionColor={colors.white}
               value={textInput}
@@ -214,7 +230,10 @@ class Search extends React.Component {
           {this.renderIcon()}
         </View>
         {this.state.toggle ? (
-          <SearchHistoryList data={this.state.search} />
+          <SearchHistoryList
+            data={this.state.search}
+            onPress={key => this.handleSearchHistoryListPress(key)}
+          />
         ) : (
           <ScrollView>{this.renderCard()}</ScrollView>
         )}
@@ -234,32 +253,7 @@ class Search extends React.Component {
         >
           <View style={styles.modalViewStyle}>
             <Text style={styles.modalHeaderTextStyle}>Features</Text>
-
-            <View style={styles.tagsViewStyle}>
-              {DATA.map((element, index) => (
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() =>
-                    this.setState({
-                      tagsBackgroundColor: colors.purple,
-                      tagsTextColor: colors.white
-                    })
-                  }
-                  style={[
-                    styles.tagsTextViewStyle,
-                    { backgroundColor: tagsBackgroundColor }
-                  ]}
-                  key={index}
-                >
-                  <Text
-                    style={[styles.tagsTextStyle, { color: tagsTextColor }]}
-                  >
-                    {element}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-
+            <TagList />
             <View style={styles.borderStyle} />
 
             <View style={styles.modalBottomViewStyle}>

@@ -14,7 +14,7 @@ class SearchHistoryList extends Component {
         {this.props.data.map((element, index) => (
           <View key={index}>
             <TouchableOpacity
-              onPress={() => console.warn("Pressed")}
+              onPress={() => this.props.onPress(element)}
               activeOpacity={0.7}
               style={styles.elementStyle}
             >
