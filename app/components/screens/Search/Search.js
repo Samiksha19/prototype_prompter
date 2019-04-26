@@ -4,10 +4,11 @@ import {
   View,
   TextInput,
   StatusBar,
+  Platform,
   Image,
   ScrollView,
   TouchableOpacity,
-  Alert
+  KeyboardAvoidingView
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
@@ -69,7 +70,7 @@ class Search extends React.Component {
 
   async saveKeyword(keyword) {
     if (keyword === "" || keyword.length < 3) {
-      alert("No results");
+      alert("Please enter search keyword value");
       return 0;
     }
     let realmData = realm.objects("Search");
@@ -90,6 +91,7 @@ class Search extends React.Component {
         });
       }
     }
+    this.setState({ search: prevSearchWords });
     this.fetchData(keyword);
   }
 
@@ -244,7 +246,11 @@ class Search extends React.Component {
   render() {
     const { textInput, DATA } = this.state;
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : null}
+        enabled
+      >
         <StatusBar translucent={false} backgroundColor={colors.purple} />
         <View style={styles.headerStyles}>
           <Icon
@@ -285,14 +291,16 @@ class Search extends React.Component {
 
           {this.renderIcon()}
         </View>
-        {this.state.toggle ? (
-          <SearchHistoryList
-            data={this.state.search}
-            onPress={key => this.handleSearchHistoryListPress(key)}
-          />
-        ) : (
-          <View style={{ flex: 1 }}>{this.renderCard()}</View>
-        )}
+        <KeyboardAvoidingView>
+          {this.state.toggle ? (
+            <SearchHistoryList
+              data={this.state.search}
+              onPress={key => this.handleSearchHistoryListPress(key)}
+            />
+          ) : (
+            <View style={{ flex: 1 }}>{this.renderCard()}</View>
+          )}
+        </KeyboardAvoidingView>
         <Modal
           isVisible={this.state.isVisible}
           animationIn="slideInDown"
@@ -312,7 +320,7 @@ class Search extends React.Component {
             <TagList />
           </View>
         </Modal>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
