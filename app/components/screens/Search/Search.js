@@ -21,6 +21,20 @@ import realm from "../../../database/realmDB";
 import styles from "./styles";
 import TagList from "./TagList";
 
+const DATA = [
+  "Live",
+  "4K",
+  "HD",
+  "SubTitles/CC",
+  "Creative Commons",
+  "360",
+  "VR180",
+  "3D",
+  "HDR",
+  "Location",
+  "Purchased"
+];
+
 class Search extends React.Component {
   constructor(props) {
     super(props);
@@ -29,9 +43,12 @@ class Search extends React.Component {
       search: [],
       toggle: true,
       searchArticleRes: false,
-      article: null,
-      isVisible: false
+      article: [],
+      isVisible: false,
+      selectedTags: [],
+      DATA: DATA
     };
+    this.childRef = React.createRef();
   }
 
   static navigationOptions = ({ navigation, screenProps }) => {
@@ -81,16 +98,16 @@ class Search extends React.Component {
     let method = "GET";
     try {
       let response = await callApi(end_point, method);
-      if (response.length > 0) {
-        this.setState({
-          article: response,
+      this.setState(
+        {
+          article: response.length > 0 ? response : [],
           searchArticleRes: true,
           toggle: false
-        });
-        this.renderCard();
-      } else {
-        alert("No data retrieved.");
-      }
+        },
+        () => {
+          setTimeout(() => {}, 500);
+        }
+      );
     } catch (err) {
       alert("Failed to fetch data from server.");
     }
@@ -98,7 +115,7 @@ class Search extends React.Component {
 
   renderIcon() {
     const { searchArticleRes, textInput } = this.state;
-    if (searchArticleRes) {
+    if (searchArticleRes && this.state.article.length !== 0) {
       return (
         <Icon2
           name="sound-mix"
@@ -124,32 +141,38 @@ class Search extends React.Component {
   renderCard() {
     const { article, searchArticleRes } = this.state;
     if (searchArticleRes && article) {
-      return article.map((element, index) => (
-        <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={() =>
-            this.props.navigation.navigate("SearchedFeed", {
-              param: element,
-              headerTitle: element.title
-            })
-          }
-          key={index}
-          style={styles.cardStyle}
-        >
-          <View style={styles.cardHeaderStyle}>
-            <Image
-              source={{ uri: element.image }}
-              style={styles.cardHeaderImageStyle}
-            />
-            <Text style={styles.headerTitleStyle}>{element.title}</Text>
-          </View>
-          <View style={styles.cardTeaserViewStyle}>
-            <Text style={styles.cardTeaserTextStyle} numberOfLines={4}>
-              {element.teaser}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      ));
+      return (
+        <ScrollView>
+          {article.length !== 0
+            ? article.map((element, index) => (
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={() =>
+                    this.props.navigation.navigate("SearchedFeed", {
+                      param: element,
+                      headerTitle: element.title
+                    })
+                  }
+                  key={index}
+                  style={styles.cardStyle}
+                >
+                  <View style={styles.cardHeaderStyle}>
+                    <Image
+                      source={{ uri: element.image }}
+                      style={styles.cardHeaderImageStyle}
+                    />
+                    <Text style={styles.headerTitleStyle}>{element.title}</Text>
+                  </View>
+                  <View style={styles.cardTeaserViewStyle}>
+                    <Text style={styles.cardTeaserTextStyle} numberOfLines={4}>
+                      {element.teaser}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              ))
+            : this.renderEmptyScreen()}
+        </ScrollView>
+      );
     }
   }
 
@@ -162,31 +185,64 @@ class Search extends React.Component {
         this.setState({ textInput: "", searchArticleRes: false });
       }
     } else {
-      this.setState({ textInput: "", toggle: true, searchArticleRes: false });
+      this.setState({
+        textInput: "",
+        toggle: true,
+        searchArticleRes: false,
+        article: []
+      });
     }
   }
 
   async handleSearchHistoryListPress(key) {
-    this.setState({ toggle: false, searchArticleRes: true });
+    this.setState({ toggle: false, searchArticleRes: true, textInput: key });
     await this.fetchData(key);
   }
 
-  handleTextInputOnFocus() {
-    const { toggle } = this.state;
-    if (!toggle) {
-      this.setState({ searchArticleRes: false });
+  pushInSelectedArr(val, ind) {
+    const { selectedTags } = this.state;
+    let status = selectedTags.findIndex(ele => ele === val);
+    if (status === -1) {
+      this.setState({
+        selectedTags: [...selectedTags, val]
+      });
     }
   }
 
-  handleTextInputOnBlur() {
-    const { toggle } = this.state;
-    if (!toggle) {
-      this.setState({ searchArticleRes: true });
-    }
+  popInSelectedArr(val, ind) {
+    const { selectedTags } = this.state;
+    let arr = selectedTags.filter(ele => ele !== val);
+    this.setState({
+      selectedTags: arr
+    });
+  }
+
+  clearArr() {
+    const { DATA, selectedTags } = this.state;
+    this.setState({ selectedTags: [] });
+    this.childRef.current.clear(DAt);
+  }
+
+  renderEmptyScreen() {
+    return (
+      <View
+        style={{
+          flex: 1,
+          paddingTop: 130,
+          alignItems: "center",
+          justifyContent: "center",
+          verticalAlign: "center"
+        }}
+      >
+        <Text style={{ fontSize: 16, color: colors.purple, margin: 10 }}>
+          No similar articles found. Try with another search
+        </Text>
+      </View>
+    );
   }
 
   render() {
-    const { textInput } = this.state;
+    const { textInput, DATA } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar translucent={false} backgroundColor={colors.purple} />
@@ -204,11 +260,10 @@ class Search extends React.Component {
               style={styles.headerTextInputStyle}
               placeholder="Search"
               returnKeyType="search"
-              onFocus={() => this.handleTextInputOnFocus()}
-              onBlur={() => this.handleTextInputOnBlur()}
               placeholderTextColor={colors.white}
               selectionColor={colors.white}
               value={textInput}
+              onSubmitEditing={() => this.saveKeyword(textInput)}
               onChangeText={text => this.setState({ textInput: text })}
             />
 
@@ -221,7 +276,8 @@ class Search extends React.Component {
                 this.setState({
                   textInput: "",
                   toggle: true,
-                  searchArticleRes: false
+                  searchArticleRes: false,
+                  article: []
                 })
               }
             />
@@ -235,7 +291,7 @@ class Search extends React.Component {
             onPress={key => this.handleSearchHistoryListPress(key)}
           />
         ) : (
-          <ScrollView>{this.renderCard()}</ScrollView>
+          <View style={{ flex: 1 }}>{this.renderCard()}</View>
         )}
         <Modal
           isVisible={this.state.isVisible}
@@ -254,22 +310,6 @@ class Search extends React.Component {
           <View style={styles.modalViewStyle}>
             <Text style={styles.modalHeaderTextStyle}>Features</Text>
             <TagList />
-            <View style={styles.borderStyle} />
-
-            <View style={styles.modalBottomViewStyle}>
-              <View style={styles.modalBottomViewTextViewStyle}>
-                <TouchableOpacity
-                  activeOpacity={0.4}
-                  onPress={() => this.setState({ isVisible: false })}
-                >
-                  <Text style={styles.modalBottomButtonStyle}>CANCEL</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity activeOpacity={0.4}>
-                  <Text style={styles.modalBottomButtonStyle}>APPLY</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
           </View>
         </Modal>
       </View>

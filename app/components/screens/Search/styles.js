@@ -89,7 +89,7 @@ export default (styles = StyleSheet.create({
   tagsViewStyle: {
     padding: 12,
     flexDirection: "row",
-    flexWrap: "wrap-reverse"
+    flexWrap: "wrap"
   },
   tagsTextViewStyle: {
     borderWidth: 1,
@@ -106,15 +106,13 @@ export default (styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "100"
   },
-  borderStyle: {
-    height: 2,
-    backgroundColor: colors.gray,
-    marginVertical: 10
-  },
   modalBottomViewStyle: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    alignItems: "center"
+    alignItems: "center",
+    borderTopColor: colors.gray,
+    borderTopWidth: 2,
+    paddingTop: 10
   },
   modalBottomViewTextViewStyle: {
     flexDirection: "row",
