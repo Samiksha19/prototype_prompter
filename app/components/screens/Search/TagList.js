@@ -1,27 +1,17 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import * as colors from "../../../utils/colors";
+import { Dropdown } from "react-native-material-dropdown";
 import styles from "./styles.js";
-const DATA = [
-  "Live",
-  "4K",
-  "HD",
-  "SubTitles/CC",
-  "Creative Commons",
-  "360",
-  "VR180",
-  "3D",
-  "HDR",
-  "Location",
-  "Purchased"
-];
 
 class TagList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       toggle: false,
-      selectedTags: []
+      selectedTags: [],
+      selectedValueDuration: "",
+      selectedValueEvaluation: ""
     };
   }
 
@@ -40,40 +30,64 @@ class TagList extends Component {
     this.setState({ selectedTags: [] });
   }
 
+  changeText(text) {
+    console.warn(text);
+  }
+
   render() {
     let { selectedTags } = this.state;
 
     return (
       <View>
-        <View style={styles.tagsViewStyle}>
-          {DATA.map((key, index) => (
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => this.selectTag(key)}
-              style={[
-                styles.tagsTextViewStyle,
-                {
-                  backgroundColor: selectedTags.includes(key)
-                    ? colors.purple
-                    : colors.white
-                }
-              ]}
-            >
-              <Text
-                style={[
-                  styles.tagsTextStyle,
-                  {
-                    color: selectedTags.includes(key)
-                      ? colors.white
-                      : colors.purple
-                  }
-                ]}
-              >
-                {key}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        {this.props.data.filter.map((key, index) => (
+          <View key={index} style={styles.filterViewStyle}>
+            {key.type === "dropdown" ? (
+              <View style={{ padding: 6 }}>
+                <Text style={styles.labelStyle}>{key.text}</Text>
+                <Dropdown
+                  label="Select an option"
+                  data={key.values}
+                  onChangeText={text => this.changeText(text)}
+                />
+              </View>
+            ) : (
+              <View>
+                <Text style={styles.labelStyle}>{key.text}</Text>
+                <View style={styles.tagsViewStyle}>
+                  {key.values.map((val, ind) => (
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={() => this.selectTag(val)}
+                      key={ind}
+                      style={[
+                        styles.tagsTextViewStyle,
+                        {
+                          backgroundColor: selectedTags.includes(val)
+                            ? colors.purple
+                            : colors.white
+                        }
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.tagsTextStyle,
+                          {
+                            color: selectedTags.includes(val)
+                              ? colors.white
+                              : colors.purple
+                          }
+                        ]}
+                      >
+                        {val}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            )}
+          </View>
+        ))}
+
         <View style={styles.modalBottomViewStyle}>
           <View style={styles.modalBottomViewTextViewStyle}>
             <TouchableOpacity

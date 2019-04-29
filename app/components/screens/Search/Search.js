@@ -22,20 +22,6 @@ import realm from "../../../database/realmDB";
 import styles from "./styles";
 import TagList from "./TagList";
 
-const DATA = [
-  "Live",
-  "4K",
-  "HD",
-  "SubTitles/CC",
-  "Creative Commons",
-  "360",
-  "VR180",
-  "3D",
-  "HDR",
-  "Location",
-  "Purchased"
-];
-
 class Search extends React.Component {
   constructor(props) {
     super(props);
@@ -47,7 +33,8 @@ class Search extends React.Component {
       article: [],
       isVisible: false,
       selectedTags: [],
-      DATA: DATA
+      DATA: [],
+      filterTags: ["filter"]
     };
     this.childRef = React.createRef();
   }
@@ -59,13 +46,44 @@ class Search extends React.Component {
     };
   };
 
-  componentWillMount() {
+  componentDidMount() {
     let searchKeys = realm.objects("Search");
     let data = searchKeys[0] ? JSON.parse(searchKeys[0].data) : [];
 
     if (data !== null || undefined) {
       this.setState({ toggle: true, search: data });
     }
+
+    this.getTags();
+  }
+
+  async getTags() {
+    let end_point = "def";
+    let method = "GET";
+    let response = await callApi(end_point, method);
+    let newArr = [];
+    let newArr1 = [];
+    let newArr2 = [];
+    response.filter.map((ele, index) => {
+      if (ele.type === "dropdown") {
+        if (newArr1.length === 0) {
+          ele.values.map((val, index) => {
+            val = { value: val };
+            newArr1.push(val);
+          });
+        } else {
+          ele.values.map((val, index) => {
+            val = { value: val };
+            newArr2.push(val);
+          });
+        }
+      }
+    });
+    response.filter[1].values = newArr1;
+    response.filter[2].values = newArr2;
+    response.filter = response.filter.reverse();
+
+    this.setState({ DATA: response });
   }
 
   async saveKeyword(keyword) {
@@ -96,7 +114,7 @@ class Search extends React.Component {
   }
 
   async fetchData(keyword) {
-    let end_point = `search/${keyword}`;
+    let end_point = `search/${keyword}/` + this.state.filterTags;
     let method = "GET";
     try {
       let response = await callApi(end_point, method);
@@ -144,7 +162,11 @@ class Search extends React.Component {
     const { article, searchArticleRes } = this.state;
     if (searchArticleRes && article) {
       return (
-        <ScrollView>
+        <ScrollView
+          contentContainerStyle={{
+            flex: 1
+          }}
+        >
           {article.length !== 0
             ? article.map((element, index) => (
                 <TouchableOpacity
@@ -197,8 +219,8 @@ class Search extends React.Component {
   }
 
   async handleSearchHistoryListPress(key) {
-    this.setState({ toggle: false, searchArticleRes: true, textInput: key });
     await this.fetchData(key);
+    this.setState({ toggle: false, searchArticleRes: true, textInput: key });
   }
 
   pushInSelectedArr(val, ind) {
@@ -227,24 +249,27 @@ class Search extends React.Component {
 
   renderEmptyScreen() {
     return (
-      <View
-        style={{
-          flex: 1,
-          paddingTop: 130,
-          alignItems: "center",
-          justifyContent: "center",
-          verticalAlign: "center"
-        }}
-      >
-        <Text style={{ fontSize: 16, color: colors.purple, margin: 10 }}>
-          No similar articles found. Try with another search
+      <View style={styles.blankScreenStyle}>
+        <View style={styles.iconContainerStyle}>
+          <Icon
+            name="search"
+            size={50}
+            style={styles.largeIconStyle}
+            color={colors.gray}
+          />
+        </View>
+        <Text style={styles.blankScreenHeaderTextStyle}>
+          {"No Data Found!"}
+        </Text>
+        <Text style={styles.detailTextStyle}>
+          {"Try again with another keyword"}
         </Text>
       </View>
     );
   }
 
   render() {
-    const { textInput, DATA } = this.state;
+    const { textInput, DATA, isVisible, toggle, search } = this.state;
     return (
       <KeyboardAvoidingView
         style={styles.container}
@@ -291,33 +316,33 @@ class Search extends React.Component {
 
           {this.renderIcon()}
         </View>
-        <KeyboardAvoidingView>
-          {this.state.toggle ? (
-            <SearchHistoryList
-              data={this.state.search}
-              onPress={key => this.handleSearchHistoryListPress(key)}
-            />
-          ) : (
-            <View style={{ flex: 1 }}>{this.renderCard()}</View>
-          )}
-        </KeyboardAvoidingView>
+        {toggle ? (
+          <SearchHistoryList
+            data={search}
+            onPress={key => this.handleSearchHistoryListPress(key)}
+          />
+        ) : (
+          <View style={{ flex: 1 }}>{this.renderCard()}</View>
+        )}
         <Modal
-          isVisible={this.state.isVisible}
+          isVisible={isVisible}
           animationIn="slideInDown"
           animationOut="slideOutUp"
           avoidKeyboard={true}
           style={styles.modalStyle}
           backdropOpacity={0.2}
-          onBackButtonPress={() =>
-            this.setState({ isVisible: !this.state.isVisible })
-          }
-          onBackdropPress={() =>
-            this.setState({ isVisible: !this.state.isVisible })
-          }
+          onBackButtonPress={() => this.setState({ isVisible: !isVisible })}
+          onBackdropPress={() => this.setState({ isVisible: !isVisible })}
         >
+          <Icon
+            name="cancel"
+            size={27}
+            color={colors.red}
+            style={styles.cancelIcon}
+            onPress={() => this.setState({ isVisible: !this.state.isVisible })}
+          />
           <View style={styles.modalViewStyle}>
-            <Text style={styles.modalHeaderTextStyle}>Features</Text>
-            <TagList />
+            <TagList data={DATA} />
           </View>
         </Modal>
       </KeyboardAvoidingView>
