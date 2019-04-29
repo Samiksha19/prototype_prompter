@@ -101,7 +101,7 @@ class Explore extends React.Component {
           article => element.title === article.title
         );
         if (value !== -1) {
-          index.icon_color = colors.red;
+          element.icon_color = colors.red;
         }
       });
 
