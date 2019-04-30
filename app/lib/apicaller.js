@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 export const API_URL = "http://pp.f418.eu/";
 
 export default async function callApi(end_point, method) {
@@ -11,7 +12,11 @@ export default async function callApi(end_point, method) {
   };
   return fetch(`${API_URL}${end_point}`, payload)
     .then(response => {
-      return response.json();
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        Alert.alert('Alert', 'There is an error in API call')
+      }
     })
     .then(data => {
       return data;
