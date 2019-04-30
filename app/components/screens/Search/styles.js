@@ -132,7 +132,8 @@ export default (styles = StyleSheet.create({
   blankScreenStyle: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    paddingTop: 100
   },
   largeIconStyle: {
     marginVertical: 35,
@@ -141,13 +142,15 @@ export default (styles = StyleSheet.create({
   blankScreenHeaderTextStyle: {
     fontSize: 17,
     fontWeight: "600",
-    color: colors.gray
+    color: colors.gray,
+    textAlign: 'center'
   },
   detailTextStyle: {
     fontSize: 16,
     fontWeight: "100",
     color: colors.gray,
-    paddingVertical: 16
+    paddingVertical: 16,
+    textAlign: 'center'
   },
   iconContainerStyle: {
     width: 80,

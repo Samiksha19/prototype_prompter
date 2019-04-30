@@ -126,7 +126,7 @@ class History extends React.Component {
               {"No History to show"}
             </Text>
             <Text style={styles.detailTextStyle}>
-              {"Keep track of what you've been reading here"}
+                {"Here you can keep track what articles you have been reading."}
             </Text>
             <Text
               style={[

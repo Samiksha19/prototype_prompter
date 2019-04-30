@@ -78,10 +78,10 @@ class SearchHistoryList extends Component {
               />
             </View>
             <Text style={styles.blankScreenHeaderTextStyle}>
-              {"No Search Data Found!"}
+                {"You have not used the search yet."}
             </Text>
             <Text style={styles.detailTextStyle}>
-              {"Begin your first search with any keyword!"}
+                {"Please enter some keywords to search."}
             </Text>
           </View>
         )}

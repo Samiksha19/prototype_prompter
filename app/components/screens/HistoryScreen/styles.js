@@ -50,12 +50,14 @@ export default (styles = StyleSheet.create({
   blankScreenHeaderTextStyle: {
     fontSize: 17,
     fontWeight: "600",
-    color: colors.gray
+    color: colors.gray,
+    textAlign: 'center'
   },
   detailTextStyle: {
     fontSize: 16,
     fontWeight: "100",
     color: colors.gray,
+    textAlign: 'center',
     paddingVertical: 16
   },
   iconContainerStyle: {

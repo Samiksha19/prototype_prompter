@@ -101,7 +101,7 @@ class ArticleRender extends Component {
         });
       }
       this.props.addToFavs(newData);
-      alert("Article has been added in favorites");
+      alert("Article has been added to favorites.");
       this.props.navigation.setParams({ ic_color: colors.red });
     }
   };
@@ -214,7 +214,7 @@ class ArticleRender extends Component {
               <Text
                 style={[styles.headerTextStyle, { flex: 1, paddingBottom: 6 }]}
               >
-                {"Duration: "}
+                {"Duration "}
               </Text>
               <Text
                 selectable={true}
@@ -227,7 +227,7 @@ class ArticleRender extends Component {
               <Text
                 style={[styles.headerTextStyle, { flex: 1, paddingBottom: 6 }]}
               >
-                {"Evaluation Time: "}
+                {"Evaluation Time "}
               </Text>
               <Text
                 selectable={true}
@@ -240,7 +240,7 @@ class ArticleRender extends Component {
               <Text
                 style={[styles.headerTextStyle, { flex: 1, paddingBottom: 4 }]}
               >
-                {"Time Dependency: "}
+                {"Time Dependency "}
               </Text>
               <Text
                 selectable={true}
@@ -253,7 +253,7 @@ class ArticleRender extends Component {
               <Text
                 style={[styles.headerTextStyle, { flex: 1, paddingBottom: 4 }]}
               >
-                {"User Participation: "}
+                {"User Participation "}
               </Text>
               <Text
                 selectable={true}

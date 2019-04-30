@@ -6,7 +6,9 @@ import {
   ScrollView,
   Image,
   Platform,
-  TextInput
+  TextInput,
+  WebView,
+  Linking
 } from "react-native";
 import {
   createSwitchNavigator,
@@ -258,6 +260,24 @@ class Main extends Component {
                 "It helps you decide on which method is most suitable to their challenge."
               }
             </Text>
+            <View style={{flex: 0, flexDirection: 'row', alignItems: 'center', marginTop: 7, paddingLeft: 5}}>
+              <Icon name="copyright" size={20} color={colors.black}/>
+              <Text style={[styles.drawerText, {marginTop: 0}]}>
+                Florian Greil, April 2019
+              </Text>
+            </View>
+            <Text style={{ paddingLeft: 10, marginTop: 5, color: colors.purple }} onPress={() => {
+              Linking.canOpenURL('http://linkedin.com/in/fgreil')
+                .then(supported => {
+                  if (!supported) {
+                    console.log("Can't handle url: " + 'http://linkedin.com/in/fgreil');
+                    return null;
+                  } else {
+                    return Linking.openURL('http://linkedin.com/in/fgreil');
+                  }
+        })
+        .catch(err => console.error("An error occurred", err));
+            }}>{'http://linkedin.com/in/fgreil'}</Text>
           </View>
         </SafeAreaView>
       </ScrollView>

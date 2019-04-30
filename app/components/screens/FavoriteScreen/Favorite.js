@@ -188,10 +188,10 @@ class Favorite extends React.Component {
               />
             </View>
             <Text style={styles.blankScreenHeaderTextStyle}>
-              {"No Favorite to show"}
+                {"No favorite articles yet"}
             </Text>
             <Text style={styles.detailTextStyle}>
-              {"Your favorite article will be displayed here"}
+                {"Your favorite articles are displayed here."}
             </Text>
             <Text
               style={[
@@ -199,7 +199,7 @@ class Favorite extends React.Component {
                 { paddingVertical: 0, bottom: 5 }
               ]}
             >
-              {"These are saved for offline access also."}
+                {"Tap on the heart icon when reading an article to save it to your list of favorites. Your favorites are also available offline."}
             </Text>
           </View>
         )}
