@@ -49,22 +49,27 @@ export default (styles = StyleSheet.create({
   cardHeaderStyle: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "center"
+    alignItems: "center",
+    flexWrap: "wrap"
   },
   cardHeaderImageStyle: {
     height: 50,
     width: 50,
-    marginHorizontal: 22
+    marginHorizontal: 17
   },
   headerTitleStyle: {
     fontSize: 16,
-    fontWeight: "100"
+    fontWeight: "100",
+    flexWrap: "wrap",
+    flex: 1
   },
   cardTeaserViewStyle: {
+    flexWrap: "wrap",
     backgroundColor: colors.white,
     padding: 20
   },
   cardTeaserTextStyle: {
+    flexWrap: "wrap",
     fontSize: 15
   },
   modalStyle: {
@@ -163,6 +168,5 @@ export default (styles = StyleSheet.create({
   filterViewStyle: {
     margin: 8
   },
-  cancelIcon: {
-  }
+  cancelIcon: {}
 }));

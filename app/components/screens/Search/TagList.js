@@ -27,18 +27,18 @@ class TagList extends Component {
   }
 
   resetSelectedTags() {
-    this.setState({ selectedTags: [], pdDuration: '', pdEvaluationType: '' });
+    this.setState({ selectedTags: [], pdDuration: "", pdEvaluationType: "" });
   }
 
   changeText(text, key) {
-    this.setState({ [key.label]: text })
-    console.warn(this.state);
+    this.setState({ [key.label]: text });
   }
 
   filterArticles() {
-    let a = [this.state.pdDuration, this.state.pdEvaluationType]
+    let a = [this.state.pdDuration, this.state.pdEvaluationType];
+    let txt = this.props.text;
     let array = this.state.selectedTags.concat(a);
-    this.props.getFilteredArtciles(array)
+    this.props.getFilteredArtciles(array, txt);
   }
 
   render() {
@@ -50,17 +50,15 @@ class TagList extends Component {
           <View key={index} style={styles.filterViewStyle}>
             {key.type === "dropdown" ? (
               <View>
-                {/* <Text style={styles.labelStyle}>{key.text}</Text> */}
                 <Dropdown
                   label={key.text}
                   baseColor={colors.purple}
                   data={key.values}
-                  onChangeText={text => this.changeText(text, key)}
+                  onChangeText={text => this.changeText(text, key, [])}
                 />
               </View>
             ) : (
               <View>
-                {/* <Text style={styles.labelStyle}>{key.text}</Text> */}
                 <View style={styles.tagsViewStyle}>
                   {key.values.map((val, ind) => (
                     <TouchableOpacity
@@ -105,7 +103,10 @@ class TagList extends Component {
               <Text style={styles.modalBottomButtonStyle}>RESET</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.4} onPress={() => this.filterArticles()}>
+            <TouchableOpacity
+              activeOpacity={0.4}
+              onPress={() => this.filterArticles()}
+            >
               <Text style={styles.modalBottomButtonStyle}>APPLY</Text>
             </TouchableOpacity>
           </View>

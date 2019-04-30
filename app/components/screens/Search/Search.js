@@ -12,7 +12,7 @@ import {
   SafeAreaView
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import Icon2 from "react-native-vector-icons/Entypo";
+import EaIcon from "react-native-vector-icons/Entypo";
 import Modal from "react-native-modal";
 import * as colors from "../../../utils/colors";
 import { connect } from "react-redux";
@@ -50,11 +50,9 @@ class Search extends React.Component {
   componentDidMount() {
     let searchKeys = realm.objects("Search");
     let data = searchKeys[0] ? JSON.parse(searchKeys[0].data) : [];
-
     if (data !== null || undefined) {
       this.setState({ toggle: true, search: data });
     }
-
     this.getTags();
   }
 
@@ -62,7 +60,6 @@ class Search extends React.Component {
     let end_point = "def";
     let method = "GET";
     let response = await callApi(end_point, method);
-    let newArr = [];
     let newArr1 = [];
     let newArr2 = [];
     response.filter.map((ele, index) => {
@@ -83,49 +80,62 @@ class Search extends React.Component {
     response.filter[1].values = newArr1;
     response.filter[2].values = newArr2;
     response.filter = response.filter.reverse();
-
     this.setState({ DATA: response });
   }
 
-  async saveKeyword(keyword) {
+  async saveKeyword(arr, keyword) {
     if (keyword === "" || keyword.length < 3) {
       alert("Please enter search keyword value");
       return 0;
     }
+    let data_to_be_pushed = {};
+    data_to_be_pushed.key = keyword;
+    data_to_be_pushed.arr = arr;
     let realmData = realm.objects("Search");
     let prevSearchWords = realmData[0] ? JSON.parse(realmData[0].data) : [];
     if (!realmData[0]) {
-      prevSearchWords.push(keyword);
+      prevSearchWords.push(data_to_be_pushed);
       realm.write(() => {
         realm.create("Search", {
           data: JSON.stringify(prevSearchWords)
         });
       });
     } else {
-      let val = prevSearchWords.findIndex(ele => ele === keyword);
-      if (val === -1) {
-        prevSearchWords.push(keyword);
+      let insert = true;
+      prevSearchWords.map((item, index) => {
+        if (item.key === keyword) {
+          if (arr.length === 0) {
+            insert = false;
+          } else {
+            prevSearchWords.splice(index, 1);
+          }
+        }
+      });
+      if (insert) {
+        prevSearchWords.push(data_to_be_pushed);
         realm.write(() => {
           realmData[0].data = JSON.stringify(prevSearchWords);
         });
       }
     }
     this.setState({ search: prevSearchWords });
-    this.fetchData(keyword);
+    this.fetchData(keyword, arr);
   }
 
-  async fetchData(keyword) {
-    let end_point = `search/${keyword}/` + this.state.filterTags;
+  async fetchData(keyword, arr) {
+    let initVal = "filter";
+    if (arr.length === 0) {
+      arr.push(initVal);
+    }
+    let end_point = `search/${keyword}/` + arr;
     let method = "GET";
     try {
       let response = await callApi(end_point, method);
-      this.setState(
-        {
-          article: response.length > 0 ? response : [],
-          searchArticleRes: true,
-          toggle: false
-        }
-      );
+      this.setState({
+        article: response.length > 0 ? response : [],
+        searchArticleRes: true,
+        toggle: false
+      });
     } catch (err) {
       alert("Failed to fetch data from server.");
     }
@@ -135,7 +145,7 @@ class Search extends React.Component {
     const { searchArticleRes, textInput } = this.state;
     if (searchArticleRes && this.state.article.length !== 0) {
       return (
-        <Icon2
+        <EaIcon
           name="sound-mix"
           size={27}
           color={colors.white}
@@ -151,7 +161,7 @@ class Search extends React.Component {
         size={27}
         color={colors.white}
         style={styles.menuIcon}
-        onPress={() => this.saveKeyword(textInput)}
+        onPress={() => this.saveKeyword([], textInput)}
       />
     );
   }
@@ -160,11 +170,12 @@ class Search extends React.Component {
     const { article, searchArticleRes } = this.state;
     if (searchArticleRes && article) {
       return (
-        <View style={{ flex: 1 }}>
         <ScrollView
           contentContainerStyle={{
-            paddingVertical: 5
+            paddingVertical: 5,
+            flexGrow: 1
           }}
+          showsVerticalScrollIndicator={false}
         >
           {article.length !== 0
             ? article.map((element, index) => (
@@ -194,9 +205,8 @@ class Search extends React.Component {
                 </TouchableOpacity>
               ))
             : this.renderEmptyScreen()}
-            <View style={{height: 50}} />
+          <View style={{ height: 50 }} />
         </ScrollView>
-        </View>
       );
     }
   }
@@ -219,33 +229,9 @@ class Search extends React.Component {
     }
   }
 
-  async handleSearchHistoryListPress(key) {
+  async handleSearchHistoryListPress(key, arr) {
     this.setState({ toggle: false, textInput: key });
-    await this.fetchData(key);
-  }
-
-  pushInSelectedArr(val, ind) {
-    const { selectedTags } = this.state;
-    let status = selectedTags.findIndex(ele => ele === val);
-    if (status === -1) {
-      this.setState({
-        selectedTags: [...selectedTags, val]
-      });
-    }
-  }
-
-  popInSelectedArr(val, ind) {
-    const { selectedTags } = this.state;
-    let arr = selectedTags.filter(ele => ele !== val);
-    this.setState({
-      selectedTags: arr
-    });
-  }
-
-  clearArr() {
-    const { DATA, selectedTags } = this.state;
-    this.setState({ selectedTags: [] });
-    this.childRef.current.clear(DAt);
+    await this.fetchData(key, arr);
   }
 
   renderEmptyScreen() {
@@ -269,19 +255,19 @@ class Search extends React.Component {
     );
   }
 
-  async getFilteredArtciles(filterKeys) {
-    let end_point = 'search/' + this.state.textInput + '/' + filterKeys;
+  async getFilteredArtciles(filterKeys, txt) {
+    let end_point = "search/" + txt + "/" + filterKeys;
     let method = "GET";
     let response = await callApi(end_point, method);
-    this.setState({ article: [{}], isVisible: false })
+    this.saveKeyword(filterKeys, txt);
+    this.renderCard(response);
+    this.setState({ article: [{}], isVisible: false });
     setTimeout(() => {
-      this.setState(
-        {
-          article: response.length > 0 ? response : [],
-          searchArticleRes: true,
-          toggle: false
-        }
-      );
+      this.setState({
+        article: response.length > 0 ? response : [],
+        searchArticleRes: true,
+        toggle: false
+      });
     }, 400);
   }
 
@@ -311,11 +297,11 @@ class Search extends React.Component {
               placeholderTextColor={colors.white}
               selectionColor={colors.white}
               value={textInput}
-              onSubmitEditing={() => this.saveKeyword(textInput)}
+              onSubmitEditing={() => this.saveKeyword([], textInput)}
               onChangeText={text => this.setState({ textInput: text })}
             />
 
-            <Icon2
+            <EaIcon
               name="cross"
               size={18}
               color={colors.white}
@@ -336,7 +322,7 @@ class Search extends React.Component {
         {toggle ? (
           <SearchHistoryList
             data={search}
-            onPress={key => this.handleSearchHistoryListPress(key)}
+            onPress={(key, arr) => this.handleSearchHistoryListPress(key, arr)}
           />
         ) : (
           <View style={{ flex: 1 }}>{this.renderCard()}</View>
@@ -351,18 +337,28 @@ class Search extends React.Component {
           onBackButtonPress={() => this.setState({ isVisible: !isVisible })}
           onBackdropPress={() => this.setState({ isVisible: !isVisible })}
         >
-          <TouchableOpacity onPress={() => this.setState({ isVisible: false })} style={{flex: 0, alignItems: 'flex-end', paddingHorizontal : 10}}>
-            {/* <Text style={{ color: colors.white}}>close</Text> */}
+          <TouchableOpacity
+            onPress={() => this.setState({ isVisible: false })}
+            style={{ flex: 0, alignItems: "flex-end", paddingHorizontal: 10 }}
+          >
             <Icon
               name="cancel"
               size={30}
               color={colors.white}
               style={styles.cancelIcon}
-              onPress={() => this.setState({ isVisible: !this.state.isVisible })}
+              onPress={() =>
+                this.setState({ isVisible: !this.state.isVisible })
+              }
             />
           </TouchableOpacity>
           <View style={styles.modalViewStyle}>
-            <TagList data={DATA} getFilteredArtciles={this.getFilteredArtciles.bind(this)}/>
+            <TagList
+              data={DATA}
+              text={textInput}
+              getFilteredArtciles={(arr, txt) =>
+                this.getFilteredArtciles(arr, txt)
+              }
+            />
           </View>
         </Modal>
       </KeyboardAvoidingView>
