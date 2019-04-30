@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, Image, ScrollView, Platform, Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import FaIcon from 'react-native-vector-icons/SimpleLineIcons'
 import RNMarkdownFormatter from "../../RNMarkdownFormatter";
 import realm from "../../../database/realmDB";
 import * as colors from "../../../utils/colors";
@@ -29,17 +30,24 @@ class ArticleRender extends Component {
   }
 
   static navigationOptions = ({ navigation, screenProps }) => {
+    let article = navigation.getParam("param", " ");
+    let headerComponent = article.icon_color && article.icon_color == colors.red ? <Icon
+      name="favorite"
+      style={styles.menuIcon}
+      color={colors.white}
+      size={27}
+      onPress={navigation.getParam("saveArticle")}
+      /> : <FaIcon
+        name="heart"
+        style={styles.menuIcon}
+        color={colors.white}
+        size={27}
+        onPress={navigation.getParam("saveArticle")}
+      />
     return {
       headerTitle: navigation.getParam("headerTitle", " "),
       headerRight: (
-        <Icon
-          style={styles.menuIcon}
-          name="favorite"
-          selectionColor={colors.white}
-          color={navigation.getParam("ic_color", "") || colors.white}
-          size={27}
-          onPress={navigation.getParam("saveArticle")}
-        />
+        headerComponent
       )
     };
   };

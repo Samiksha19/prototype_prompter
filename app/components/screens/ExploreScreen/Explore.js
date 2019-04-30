@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { IndicatorViewPager, PagerDotIndicator } from "rn-viewpager";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import FaIcon from 'react-native-vector-icons/SimpleLineIcons'
 import NetInfo from "@react-native-community/netinfo";
 
 import { connect } from "react-redux";
@@ -286,12 +287,25 @@ class Explore extends React.Component {
                     <View style={styles.titleViewStyle}>
                       <Text style={styles.titleStyle}>{article.title}</Text>
                       <View style={styles.icon_image_view_style}>
-                        <Icon
+                        {
+                          article.icon_color && article.icon_color == colors.red ? <Icon
+                            name="favorite"
+                            color={colors.purple}
+                            size={27}
+                            onPress={() => this.saveArticle(article)}
+                          /> : <FaIcon
+                              name="heart"
+                              color={colors.white}
+                              size={27}
+                              onPress={() => this.saveArticle(article)}
+                            />
+                        }
+                        {/* <Icon
                           name="favorite"
                           color={article.icon_color || colors.white}
                           size={27}
                           onPress={() => this.saveArticle(article)}
-                        />
+                        /> */}
                       </View>
                     </View>
                     <Image

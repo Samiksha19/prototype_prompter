@@ -8,7 +8,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  SafeAreaView
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
@@ -123,9 +124,6 @@ class Search extends React.Component {
           article: response.length > 0 ? response : [],
           searchArticleRes: true,
           toggle: false
-        },
-        () => {
-          setTimeout(() => {}, 500);
         }
       );
     } catch (err) {
@@ -219,8 +217,8 @@ class Search extends React.Component {
   }
 
   async handleSearchHistoryListPress(key) {
+    this.setState({ toggle: false, textInput: key });
     await this.fetchData(key);
-    this.setState({ toggle: false, searchArticleRes: true, textInput: key });
   }
 
   pushInSelectedArr(val, ind) {
@@ -277,7 +275,7 @@ class Search extends React.Component {
         enabled
       >
         <StatusBar translucent={false} backgroundColor={colors.purple} />
-        <View style={styles.headerStyles}>
+        <SafeAreaView style={styles.headerStyles}>
           <Icon
             name="arrow-back"
             size={27}
@@ -315,7 +313,7 @@ class Search extends React.Component {
           </View>
 
           {this.renderIcon()}
-        </View>
+        </SafeAreaView>
         {toggle ? (
           <SearchHistoryList
             data={search}

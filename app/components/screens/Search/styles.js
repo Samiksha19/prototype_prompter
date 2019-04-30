@@ -9,7 +9,6 @@ export default (styles = StyleSheet.create({
   },
   headerStyles: {
     flexDirection: "row",
-    height: Platform.OS === "ios" ? 65 : 50,
     backgroundColor: colors.purple,
     justifyContent: "space-around",
     alignItems: "flex-end",
@@ -58,7 +57,6 @@ export default (styles = StyleSheet.create({
     marginHorizontal: 22
   },
   headerTitleStyle: {
-    flex: 1,
     fontSize: 16,
     fontWeight: "100"
   },
@@ -75,7 +73,7 @@ export default (styles = StyleSheet.create({
   },
   modalViewStyle: {
     backgroundColor: colors.white,
-    borderRadius: 8,
+    borderRadius: 5,
     marginHorizontal: 10,
     paddingBottom: 5
   },
