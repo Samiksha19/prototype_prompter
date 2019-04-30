@@ -160,9 +160,10 @@ class Search extends React.Component {
     const { article, searchArticleRes } = this.state;
     if (searchArticleRes && article) {
       return (
+        <View style={{ flex: 1 }}>
         <ScrollView
           contentContainerStyle={{
-            flex: 1
+            paddingVertical: 5
           }}
         >
           {article.length !== 0
@@ -193,7 +194,9 @@ class Search extends React.Component {
                 </TouchableOpacity>
               ))
             : this.renderEmptyScreen()}
+            <View style={{height: 50}} />
         </ScrollView>
+        </View>
       );
     }
   }
@@ -344,17 +347,20 @@ class Search extends React.Component {
           animationOut="slideOutUp"
           avoidKeyboard={true}
           style={styles.modalStyle}
-          backdropOpacity={0.2}
+          backdropOpacity={0.8}
           onBackButtonPress={() => this.setState({ isVisible: !isVisible })}
           onBackdropPress={() => this.setState({ isVisible: !isVisible })}
         >
-          <Icon
-            name="cancel"
-            size={27}
-            color={colors.red}
-            style={styles.cancelIcon}
-            onPress={() => this.setState({ isVisible: !this.state.isVisible })}
-          />
+          <TouchableOpacity onPress={() => this.setState({ isVisible: false })} style={{flex: 0, alignItems: 'flex-end', paddingHorizontal : 10}}>
+            {/* <Text style={{ color: colors.white}}>close</Text> */}
+            <Icon
+              name="cancel"
+              size={30}
+              color={colors.white}
+              style={styles.cancelIcon}
+              onPress={() => this.setState({ isVisible: !this.state.isVisible })}
+            />
+          </TouchableOpacity>
           <View style={styles.modalViewStyle}>
             <TagList data={DATA} getFilteredArtciles={this.getFilteredArtciles.bind(this)}/>
           </View>

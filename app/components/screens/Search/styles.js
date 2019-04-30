@@ -164,8 +164,5 @@ export default (styles = StyleSheet.create({
     margin: 8
   },
   cancelIcon: {
-    position: "absolute",
-    top: 50,
-    right: 20
   }
 }));
