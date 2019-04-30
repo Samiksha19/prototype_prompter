@@ -21,11 +21,9 @@ class SearchHistoryList extends Component {
                   style={[
                     styles.elementStyle,
                     {
-                      justifyContent:
-                        ele.arr && ele.arr.length === 0
-                          ? "space-between"
-                          : "space-around",
-                      paddingHorizontal: ele.arr.length === 0 ? 7 : 15
+                      justifyContent: "space-between",
+                      paddingHorizontal: 10,
+                      flexGrow: 1
                     }
                   ]}
                 >
@@ -36,28 +34,32 @@ class SearchHistoryList extends Component {
                         <View
                           style={{
                             flexDirection: "row",
-                            flexWrap: "wrap-reverse",
+                            flexWrap: "wrap",
                             justifyContent: "flex-start"
                           }}
                         >
+                          {}
                           <Text style={{ fontSize: 12, color: colors.black }}>
-                            Filters:{" "}
+                            Applied filter keywords are:{" "}
                           </Text>
+
                           {ele.arr.map((text, index) => (
                             <Text
                               key={index}
                               style={styles.smalltext}
                             >{`${text}, `}</Text>
                           ))}
-                          <View />
                         </View>
                       )}
                     </View>
                   </View>
-                  <View>
+
+                  <View style={{ flex: 0 }}>
                     <Icon
                       name="history"
-                      style={{ marginRight: 5 }}
+                      style={{
+                        marginRight: 5
+                      }}
                       size={27}
                       color={colors.gray}
                     />
@@ -78,10 +80,10 @@ class SearchHistoryList extends Component {
               />
             </View>
             <Text style={styles.blankScreenHeaderTextStyle}>
-                {"You have not used the search yet."}
+              {"You have not used the search yet."}
             </Text>
             <Text style={styles.detailTextStyle}>
-                {"Please enter some keywords to search."}
+              {"Please enter some keywords to search."}
             </Text>
           </View>
         )}

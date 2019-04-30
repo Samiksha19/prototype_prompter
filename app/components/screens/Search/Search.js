@@ -195,7 +195,9 @@ class Search extends React.Component {
                       source={{ uri: element.image }}
                       style={styles.cardHeaderImageStyle}
                     />
-                    <Text style={styles.headerTitleStyle}>{element.title}</Text>
+                    <Text numberOfLines={2} style={styles.headerTitleStyle}>
+                      {element.title}
+                    </Text>
                   </View>
                   <View style={styles.cardTeaserViewStyle}>
                     <Text style={styles.cardTeaserTextStyle} numberOfLines={4}>
@@ -306,14 +308,14 @@ class Search extends React.Component {
               size={18}
               color={colors.white}
               style={styles.menuIcon}
-              onPress={() =>
+              onPress={() => {
                 this.setState({
                   textInput: "",
                   toggle: true,
                   searchArticleRes: false,
                   article: []
-                })
-              }
+                });
+              }}
             />
           </View>
 

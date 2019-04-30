@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import * as colors from "../../../utils/colors";
 import { Dropdown } from "react-native-material-dropdown";
 import styles from "./styles.js";
@@ -11,7 +11,8 @@ class TagList extends Component {
       toggle: false,
       selectedTags: [],
       pdDuration: "",
-      pdEvaluationType: ""
+      pdEvaluationType: "",
+      data: props.data
     };
   }
 
@@ -27,7 +28,18 @@ class TagList extends Component {
   }
 
   resetSelectedTags() {
-    this.setState({ selectedTags: [], pdDuration: "", pdEvaluationType: "" });
+    let propsData = this.props.data;
+    this.setState(
+      {
+        selectedTags: [],
+        pdDuration: "",
+        pdEvaluationType: "",
+        data: { filter: [] }
+      },
+      () => {
+        this.setState({ data: propsData });
+      }
+    );
   }
 
   changeText(text, key) {
@@ -35,18 +47,30 @@ class TagList extends Component {
   }
 
   filterArticles() {
-    let a = [this.state.pdDuration, this.state.pdEvaluationType];
+    let a = [];
+    if (this.state.pdDuration !== "") {
+      a.push(this.state.pdDuration);
+    }
+    if (this.state.pdEvaluationType !== "") {
+      a.push(this.state.pdEvaluationType);
+    }
     let txt = this.props.text;
-    let array = this.state.selectedTags.concat(a);
-    this.props.getFilteredArtciles(array, txt);
+    let array =
+      this.state.pdDuration !== "" || this.state.pdEvaluationType !== ""
+        ? this.state.selectedTags.concat(a)
+        : this.state.selectedTags;
+    if (array.length !== 0) {
+      this.props.getFilteredArtciles(array, txt);
+    } else {
+      Alert.alert("Alert", "Select filter tags to continue");
+    }
   }
 
   render() {
     let { selectedTags } = this.state;
-
     return (
       <View>
-        {this.props.data.filter.map((key, index) => (
+        {this.state.data.filter.map((key, index) => (
           <View key={index} style={styles.filterViewStyle}>
             {key.type === "dropdown" ? (
               <View>

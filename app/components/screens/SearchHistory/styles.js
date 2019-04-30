@@ -66,13 +66,15 @@ export default (styles = StyleSheet.create({
     paddingVertical: 15
   },
   columnStyle: {
+    flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    paddingHorizontal: 4
+    paddingHorizontal: 3
   },
   rowStyle: {
-    paddingHorizontal: 5,
+    paddingLeft: 3,
+    marginRight: 30,
     marginTop: 5
   },
   smalltext: {

@@ -55,13 +55,14 @@ export default (styles = StyleSheet.create({
   cardHeaderImageStyle: {
     height: 50,
     width: 50,
-    marginHorizontal: 17
+    marginHorizontal: 10
   },
   headerTitleStyle: {
     fontSize: 16,
     fontWeight: "100",
     flexWrap: "wrap",
-    flex: 1
+    flex: 1,
+    paddingLeft: 5
   },
   cardTeaserViewStyle: {
     flexWrap: "wrap",
@@ -143,14 +144,14 @@ export default (styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "600",
     color: colors.gray,
-    textAlign: 'center'
+    textAlign: "center"
   },
   detailTextStyle: {
     fontSize: 16,
     fontWeight: "100",
     color: colors.gray,
     paddingVertical: 16,
-    textAlign: 'center'
+    textAlign: "center"
   },
   iconContainerStyle: {
     width: 80,
