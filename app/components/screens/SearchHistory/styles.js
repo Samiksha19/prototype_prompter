@@ -10,10 +10,9 @@ export default (styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 22,
-    paddingVertical: 8
+    paddingHorizontal: 5,
+    paddingVertical: 10
   },
   listTextStyle: {
     fontSize: 15,
@@ -65,5 +64,19 @@ export default (styles = StyleSheet.create({
   },
   searchHistoryListViewStyle: {
     paddingVertical: 15
+  },
+  columnStyle: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    paddingHorizontal: 4
+  },
+  rowStyle: {
+    paddingHorizontal: 5,
+    marginTop: 5
+  },
+  smalltext: {
+    fontSize: 12,
+    color: colors.black
   }
 }));

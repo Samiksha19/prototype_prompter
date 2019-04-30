@@ -13,15 +13,55 @@ class SearchHistoryList extends Component {
             <Text style={styles.searchTopTextStyle}>
               {"Previously Searched Keywords"}
             </Text>
-            {this.props.data.map((element, index) => (
+            {this.props.data.map((ele, index) => (
               <View key={index}>
                 <TouchableOpacity
-                  onPress={() => this.props.onPress(element)}
+                  onPress={() => this.props.onPress(ele.key, ele.arr)}
                   activeOpacity={0.7}
-                  style={styles.elementStyle}
+                  style={[
+                    styles.elementStyle,
+                    {
+                      justifyContent:
+                        ele.arr && ele.arr.length === 0
+                          ? "space-between"
+                          : "space-around",
+                      paddingHorizontal: ele.arr.length === 0 ? 7 : 15
+                    }
+                  ]}
                 >
-                  <Text style={styles.listTextStyle}>{element}</Text>
-                  <Icon name="history" size={27} color={colors.gray} />
+                  <View style={styles.columnStyle}>
+                    <Text style={styles.listTextStyle}>{ele.key}</Text>
+                    <View style={styles.rowStyle}>
+                      {ele.arr && ele.arr.length !== 0 && (
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            flexWrap: "wrap-reverse",
+                            justifyContent: "flex-start"
+                          }}
+                        >
+                          <Text style={{ fontSize: 12, color: colors.black }}>
+                            Filters:{" "}
+                          </Text>
+                          {ele.arr.map((text, index) => (
+                            <Text
+                              key={index}
+                              style={styles.smalltext}
+                            >{`${text}, `}</Text>
+                          ))}
+                          <View />
+                        </View>
+                      )}
+                    </View>
+                  </View>
+                  <View>
+                    <Icon
+                      name="history"
+                      style={{ marginRight: 5 }}
+                      size={27}
+                      color={colors.gray}
+                    />
+                  </View>
                 </TouchableOpacity>
                 <View style={styles.viewBorderStyle} />
               </View>
