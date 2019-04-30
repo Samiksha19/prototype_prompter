@@ -10,8 +10,8 @@ class TagList extends Component {
     this.state = {
       toggle: false,
       selectedTags: [],
-      selectedValueDuration: "",
-      selectedValueEvaluation: ""
+      pdDuration: "",
+      pdEvaluationType: ""
     };
   }
 
@@ -27,11 +27,18 @@ class TagList extends Component {
   }
 
   resetSelectedTags() {
-    this.setState({ selectedTags: [] });
+    this.setState({ selectedTags: [], pdDuration: '', pdEvaluationType: '' });
   }
 
-  changeText(text) {
-    console.warn(text);
+  changeText(text, key) {
+    this.setState({ [key.label]: text })
+    console.warn(this.state);
+  }
+
+  filterArticles() {
+    let a = [this.state.pdDuration, this.state.pdEvaluationType]
+    let array = this.state.selectedTags.concat(a);
+    this.props.getFilteredArtciles(array)
   }
 
   render() {
@@ -42,17 +49,18 @@ class TagList extends Component {
         {this.props.data.filter.map((key, index) => (
           <View key={index} style={styles.filterViewStyle}>
             {key.type === "dropdown" ? (
-              <View style={{ padding: 6 }}>
-                <Text style={styles.labelStyle}>{key.text}</Text>
+              <View>
+                {/* <Text style={styles.labelStyle}>{key.text}</Text> */}
                 <Dropdown
-                  label="Select an option"
+                  label={key.text}
+                  baseColor={colors.purple}
                   data={key.values}
-                  onChangeText={text => this.changeText(text)}
+                  onChangeText={text => this.changeText(text, key)}
                 />
               </View>
             ) : (
               <View>
-                <Text style={styles.labelStyle}>{key.text}</Text>
+                {/* <Text style={styles.labelStyle}>{key.text}</Text> */}
                 <View style={styles.tagsViewStyle}>
                   {key.values.map((val, ind) => (
                     <TouchableOpacity
@@ -97,7 +105,7 @@ class TagList extends Component {
               <Text style={styles.modalBottomButtonStyle}>RESET</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.4}>
+            <TouchableOpacity activeOpacity={0.4} onPress={() => this.filterArticles()}>
               <Text style={styles.modalBottomButtonStyle}>APPLY</Text>
             </TouchableOpacity>
           </View>

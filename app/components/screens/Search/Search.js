@@ -266,6 +266,22 @@ class Search extends React.Component {
     );
   }
 
+  async getFilteredArtciles(filterKeys) {
+    let end_point = 'search/' + this.state.textInput + '/' + filterKeys;
+    let method = "GET";
+    let response = await callApi(end_point, method);
+    this.setState({ article: [{}], isVisible: false })
+    setTimeout(() => {
+      this.setState(
+        {
+          article: response.length > 0 ? response : [],
+          searchArticleRes: true,
+          toggle: false
+        }
+      );
+    }, 400);
+  }
+
   render() {
     const { textInput, DATA, isVisible, toggle, search } = this.state;
     return (
@@ -340,7 +356,7 @@ class Search extends React.Component {
             onPress={() => this.setState({ isVisible: !this.state.isVisible })}
           />
           <View style={styles.modalViewStyle}>
-            <TagList data={DATA} />
+            <TagList data={DATA} getFilteredArtciles={this.getFilteredArtciles.bind(this)}/>
           </View>
         </Modal>
       </KeyboardAvoidingView>
